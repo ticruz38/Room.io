@@ -1,0 +1,59 @@
+.restaurant-selected {
+  max-width: 20%;
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  img {
+    border-radius: 3px;
+    width: 100%;
+  }
+}
+.foods-bar {
+  width: 80%;
+  border-radius: 5px;
+  background: white;
+  margin: 80px auto;
+  display: flex;
+  justify-content: center;
+  strong {
+    display: block;
+  }
+  .food-item {
+    &.selected {
+      border: 1px solid;
+      border-radius: 5px;
+      background: lightyellow;
+    }
+    max-width: 300px;
+    img {
+      cursor: pointer;
+      width: 30%;
+    }
+  }
+}
+.card {
+  background: white;
+  border-radius: 5px;
+  margin: auto;
+  width: 80%;
+  border: 1px solid;
+  box-shadow: 0 0 5px black;
+  .row {
+    td {
+      height: 30px;
+    }
+    .caddy-icon {
+      cursor: pointer;
+      width: 24px;
+    }
+    &:hover {
+      background: ghostwhite;
+      i {
+        display: inline-block;
+      }
+    }
+    i {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,53 @@
+header {
+  height: 30px;
+  padding: 10px;
+  margin-bottom: 2em;
+  background-color: gold;
+
+  .app-icon {
+    float: left;
+    font-size: 30px;
+  }
+
+  .signin {
+    i {
+      font-size: 30px;
+    }
+    display: flex;
+    float: right;
+    height: 30px;
+    button {
+      border-radius: 3px;
+      cursor: pointer;
+      background: lightyellow;
+      display: flex;
+      font-size: 18px;
+      padding: 0;
+      border: none;
+      padding: 0 5px;
+      span {
+        padding: 5px;
+      }
+    }
+  }
+
+  .search-wrapper {
+    margin: 0 1em;
+    float: left;
+    display: flex;
+    height: 30px;
+    border-radius: 3px;
+    background: lightyellow;
+    >i{
+      font-size: 30px;
+    }
+    input {
+      border: none;
+      font-size: 26px;
+      outline: none;
+      padding: 0 5px;
+      border-radius: 3px;
+      background: lightyellow;
+    }
+  }
+}

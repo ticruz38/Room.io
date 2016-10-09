@@ -1,0 +1,26 @@
+.caddy {
+  margin: 2em auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  .caddy-item {
+    margin: 1em;
+    text-align: left;
+    >div {
+      text-align: left;
+      border-radius: 0.5em;
+      /* border: 1px solid; */
+      display: inline-block;
+      background: gold;
+      color: black;
+      font-style: oblique;
+    }
+    strong {
+      padding: 1em;
+      display: block;
+      box-shadow: 0 0 3px;
+      background: white;
+      border-radius: 5px;
+    }
+  }
+}
