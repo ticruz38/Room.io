@@ -7,13 +7,20 @@
     margin: 1em;
     text-align: left;
     >div {
-      text-align: left;
-      border-radius: 0.5em;
-      /* border: 1px solid; */
-      display: inline-block;
-      background: gold;
-      color: black;
       font-style: oblique;
+      text-align: right;
+      width: 100%;
+      span {
+        background: gold;
+        float: left;
+        border-radius: 9px;
+      }
+      i {
+        font-size: 18px;
+        cursor: pointer;
+        background: gold;
+        border-radius: 9px;
+      }
     }
     strong {
       padding: 1em;

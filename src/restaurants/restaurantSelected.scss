@@ -8,11 +8,11 @@
     width: 100%;
   }
 }
+
 .foods-bar {
   width: 80%;
+  margin: auto;
   border-radius: 5px;
-  background: white;
-  margin: 80px auto;
   display: flex;
   justify-content: center;
   strong {
@@ -20,25 +20,41 @@
   }
   .food-item {
     &.selected {
-      border: 1px solid;
       border-radius: 5px;
-      background: lightyellow;
+      background: gold;
     }
     max-width: 300px;
+    padding: 1em;
+    margin: 1em;
+    box-shadow: 0 0 5px;
+    border-radius: 5px;
+    background: lightyellow;
     img {
       cursor: pointer;
       width: 30%;
     }
   }
 }
+
+div.selected-food-picture {
+  img {
+    border-radius: 5px;
+  }
+}
+
 .card {
-  background: white;
   border-radius: 5px;
-  margin: auto;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  margin: 5em auto;
+  background-size: cover;
   width: 80%;
   border: 1px solid;
   box-shadow: 0 0 5px black;
   .row {
+    background-color: rgba($color: white, $alpha: 0.7);
+
     td {
       height: 30px;
     }

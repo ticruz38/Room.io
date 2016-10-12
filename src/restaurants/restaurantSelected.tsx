@@ -19,7 +19,7 @@ class FoodState {
   @observable caddy: Meal[] = [];
 }
 
-const foodState = new FoodState();
+export const foodState = new FoodState();
 
 @observer
 export default class RestaurantSelected extends React.Component<props, any> {
@@ -37,9 +37,7 @@ export default class RestaurantSelected extends React.Component<props, any> {
     return foodState.selectedFood;
   }
 
-  addCaddyItem = (meal: Meal, parent: string) => {
-    console.log(Object.assign({}, meal, {parent: parent} ));
-    
+  addCaddyItem = (meal: Meal, parent: string) => {    
     foodState.caddy.push(Object.assign({}, meal, {parent: parent} ) )
   }
 
@@ -70,6 +68,7 @@ export default class RestaurantSelected extends React.Component<props, any> {
           <h1>{restaurant.name}</h1>
           <img src={restaurant.picture.url}/>
         </div>
+
         <div className='foods-bar'>
           {restaurant.foods.map(food => {
             return (
@@ -77,12 +76,13 @@ export default class RestaurantSelected extends React.Component<props, any> {
                 key={food.id}
                 onClick={ () => { foodState.selectedFood = food } }>
                 <strong>{food.name}</strong>
-                <img src={food.picture.url} />
               </div>
             );
           })}
         </div>
-        <table className='card'>
+        <table
+          className='card'
+          style={{ backgroundImage: `url(${this.selectedFood.picture.url} )` } } >
           <tbody>
             {this.selectedFood.meals.map(meal => {
                 return <Meal {...meal} key={meal.id} parent={this.selectedFood.name} />
@@ -90,7 +90,7 @@ export default class RestaurantSelected extends React.Component<props, any> {
             }
           </tbody>
         </table>
-        {foodState.caddy.length ? <Caddy caddy= {foodState.caddy} /> : <span/>}
+        {foodState.caddy.length ? <Caddy foodState={foodState} /> : <span/>}
       </div>
     )
   }
