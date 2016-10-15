@@ -19,7 +19,8 @@ export interface Meal {
   id: string;
   parent: string,
   name: string,
-  description: string
+  description: string,
+  length: number // this is used in caddy
 }
 
 export interface Food {
@@ -46,28 +47,27 @@ export interface Restaurant {
 }
 
 
-// the main component feedState;
-class FeedState {
+// the main component restaurantFeedState;
+export class RestaurantFeedState {
 
+  /** get next or prev sibling restaurant */
+  browseRestaurant: (prop: number) => void = (prop) => {    
+    this.restaurant = this.restaurants[this.restaurants.findIndex(restaurant => restaurant.id === this.restaurant.id) + prop ]
+  }
+  
   @observable restaurants: Restaurant[] = [];
 
   @observable columnWidth: number = 300;
 
-  @observable selectedIndex: number;
-
-  @computed get restaurantSelected(): Restaurant {
-    return this.selectedIndex ? this.restaurants[this.selectedIndex] : null;
-  }
+  @observable restaurant: Restaurant; //selected restaurant
 
   @computed get numberOfColumn(): number {
-    return Math.round(uiStore.windowSize[1] / feedState.columnWidth);
+    return Math.round(uiStore.windowSize[1] / restaurantFeedState.columnWidth);
   }
-
-
-
+  
 }
 
-export const feedState = new FeedState();
+export const restaurantFeedState = new RestaurantFeedState();
 
 @observer
 export class RestaurantsFeed extends View {
@@ -78,8 +78,7 @@ export class RestaurantsFeed extends View {
 
   componentWillMount() {
     graphStore.graphRequest(this.fragments, this.variableString, this.variables).then((result: any) => {
-      console.log(result.data.list);
-      feedState.restaurants = result.data.list;
+      restaurantFeedState.restaurants = result.data.list;
     })
   }
 
@@ -129,8 +128,8 @@ export class RestaurantsFeed extends View {
   };
 
   get modal() {
-    if (!feedState.restaurantSelected) return <span/>;
-    return <RestaurantSelected restaurant={ feedState.restaurantSelected } />
+    if (!restaurantFeedState.restaurant) return <span/>;
+    return <RestaurantSelected restaurantFeedState = {restaurantFeedState} />
   }
   /**
    * @override View
@@ -148,9 +147,9 @@ export class RestaurantsFeed extends View {
       )
     }    
     //divide restaurants array in n distinct array
-    for (let i = 0; i < feedState.restaurants.length; i++) {
-      let column = columns[i % feedState.numberOfColumn];
-      column ? column.push(feedState.restaurants[i]) : columns.push([feedState.restaurants[i]]);
+    for (let i = 0; i < restaurantFeedState.restaurants.length; i++) {
+      let column = columns[i % restaurantFeedState.numberOfColumn];
+      column ? column.push(restaurantFeedState.restaurants[i]) : columns.push([restaurantFeedState.restaurants[i]]);
     }
     return (
       <div className='restaurants-grid'>
@@ -164,10 +163,7 @@ const Restaurant = (restaurant: Restaurant) => {
 
   return (
     <div className='restaurant'>
-      <img src={restaurant.picture.url} onClick={ _ => {
-        feedState.selectedIndex = 1;
-        console.log('click', feedState.selectedIndex);
-      } } />
+      <img src={restaurant.picture.url} onClick={_ => { restaurantFeedState.restaurant = restaurant } } />
       <i>{restaurant.reviews.count} {restaurant.reviews.averageScore}</i>
       <h2>{restaurant.name}</h2>
       <p>{restaurant.description}</p>

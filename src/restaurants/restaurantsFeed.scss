@@ -41,12 +41,12 @@ div.full-screen {
     position: fixed;
     display: table;
     height: 100%;
+    font-size: 30px;
     &.arrow-right {
       right: 0;
     }
     &.arrow-left {
       left: 0;
-      font-size: 30px;
     }
     i {
       cursor: pointer;

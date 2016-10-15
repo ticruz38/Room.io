@@ -3,6 +3,21 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  > div {
+    background: white;
+    border-radius: 1em;
+    box-shadow: 0 0 1px;
+    margin: 1em;
+    >h1 {
+      padding: 0 1em;
+      margin: 0;
+      text-align: left;
+    }
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
   .caddy-item {
     margin: 1em;
     text-align: left;

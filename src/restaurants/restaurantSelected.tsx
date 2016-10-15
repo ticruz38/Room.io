@@ -4,65 +4,72 @@ import {computed, observable, toJS, autorun} from 'mobx'
 
 import * as classnames from 'classnames';
 
-import { feedState, Restaurant, Food, Meal } from './restaurantsFeed';
+import {
+  RestaurantFeedState, Restaurant, Food, Meal,
+} from './restaurantsFeed';
 
 import Caddy                  from './caddy';
 
 import { observer } from 'mobx-react';
 
 interface props {
-  restaurant: Restaurant
+  restaurantFeedState: RestaurantFeedState
 }
 
-class FoodState {
+export class RestaurantState {
+
   @observable selectedFood: Food
+
   @observable caddy: Meal[] = [];
+
 }
 
-export const foodState = new FoodState();
+export const restaurantState = new RestaurantState();
 
 @observer
 export default class RestaurantSelected extends React.Component<props, any> {
 
-  componentWillMount() {    
-    foodState.selectedFood = this.props.restaurant.foods[0];
-  }
+  /** refresh caddy any time selected restaurant change */
+  refreshCaddy = autorun( () => {
+    this.restaurantFeedState.restaurant;
+    restaurantState.caddy = [];
+  })
 
-  componentWillReceiveProps(nextProps: props) {
-    foodState.caddy = [];
-    foodState.selectedFood = nextProps.restaurant.foods[0]
+  get restaurantFeedState() {
+    return this.props.restaurantFeedState;
   }
-
+  
   get selectedFood() {
-    return foodState.selectedFood;
+    return restaurantState.selectedFood || this.restaurantFeedState.restaurant.foods[0];
   }
 
-  addCaddyItem = (meal: Meal, parent: string) => {    
-    foodState.caddy.push(Object.assign({}, meal, {parent: parent} ) )
+  addCaddyItem = (meal: Meal) => {
+    let newMeal = Object.assign({}, meal); // send a new object instance here
+    restaurantState.caddy.push(newMeal);
   }
 
   render() {
 
-    const Meal = (meal: Meal, parent: string) => {
+    const Meal = (props: Meal) => {
       return (
         <tr className='row'>
-          <td className='meal-name'>{meal.name}</td>
-          <td className='meal-description'>{meal.description}</td>
-          <td className='caddy-icon'><i onClick={ () => this.addCaddyItem( meal, parent ) } className="material-icons">add_shopping_cart</i></td>
+          <td className='meal-name'>{props.name}</td>
+          <td className='meal-description'>{props.description}</td>
+          <td className='caddy-icon'><i onClick={ () => this.addCaddyItem( props ) } className="material-icons">add_shopping_cart</i></td>
         </tr>
       );
     } 
     
-    const {restaurant} = this.props;
+    const restaurant = this.restaurantFeedState.restaurant;
     
     return (
       <div className='full-screen'>
-        <i className="material-icons" onClick={_ => feedState.selectedIndex = null}>close</i>
+        <i className="material-icons" onClick={_ => this.restaurantFeedState.restaurant = null}>close</i>
         <span className='arrow-left'>
-          <i className="material-icons" onClick={ _ => feedState.selectedIndex -= 1 }>keyboard_arrow_left</i>
+          <i className="material-icons" onClick={ _ => this.restaurantFeedState.browseRestaurant(-1) }>keyboard_arrow_left</i>
         </span>
         <span className='arrow-right'>
-          <i className="material-icons" onClick={ _ => feedState.selectedIndex += 1 }>keyboard_arrow_right</i>
+          <i className="material-icons" onClick={ _ => this.restaurantFeedState.browseRestaurant(1) }>keyboard_arrow_right</i>
         </span>
         <div className="restaurant-selected">
           <h1>{restaurant.name}</h1>
@@ -74,7 +81,7 @@ export default class RestaurantSelected extends React.Component<props, any> {
             return (
               <div className={classnames('food-item', { selected: food === this.selectedFood }) }
                 key={food.id}
-                onClick={ () => { foodState.selectedFood = food } }>
+                onClick={ () => { restaurantState.selectedFood = food } }>
                 <strong>{food.name}</strong>
               </div>
             );
@@ -90,7 +97,7 @@ export default class RestaurantSelected extends React.Component<props, any> {
             }
           </tbody>
         </table>
-        {foodState.caddy.length ? <Caddy foodState={foodState} /> : <span/>}
+        {restaurantState.caddy.length ? <Caddy restaurantState={restaurantState} /> : <span/>}
       </div>
     )
   }
