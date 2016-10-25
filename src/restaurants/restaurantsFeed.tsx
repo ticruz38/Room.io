@@ -160,7 +160,6 @@ export class RestaurantsFeed extends View {
 }
 
 const Restaurant = (restaurant: Restaurant) => {
-
   return (
     <div className='restaurant'>
       <img src={restaurant.picture.url} onClick={_ => { restaurantFeedState.restaurant = restaurant } } />

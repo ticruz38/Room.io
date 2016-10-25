@@ -8,7 +8,7 @@ import {
   RestaurantFeedState, Restaurant, Food, Meal,
 } from './restaurantsFeed';
 
-import Caddy                  from './caddy';
+import Caddy from './caddy';
 
 import { observer } from 'mobx-react';
 

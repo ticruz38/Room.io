@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 import * as ReactDOM from "react-dom";
 
-import { Router, Route, Link, browserHistory } from 'react-router'
+import * as ReactRouter from 'react-router';
 
-import { Hello } from "./components/Hello";
+import { RestaurantsFeed } from './restaurants/restaurantsFeed';
 
-import { RestaurantsFeed } from './restaurants/restaurantsFeed'; 
+const { Router, Route, Link, browserHistory } = ReactRouter;
 
 ReactDOM.render(
     <Router history={browserHistory}>
