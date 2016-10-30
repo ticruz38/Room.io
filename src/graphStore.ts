@@ -1,6 +1,6 @@
 import * as mobx from 'mobx'
 
-import 'isomorphic-fetch';
+import 'whatwg-fetch';
 
 export const graphQLFetcher = (graphQLParams: { query: string, variables: { [s: string]: any } } ) => {
   return fetch('http://localhost:3800/graphql', {
