@@ -2,17 +2,14 @@ import * as React from "react";
 import { computed, observable, toJS, autorun } from 'mobx';
 import { observer } from 'mobx-react';
 
-import { View } from '../../crankshaft/view';
-
 class LoginState {
-  identifier: string;
-  password: string;
-
+  @observable login: string;
+  @observable password: string;
 }
 
 const loginState = new LoginState();
 
-export class Login extends View {
+export class Login extends React.Component< any, LoginState > {
 
   constructor(props: any) {
     super(props);
@@ -21,8 +18,10 @@ export class Login extends View {
   get content() {
     return (
       <div className='login'>
+        <label>Login</label>
+        <input id='login' value={loginState.login} onChange={ (e) => loginState.login = e.target.value } />
         <label></label>
-        <input id='identifier' value={loginState.identifier} />
+        <input id='password' value={ loginState.password} onChange={ (e) => loginState.password = e.target.value } />
       </div>
     );
   }

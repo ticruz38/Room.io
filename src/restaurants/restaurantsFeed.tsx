@@ -4,7 +4,7 @@ import {computed, observable, toJS, autorun} from 'mobx'
 
 import { observer } from 'mobx-react';
 
-import { View } from '../../crankshaft/view';
+import { layoutState } from '../../crankshaft/layout';
 
 import graphStore from '../graphStore';
 import uiStore from '../uiStore';
@@ -70,7 +70,7 @@ export class RestaurantFeedState {
 export const restaurantFeedState = new RestaurantFeedState();
 
 @observer
-export class RestaurantsFeed extends View {
+export class RestaurantsFeed extends React.Component< RestaurantsFeedProps, RestaurantFeedState > {
 
   constructor(props: RestaurantsFeedProps) {
     super(props);
@@ -127,15 +127,13 @@ export class RestaurantsFeed extends View {
     `
   };
 
-  get modal() {
-    if (!restaurantFeedState.restaurant) return <span/>;
-    return <RestaurantSelected restaurantFeedState = {restaurantFeedState} />
+
+  modal() {
+    layoutState.modal = <RestaurantSelected restaurantFeedState = {restaurantFeedState} />;
   }
-  /**
-   * @override View
-   * 
-   */
-  get content(): React.ReactElement<any> {
+
+
+  render(): React.ReactElement<any> {
     //set the array of restaurants array
     const columns: Restaurant[][] = [];
 
@@ -144,7 +142,7 @@ export class RestaurantsFeed extends View {
         <div className='column' key={index}>
           { restaurants.map( restaurant => <Restaurant {...restaurant} key={restaurant.id} /> ) }
         </div>
-      )
+      );
     }    
     //divide restaurants array in n distinct array
     for (let i = 0; i < restaurantFeedState.restaurants.length; i++) {
