@@ -3,8 +3,24 @@ import { computed, observable, toJS, autorun } from 'mobx';
 import { observer } from 'mobx-react';
 
 class LoginState {
+
   @observable login: string;
+
   @observable password: string;
+
+  @computed get loginError() {
+    console.log('loginError', loginState.login);
+    if (loginState.login === undefined) return;
+    if (!loginState.login.length) return 'login cannot be empty';
+    return null;
+  }
+
+  @computed get passwordError() {
+      if (loginState.password === undefined) return;
+      const re = /^(?=.*\d)[a-zA-Z0-9]{8,}$/i;
+      if (!re.test(loginState.password)) return 'Password must contains 8 characters with uppercase letters and numbers';
+      return null;
+  }
 }
 
 const loginState = new LoginState();
@@ -17,12 +33,29 @@ export class Login extends React.Component< any, LoginState > {
 
   get content() {
     return (
-      <div className='login'>
-        <label>Login</label>
-        <input id='login' value={loginState.login} onChange={ (e) => loginState.login = e.target.value } />
-        <label></label>
-        <input id='password' value={ loginState.password} onChange={ (e) => loginState.password = e.target.value } />
+      <div className='form'>
+        <div className='login'>
+          <label>login</label>
+          <input
+            id='login'
+            className={loginState.loginError ? 'error' : ''}
+            onChange={(e: any) => loginState.login = e.target.value}
+            value={loginState.login}
+          />
+          <div className='error'>{loginState.loginError}</div>
+        </div>
+        <div className='password'>
+          <label>password</label>
+          <input
+            className={loginState.passwordError ? 'error' : ''}
+            id='password'
+            onChange={(e: any) => loginState.password = e.target.value}
+            value={loginState.password} />
+          <div className='error'>{loginState.passwordError}</div>
+        </div>
       </div>
     );
   }
 }
+
+import './login.scss';

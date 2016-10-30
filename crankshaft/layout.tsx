@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
+import { Login } from '../src/login/login';
+
 interface LayoutProps {
   children: React.Component< any, any >,
 }
@@ -57,7 +59,7 @@ export class Layout extends React.Component<any, any> {
           { this.icon }
           { this.backButton }
           { this.searchbar }  
-          <div className='signin'>
+          <div className='signin' onClick={_ =>  }>
             <button className='ambrosia-button'>
             <i className="fa fa-sign-in" />
               <span>Login</span>
@@ -74,7 +76,6 @@ export class Layout extends React.Component<any, any> {
 }
 
 const Modal = (props: any) => {
-  console.log(props);
   
     if(!props) return;
     return (
