@@ -47,6 +47,7 @@ header {
       padding: 0;
       border: none;
       padding: 0 5px;
+      outline: none;
       span {
         padding: 5px;
       }
@@ -84,6 +85,7 @@ header {
   justify-content: center;
   align-items: center;
   .modal-content {
+    border-radius: 5px;
     display: inline-table;
     background: white;
     width: 80%;

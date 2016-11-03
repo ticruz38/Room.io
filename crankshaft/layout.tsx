@@ -24,7 +24,7 @@ export class LayoutState {
 
 export const layoutState = new LayoutState();
 
-
+@observer
 export class Layout extends React.Component<any, any> {
 
   get searchbar() {
@@ -59,7 +59,7 @@ export class Layout extends React.Component<any, any> {
           { this.icon }
           { this.backButton }
           { this.searchbar }  
-          <div className='signin' onClick={_ =>  }>
+          <div className='signin' onClick={_ => {console.log('layoutState'); layoutState.modal = <Login/>} }>
             <button className='ambrosia-button'>
             <i className="fa fa-sign-in" />
               <span>Login</span>
@@ -76,13 +76,20 @@ export class Layout extends React.Component<any, any> {
 }
 
 const Modal = (props: any) => {
+    console.log(props);
   
     if(!props) return;
+
+    const close = (e: MouseEvent ) => {
+      e.preventDefault();
+      layoutState.modal = false;
+    }
+    
     return (
-      <div className={classnames('modal', {hidden: !props.children})} >
+      <div className={classnames('modal', {hidden: !props.children})} onClick={ (e: any) => close(e) } >
         <div className='modal-content' 
-          onBlur={ _ => props.onBlur ? props.onBlur(): layoutState.modal = false} 
-          tabIndex={-1} 
+          tabIndex={-1}
+          onClick={ (e) => e.stopPropagation() }
           autoFocus>
           { props.children }
         </div>

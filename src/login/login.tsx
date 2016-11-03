@@ -31,7 +31,7 @@ export class Login extends React.Component< any, LoginState > {
     super(props);
   }
 
-  get content() {
+  render() {
     return (
       <div className='form'>
         <div className='login'>
