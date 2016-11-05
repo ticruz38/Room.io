@@ -21,6 +21,7 @@
     "@types/react-dom": "^0.14.18",
     "@types/react-router": "^2.0.38",
     "@types/whatwg-fetch": "0.0.32",
+    "solc": "^0.4.4",
     "source-map-loader": "^0.1.5",
     "ts-loader": "^0.8.2"
   },
