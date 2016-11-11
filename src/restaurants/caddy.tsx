@@ -3,7 +3,7 @@ import {computed, observable, toJS, autorun }        from 'mobx';
 import { observer }                                 from 'mobx-react';
 import * as classnames                              from 'classnames';
 
-import { Restaurant, Food, Meal } from './restaurantsFeed';
+import { Restaurant, Food, Meal }                   from './RestaurantsFeed';
 
 interface Item {
   id: string;
@@ -84,4 +84,4 @@ export default class Caddy extends React.Component<any, any> {
   }
 }
 
-import './caddy.scss';
+import './Caddy.scss';

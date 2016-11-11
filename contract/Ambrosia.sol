@@ -2,7 +2,7 @@ pragma solidity ^0.4.4;
 
 contract Ambrosia {
 
-    mapping (address => bytes32) restaurants;
+    mapping (address => bytes32) restaurants; // a way to store our restaurant?
 
     address _owner;
 

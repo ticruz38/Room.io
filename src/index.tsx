@@ -3,14 +3,14 @@ import * as ReactDOM from "react-dom";
 
 import * as ReactRouter from 'react-router';
 
-import { RestaurantsFeed } from './restaurants/restaurantsFeed';
-import { Layout } from '../crankshaft/layout';
+import { RestaurantsFeed } from './restaurants/RestaurantsFeed';
+import { Layout } from '../crankshaft/Layout';
 
 const { Router, Route, Link, browserHistory } = ReactRouter;
 
 ReactDOM.render(
     <Router history={browserHistory}>
-      <Route component={Layout} >
+      <Route component={Layout}>
         <Route path="/" component={RestaurantsFeed}/>
       </Route>
     </Router>,
