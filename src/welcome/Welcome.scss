@@ -1,0 +1,17 @@
+div.presentation {
+    margin: auto;
+    width: 80%;
+    h1 {
+        text-align: center;
+    }
+}
+
+div.pick {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .box {
+        height: 7em;
+        width: 7em;
+    }
+}

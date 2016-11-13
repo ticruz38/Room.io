@@ -11,8 +11,8 @@ export class Welcome extends React.Component< any, any > {
                 <div className='presentation'>
                     <h1>Caddy makes it easy to anyone to open it's business</h1>
                     <p>
-                        Caddy is a very simple concept, show and detail what you are offering, it can be anything,
-                        it can be goods, services, foods, homemade beauty product...
+                        Caddy is a very simple concept, you show and detail what you are offering, in a nicely usable yet beautiful interface, it can be anything,
+                        goods, services, foods, homemade beauty product... And let your customer enter in a deal with you in total trust and simplicity.
                     </p>
                     <p>
                         As soon as your customer is in a deal with you, he subscribes to the rule of your contract,
@@ -39,3 +39,5 @@ export class Welcome extends React.Component< any, any > {
         );
     }
 }
+
+import './Welcome.scss';
