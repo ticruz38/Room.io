@@ -4,9 +4,9 @@ import { observer } from 'mobx-react';
 
 class LoginState {
 
-  @observable login: string;
+  @observable login;
 
-  @observable password: string;
+  @observable password;
 
   @computed get loginError() {
     console.log('loginError', loginState.login);
@@ -25,7 +25,7 @@ class LoginState {
 
 const loginState = new LoginState();
 
-export class Login extends React.Component< any, LoginState > {
+export class Login extends React.Component {
 
   constructor(props: any) {
     super(props);
@@ -39,7 +39,7 @@ export class Login extends React.Component< any, LoginState > {
           <input
             id='login'
             className={loginState.loginError ? 'error' : ''}
-            onChange={(e: any) => loginState.login = e.target.value}
+            onChange={e => loginState.login = e.target.value}
             value={loginState.login}
           />
           <div className='error'>{loginState.loginError}</div>
@@ -49,7 +49,7 @@ export class Login extends React.Component< any, LoginState > {
           <input
             className={loginState.passwordError ? 'error' : ''}
             id='password'
-            onChange={(e: any) => loginState.password = e.target.value}
+            onChange={e => loginState.password = e.target.value}
             value={loginState.password} />
           <div className='error'>{loginState.passwordError}</div>
         </div>

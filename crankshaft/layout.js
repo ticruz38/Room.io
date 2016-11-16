@@ -1,31 +1,28 @@
-import * as React from 'react';
-import * as classnames  from 'classnames';
+import React from 'react';
+import classnames  from 'classnames';
 import { Link } from 'react-router';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
 import { Login } from '../src/login/login';
 
-interface LayoutProps {
-  children: React.Component< any, any >,
-}
 
 const ModalContent = () => {
-  return <div> Hi Guys, I'm a modal</div>;
+  return <div> Hi Guys, Im a modal</div>;
 }
 
 export class LayoutState {
 
-  @observable modal: boolean | React.ReactElement< any >;
-  @observable searchBar: boolean = true;
-  @observable backRoute: string;
+  @observable modal;
+  @observable searchBar = true;
+  @observable backRoute;
 
 }
 
 export const layoutState = new LayoutState();
 
 @observer
-export class Layout extends React.Component<any, any> {
+export class Layout extends React.Component {
 
   get searchbar() {
     return (
@@ -76,7 +73,6 @@ export class Layout extends React.Component<any, any> {
 }
 
 const Modal = (props: any) => {
-    console.log(props);
   
     if(!props) return;
 

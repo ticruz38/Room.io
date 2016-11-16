@@ -4,7 +4,7 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        app: ["./src/index.tsx"]
+        app: ["./src/index.js"]
     },
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -26,8 +26,15 @@ module.exports = {
     },
 
     module: {
-        loaders: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
+        loaders: [{
+            test: /\.js$/,
+            loader: 'babel',
+            exclude: /node_modules/,
+            query: {
+                presets: ['react', 'es2015', 'stage-0'],
+                plugins: ['transform-class-properties', 'transform-decorators-legacy']
+                }
+            },
             {
                 test: /\.tsx?$/,
                 loader: "ts-loader"
