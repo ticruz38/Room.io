@@ -1,4 +1,5 @@
-import * as React from "react";
+import * as React   from "react";
+import {Link}       from "react-router";
 
 import {computed, observable, toJS, autorun} from 'mobx'
 
@@ -28,12 +29,12 @@ export class Welcome extends React.Component< any, any > {
                     </p>
                 </div>
                 <div className='pick'>
-                    <div className='box'>
+                    <Link to="start-business" className='box'>
                         <span>Become a caddyer</span>
-                    </div>
-                    <div className='box'>
+                    </Link>
+                    <Link to='look-around' className='box'>
                         <span>Look Around</span>
-                    </div>
+                    </Link>
                 </div>
             </div>
         );

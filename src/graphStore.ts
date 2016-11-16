@@ -23,7 +23,6 @@ class GraphStore {
     const query = this.getQuery( fragments, variableString)
     return graphQLFetcher({query: query, variables: variables})
   };
-  
 }
 
 export default new GraphStore();

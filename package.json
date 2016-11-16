@@ -17,6 +17,7 @@
   "devDependencies": {
     "@types/classnames": "0.0.31",
     "@types/history": "^2.0.39",
+    "@types/node": "^6.0.48",
     "@types/react": "^0.14.42",
     "@types/react-dom": "^0.14.18",
     "@types/react-router": "^2.0.38",
@@ -33,6 +34,7 @@
     "ether-pudding": "^3.2.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
+    "ipfs": "^0.18.0",
     "isomorphic-fetch": "^2.2.1",
     "mobx": "^2.5.1",
     "mobx-react": "^3.5.6",
@@ -45,7 +47,7 @@
     "style-loader": "^0.13.1",
     "web3": "^0.17.0-beta",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1",
-    "whatwg-fetch": "^1.0.0"
-  }
+    "webpack-dev-server": "^1.14.1"
+  },
+  "repository": "https://github.com/ticruz38/Ambrosia-Mobx.git"
 }
