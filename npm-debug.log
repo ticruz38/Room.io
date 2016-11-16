@@ -1,34 +1,113 @@
 0 info it worked if it ends with ok
 1 verbose cli [ '/Users/tduchene/.nvm/versions/node/v6.5.0/bin/node',
 1 verbose cli   '/Users/tduchene/.nvm/versions/node/v6.5.0/bin/npm',
-1 verbose cli   'start' ]
+1 verbose cli   'i',
+1 verbose cli   '-D',
+1 verbose cli   '@types/ipfs' ]
 2 info using npm@3.10.3
 3 info using node@v6.5.0
-4 verbose stack Error: Failed to parse json
-4 verbose stack Unexpected token '/' at 20:31
-4 verbose stack     "@types/node": "^6.0.45", // enable the use of require(<module>)
-4 verbose stack                               ^
-4 verbose stack     at parseError (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:390:11)
-4 verbose stack     at parseJson (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:79:23)
-4 verbose stack     at /Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:48:5
-4 verbose stack     at /Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:78:16
-4 verbose stack     at tryToString (fs.js:455:3)
-4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:442:12)
-5 verbose cwd /Users/tduchene/Sites/Ambrosia-Mobx
-6 error Darwin 16.0.0
-7 error argv "/Users/tduchene/.nvm/versions/node/v6.5.0/bin/node" "/Users/tduchene/.nvm/versions/node/v6.5.0/bin/npm" "start"
-8 error node v6.5.0
-9 error npm  v3.10.3
-10 error file /Users/tduchene/Sites/Ambrosia-Mobx/package.json
-11 error code EJSONPARSE
-12 error Failed to parse json
-12 error Unexpected token '/' at 20:31
-12 error     "@types/node": "^6.0.45", // enable the use of require(<module>)
-12 error                               ^
-13 error File: /Users/tduchene/Sites/Ambrosia-Mobx/package.json
-14 error Failed to parse package.json data.
-14 error package.json must be actual JSON, not just JavaScript.
-14 error
-14 error This is not a bug in npm.
-14 error Tell the package author to fix their package.json file. JSON.parse
-15 verbose exit [ 1, true ]
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData @types/ipfs
+8 silly fetchNamedPackageData @types/ipfs
+9 silly mapToRegistry name @types/ipfs
+10 silly mapToRegistry scope (from package name) @types
+11 verbose mapToRegistry no registry URL found in name for scope @types
+12 silly mapToRegistry using default registry
+13 silly mapToRegistry registry https://registry.npmjs.org/
+14 silly mapToRegistry data Result {
+14 silly mapToRegistry   raw: '@types/ipfs',
+14 silly mapToRegistry   scope: '@types',
+14 silly mapToRegistry   escapedName: '@types%2fipfs',
+14 silly mapToRegistry   name: '@types/ipfs',
+14 silly mapToRegistry   rawSpec: '',
+14 silly mapToRegistry   spec: 'latest',
+14 silly mapToRegistry   type: 'tag' }
+15 silly mapToRegistry uri https://registry.npmjs.org/@types%2fipfs
+16 verbose request uri https://registry.npmjs.org/@types%2fipfs
+17 verbose request no auth needed
+18 info attempt registry request try #1 at 21:18:11
+19 verbose request id 0f9ff901835db3bf
+20 http request GET https://registry.npmjs.org/@types%2fipfs
+21 http 404 https://registry.npmjs.org/@types%2fipfs
+22 verbose headers { 'content-type': 'application/json',
+22 verbose headers   'cache-control': 'max-age=0',
+22 verbose headers   'content-length': '2',
+22 verbose headers   'accept-ranges': 'bytes',
+22 verbose headers   date: 'Wed, 16 Nov 2016 20:18:14 GMT',
+22 verbose headers   via: '1.1 varnish',
+22 verbose headers   age: '0',
+22 verbose headers   connection: 'keep-alive',
+22 verbose headers   'x-served-by': 'cache-fra1229-FRA',
+22 verbose headers   'x-cache': 'MISS',
+22 verbose headers   'x-cache-hits': '0',
+22 verbose headers   'x-timer': 'S1479327494.230509,VS0,VE332',
+22 verbose headers   vary: 'Accept-Encoding' }
+23 silly get cb [ 404,
+23 silly get   { 'content-type': 'application/json',
+23 silly get     'cache-control': 'max-age=0',
+23 silly get     'content-length': '2',
+23 silly get     'accept-ranges': 'bytes',
+23 silly get     date: 'Wed, 16 Nov 2016 20:18:14 GMT',
+23 silly get     via: '1.1 varnish',
+23 silly get     age: '0',
+23 silly get     connection: 'keep-alive',
+23 silly get     'x-served-by': 'cache-fra1229-FRA',
+23 silly get     'x-cache': 'MISS',
+23 silly get     'x-cache-hits': '0',
+23 silly get     'x-timer': 'S1479327494.230509,VS0,VE332',
+23 silly get     vary: 'Accept-Encoding' } ]
+24 silly fetchPackageMetaData Error: Registry returned 404 for GET on https://registry.npmjs.org/@types%2fipfs
+24 silly fetchPackageMetaData     at makeError (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+24 silly fetchPackageMetaData     at CachingRegistryClient.<anonymous> (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:242:14)
+24 silly fetchPackageMetaData     at Request._callback (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+24 silly fetchPackageMetaData     at Request.self.callback (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/request/request.js:200:22)
+24 silly fetchPackageMetaData     at emitTwo (events.js:106:13)
+24 silly fetchPackageMetaData     at Request.emit (events.js:191:7)
+24 silly fetchPackageMetaData     at Request.<anonymous> (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/request/request.js:1067:10)
+24 silly fetchPackageMetaData     at emitOne (events.js:101:20)
+24 silly fetchPackageMetaData     at Request.emit (events.js:188:7)
+24 silly fetchPackageMetaData     at IncomingMessage.<anonymous> (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/request/request.js:988:12)
+24 silly fetchPackageMetaData  error for @types/ipfs { Error: Registry returned 404 for GET on https://registry.npmjs.org/@types%2fipfs
+24 silly fetchPackageMetaData     at makeError (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+24 silly fetchPackageMetaData     at CachingRegistryClient.<anonymous> (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:242:14)
+24 silly fetchPackageMetaData     at Request._callback (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+24 silly fetchPackageMetaData     at Request.self.callback (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/request/request.js:200:22)
+24 silly fetchPackageMetaData     at emitTwo (events.js:106:13)
+24 silly fetchPackageMetaData     at Request.emit (events.js:191:7)
+24 silly fetchPackageMetaData     at Request.<anonymous> (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/request/request.js:1067:10)
+24 silly fetchPackageMetaData     at emitOne (events.js:101:20)
+24 silly fetchPackageMetaData     at Request.emit (events.js:188:7)
+24 silly fetchPackageMetaData     at IncomingMessage.<anonymous> (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/request/request.js:988:12) pkgid: '@types/ipfs', statusCode: 404, code: 'E404' }
+25 silly rollbackFailedOptional Starting
+26 silly rollbackFailedOptional Finishing
+27 silly runTopLevelLifecycles Starting
+28 silly runTopLevelLifecycles Finishing
+29 silly install printInstalled
+30 verbose stack Error: Registry returned 404 for GET on https://registry.npmjs.org/@types%2fipfs
+30 verbose stack     at makeError (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+30 verbose stack     at CachingRegistryClient.<anonymous> (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:242:14)
+30 verbose stack     at Request._callback (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+30 verbose stack     at Request.self.callback (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/request/request.js:200:22)
+30 verbose stack     at emitTwo (events.js:106:13)
+30 verbose stack     at Request.emit (events.js:191:7)
+30 verbose stack     at Request.<anonymous> (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/request/request.js:1067:10)
+30 verbose stack     at emitOne (events.js:101:20)
+30 verbose stack     at Request.emit (events.js:188:7)
+30 verbose stack     at IncomingMessage.<anonymous> (/Users/tduchene/.nvm/versions/node/v6.5.0/lib/node_modules/npm/node_modules/request/request.js:988:12)
+31 verbose statusCode 404
+32 verbose pkgid @types/ipfs
+33 verbose cwd /Users/tduchene/Sites/Ambrosia-Mobx
+34 error Darwin 16.1.0
+35 error argv "/Users/tduchene/.nvm/versions/node/v6.5.0/bin/node" "/Users/tduchene/.nvm/versions/node/v6.5.0/bin/npm" "i" "-D" "@types/ipfs"
+36 error node v6.5.0
+37 error npm  v3.10.3
+38 error code E404
+39 error 404 Registry returned 404 for GET on https://registry.npmjs.org/@types%2fipfs
+40 error 404
+41 error 404 '@types/ipfs' is not in the npm registry.
+42 error 404 You should bug the author to publish it (or use the name yourself!)
+43 error 404 Note that you can also install from a
+44 error 404 tarball, folder, http url, or git url.
+45 verbose exit [ 1, true ]

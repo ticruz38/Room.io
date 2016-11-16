@@ -98,4 +98,4 @@ const Modal = (props: any) => {
 }
 
 
-import './layout.scss';
+import './Layout.scss';

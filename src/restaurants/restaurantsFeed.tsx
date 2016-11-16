@@ -1,15 +1,13 @@
-import * as React from "react";
+import * as React                             from "react";
 
-import {computed, observable, toJS, autorun} from 'mobx'
+import {computed, observable, toJS, autorun}  from 'mobx'
 
-import { observer } from 'mobx-react';
+import { observer }                           from 'mobx-react';
 
-import { layoutState } from '../../crankshaft/layout';
-
-import graphStore from '../graphStore';
-import uiStore from '../uiStore';
-
-import RestaurantSelected from './RestaurantSelected';
+import graphStore                             from '../GraphStore';
+import uiStore                                from '../UiStore';
+import RestaurantSelected                     from './RestaurantSelected';
+import { layoutState }                        from '../../crankshaft/Layout';
 
 interface RestaurantsFeedProps {
 
@@ -169,6 +167,6 @@ const Restaurant = (restaurant: Restaurant) => {
 };
 
 
-import './restaurantsFeed.scss';
+import './RestaurantsFeed.scss';
 
 
