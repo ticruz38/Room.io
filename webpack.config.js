@@ -34,11 +34,7 @@ module.exports = {
                 presets: ['react', 'es2015', 'stage-0'],
                 plugins: ['transform-class-properties', 'transform-decorators-legacy']
                 }
-            },
-            {
-                test: /\.tsx?$/,
-                loader: "ts-loader"
-            }, {
+            },{
                 test: /\.scss|sass|css$/,
                 loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
             }, {

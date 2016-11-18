@@ -4,13 +4,12 @@ import * as React from 'react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-const IPFS = require('ipfs');
 
 
 export class StartBusinessState {
-    @observable title: string;
-    @observable description: string;
-    @observable urPicture: string;
+    @observable title;
+    @observable description;
+    @observable urPicture;
 }
 
 export const startBusinessState = new StartBusinessState();
@@ -24,7 +23,7 @@ export class StartBusiness extends React.Component< any, any > {
             title: startBusinessState.title,
             description: startBusinessState.description
         };
-        console.log(IPFS);
+        console.log(Ipfs, new Ipfs());
         
         getIpfsNode();
     }
@@ -36,8 +35,8 @@ export class StartBusiness extends React.Component< any, any > {
             <div className="start-business">
                 <input value={startBusinessState.title} onChange={ (e: any) => startBusinessState.title = e.currentTarget.value } />
                 <textarea value={startBusinessState.description} onChange={ (e: any) => startBusinessState.description = e.currentTarget.value } />
-                <input type='file'>Select File</input>
-                <button onClick={ _ => this.uploadDataToIPFS() }></button>
+                <input type='file'/>
+                <button onClick={ _ => this.uploadDataToIPFS() }>Ipfs</button>
             </div>
         );
     }
