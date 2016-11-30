@@ -8,10 +8,11 @@ import { Welcome } from './welcome/Welcome';
 import { Layout } from '../crankshaft/Layout';
 import { StartBusiness } from './form/StartBusiness';
 
-const { Router, Route, Link, browserHistory } = ReactRouter;
+const { Router, Route, Link, hashHistory } = ReactRouter;
+
 
 ReactDOM.render(
-    <Router history={browserHistory}>
+    <Router history={hashHistory}>
       <Route component={Layout}>
         <Route path="/start-business" component={StartBusiness}/>
         <Route path="/" component={Welcome}/>

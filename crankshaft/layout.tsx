@@ -76,8 +76,6 @@ export class Layout extends React.Component<any, any> {
 }
 
 const Modal = (props: any) => {
-    console.log(props);
-  
     if(!props) return;
 
     const close = (e: MouseEvent ) => {

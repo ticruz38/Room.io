@@ -1,0 +1,41 @@
+.start-business {
+    label {
+        color: white;
+    }
+    .intro-layer {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        filter: blur(9px);
+        z-index: -1;
+        background-image: url('../../public/messy_room.jpg');
+        background-size: cover;
+    }
+    padding: 2em;
+    input {
+        display: block;
+    }
+    textarea {
+        display: block;
+        width: 80%;
+    }
+    .button {
+        cursor: pointer;
+        float: right;
+        padding: 0.5em;
+        border-radius: 5px;
+        background: gold;
+        border: none;
+        box-shadow: 0 0 2px black;
+        font-size: 1em;
+        &:hover {
+            border: 1px solid;
+        }
+        &.disabled {
+            color: grey;
+            color: lightyellow;
+        }
+    }
+}
