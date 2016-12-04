@@ -38,7 +38,6 @@ export class StartBusiness extends React.Component< any, any > {
     fileReader.onloadend = (e: any) => {
       console.log(e.target.result);
     }
-
   };
 
     get buttonDisabled() {
