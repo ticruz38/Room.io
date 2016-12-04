@@ -3,64 +3,39 @@ import * as classNames from 'classnames';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-class Constraint {
-    test(value: string) {
-        throw 'please override the test fiel in ' + this.constructor.name;
+export const nonEmpty = (value: any) => {
+    if(value === undefined) return 'undefined';
+    if(value.length === 0) {
+        return 'please input a value in that field';
     }
 }
 
-export class NonEmpty extends Constraint {
-    constructor() {
-        super();
+export const atLeast = (value: any) => {
+    if(value === undefined) return 'undefined';
+    if(value.length !>= this.least) {
+        return 'That field require at least '+ this.least + 'characters';
     }
-    test(value: string): string {
-        if(value === undefined) return;
-        if(value.length === 0) {
-            return 'please input a value in that field';
-        }
-     }
 }
 
-export class AtLeast extends Constraint {
-    constructor(least: number) {
-        super();
-        this.least = least;
+export const atMost = (value: any) => {
+    if(value === undefined) return 'undefined';
+    if(value.length !<= this.most) {
+        return 'That field cannot be more than '+ this.most + 'characters';
     }
-    least: number;
-    test(value: string): string {
-        if(value === undefined) return;
-        if(value.length !>= this.least) {
-            return 'That field require at least '+ this.least + 'characters';
-        }
-     }
 }
 
-export class AtMost extends Constraint {
-    constructor(most: number) {
-        super();
-        this.most = most;
-    }
-    most: number;
-    test(value: string) {
-        if(value === undefined) return;
-        if(value.length !<= this.most) {
-            return 'That field cannot be more than '+ this.most + 'characters';
-        }
-     }
-}
-
-export class Email extends Constraint {
-    test(value: string) {
-        if(value === undefined) return;
-        const re = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
-        if( !re.test(value) ) return 'That email address is invalid';
-    }
+export const email = (value: any) => {
+    if(value === undefined) return 'undefined';
+    const re = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
+    if( !re.test(value) ) return 'That email address is invalid';
 }
 
 type InputProps = {
+    id: string;
+    errorChecker?: {[prop: string]: string}
     type?: string;
     label?: string;
-    constraints?: Constraint[];
+    constraints?: Function[];
     value: string;
     onChange: (e: any) => void;
 }
@@ -74,7 +49,16 @@ export class Input extends React.Component< InputProps, InputState > {
     public static defaultProps: any = { constraints: [] };
 
     get isValid():boolean {
-        return !this.props.constraints.filter((c: Constraint) => c.test(this.props.value)).length;
+        return !this.props.constraints.filter((c: Function) => {
+            const test = c(this.props.value);
+            return test === 'undefined' ? false : test;
+        }).length;
+    }
+
+    mapConstraint = (c: Function) => {
+        const test = c(this.props.value)
+        this.props.errorChecker[this.props.id] = test;
+        return test === 'undefined' ? '' : test;
     }
 
     render() {
@@ -88,7 +72,7 @@ export class Input extends React.Component< InputProps, InputState > {
                     onChange={this.props.onChange}
                 />
                 <div className="errors">
-                    { this.props.constraints.map((c: Constraint) => c.test(this.props.value) ) }
+                    { this.props.constraints.map( this.mapConstraint ) }
                 </div>
             </div>
         );
@@ -107,6 +91,19 @@ export class Textarea extends React.Component< TextareaProps, InputState > {
 
     public static defaultProps: any = { constraints: [] };
 
+    get isValid():boolean {
+        return !this.props.constraints.filter((c: Function) => {
+            const test = c(this.props.value);
+            return test === 'undefined' ? false : test;
+        }).length;
+    }
+
+    mapConstraint = (c: Function) => {
+        const test = c(this.props.value)
+        this.props.errorChecker[this.props.id] = test;
+        return test === 'undefined' ? '' : test;
+    }
+
     render() {
         return (
             <div className="textarea">
@@ -118,7 +115,7 @@ export class Textarea extends React.Component< TextareaProps, InputState > {
                     onChange={this.props.onChange}
                 />
                 <div className="errors">
-                    { this.props.constraints.map((c: Constraint) => c.test(this.props.value) ) }
+                    { this.props.constraints.map( this.mapConstraint ) }
                 </div>
             </div>
         );

@@ -2,6 +2,17 @@
     label {
         color: white;
     }
+    .room {
+        font-size: 2em;
+        font-family: serif;
+        position: fixed;
+        bottom: 1em;
+        left: 0;
+        display: block;
+        margin: auto;
+        width: 100%;
+        text-align: center;
+    }
     .dragdrop {
         position: absolute;
         bottom: 0;
@@ -31,7 +42,6 @@
         width: 80%;
     }
     .button {
-        cursor: pointer;
         float: right;
         padding: 0.5em;
         border-radius: 5px;
@@ -39,12 +49,10 @@
         border: none;
         box-shadow: 0 0 2px black;
         font-size: 1em;
-        &:hover {
-            border: 1px solid;
-        }
         &.disabled {
             color: grey;
             color: lightyellow;
+            box-shadow: none;
         }
     }
 }

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
+import { Link } from 'react-router';
 
-
-import { observable } from 'mobx';
+import { observable, extendObservable, computed } from 'mobx';
 import { observer } from 'mobx-react';
-import { NonEmpty, Email, Input, Textarea } from '../../crankshaft/Input';
+import { nonEmpty, email, Input, Textarea } from '../../crankshaft/Input';
 //import ipfs from '../IpfsStore';
 import ipfsApi from '../IpfsApiStore';
 
@@ -22,9 +22,23 @@ export const start = new StartBusinessState();
 
 
 @observer
-export class StartBusiness extends React.Component< any, any > {
+export class StartBusiness extends React.Component< any, {isValid: boolean} > {
+    state = {isValid: false};
+    @observable errorChecker: {[prop: string]: string} = {
+        name: '',
+        description: '',
+        email: '',
+        phoneNumber: ''
+    };
+
+    initForm () {
+        Object.keys( this.errorChecker ).map( (key: string) => {
+        })
+    }
 
     uploadDataToIPFS() {
+        if( !this.isFormValid ) return this.initForm();
+        console.log(ipfsApi.nodeID);
         ipfsApi.restaurant.put({
             _id: "ambrosia",
             doc: start.name,
@@ -32,17 +46,22 @@ export class StartBusiness extends React.Component< any, any > {
     }
 
     onDrop = (e: any) => {
-    e.preventDefault();
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(e.dataTransfer.files[0]);
-    fileReader.onloadend = (e: any) => {
-      console.log(e.target.result);
-    }
-  };
 
-    get buttonDisabled() {
-        if( !start.name || !start.description) return true;
-        return !start.name.length && !start.description.length && !ipfsApi.nodeID; 
+  };
+    }
+      console.log(e.target.result);
+    fileReader.onloadend = (e: any) => {
+    fileReader.readAsDataURL(e.dataTransfer.files[0]);
+    const fileReader = new FileReader();
+    e.preventDefault();
+    getDataFromIpfs() {
+        ipfsApi.restaurant.get( ipfsApi.nodeID ).map( (e: any) => console.log(e) );
+        const all = ipfsApi.restaurant.query((doc: any) => !!doc.name)
+        console.log(all);
+    }
+
+    @computed get isFormValid() {
+        return !Object.keys( this.errorChecker ).filter( error => !!this.errorChecker[error] ).length;
     }
 
     render() {
@@ -50,36 +69,48 @@ export class StartBusiness extends React.Component< any, any > {
             <div className="start-business" onDrop={ e => this.onDrop(e)} onDragOver={e => e.preventDefault()}>>
                 <div className="intro-layer"/>
                 <Input
+                    id="name"
                     type="text"
                     label="Business Name"
+                    errorChecker={ this.errorChecker }
                     value={start.name}
                     onChange={ (e: any) => start.name = e.currentTarget.value }
-                    constraints={ [ new NonEmpty() ]}
+                    constraints={ [ nonEmpty ]}
                 />
                 <Textarea
+                    id="description"
+                    errorChecker={ this.errorChecker }
                     label="Put a brief description on what your business offer"
                     value={start.description} 
                     onChange={ (e: any) => start.description = e.currentTarget.value } />
                 <Input
+                    id="email"
+                    errorChecker={ this.errorChecker }
                     label="Email Address"
                     type='email'
                     value={start.email}
                     onChange={ (e:any) => start.email = e.currentTarget.value }
-                    constraints={ [ new Email() ] }
+                    constraints={ [ email ] }
                 />
                 <Input
+                    id="phone number"
+                    errorChecker={ this.errorChecker }
                     label="Phone Number"
                     type="tel"
                     value={start.phoneNumber}
                     onChange={ (e: any) => start.phoneNumber = e.currentTarget.value }
                 />
                 <button
-                    className={ classnames( 'button', { disabled: this.buttonDisabled }) }
+                    className={ classnames( 'button', { disabled: !this.isFormValid }) }
                     onClick={ _ => this.uploadDataToIPFS() }
-                    disabled={this.buttonDisabled}
                 >Open it
                 </button>
-                <p className="dragdrop">Drag & drop a picture in the window to upload an image</p>
+                <div className="room">
+                    <Link to="room">
+                        <div>Set your room up</div> 
+                        <i className="material-icons">expand_more</i>
+                    </Link>
+                </div>
             </div>
         );
     }
