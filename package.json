@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@haad/ipfs-api": "^13.0.0-beta.2",
+    "@types/react-motion": "0.0.20",
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
     "css-loader": "^0.24.0",
@@ -48,6 +49,7 @@
     "path": "^0.12.7",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-motion": "^0.4.5",
     "react-router": "^3.0.0",
     "sass-loader": "^4.0.1",
     "style-loader": "^0.13.1",
