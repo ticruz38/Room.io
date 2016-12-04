@@ -25,13 +25,21 @@ export const start = new StartBusinessState();
 export class StartBusiness extends React.Component< any, any > {
 
     uploadDataToIPFS() {
-        console.log(ipfsApi.nodeID);
         ipfsApi.restaurant.put({
-            _id: ipfsApi.nodeID,
-            name: start.name,
-            description: start.description
-        }).then((hash: string) => console.log(hash));
+            _id: "ambrosia",
+            doc: start.name,
+        });
     }
+
+    onDrop = (e: any) => {
+    e.preventDefault();
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(e.dataTransfer.files[0]);
+    fileReader.onloadend = (e: any) => {
+      console.log(e.target.result);
+    }
+
+  };
 
     get buttonDisabled() {
         if( !start.name || !start.description) return true;
@@ -40,7 +48,7 @@ export class StartBusiness extends React.Component< any, any > {
 
     render() {
         return (
-            <div className="start-business">
+            <div className="start-business" onDrop={ e => this.onDrop(e)} onDragOver={e => e.preventDefault()}>>
                 <div className="intro-layer"/>
                 <Input
                     type="text"
@@ -65,13 +73,14 @@ export class StartBusiness extends React.Component< any, any > {
                     type="tel"
                     value={start.phoneNumber}
                     onChange={ (e: any) => start.phoneNumber = e.currentTarget.value }
-                    />
+                />
                 <button
                     className={ classnames( 'button', { disabled: this.buttonDisabled }) }
                     onClick={ _ => this.uploadDataToIPFS() }
                     disabled={this.buttonDisabled}
                 >Open it
                 </button>
+                <p className="dragdrop">Drag & drop a picture in the window to upload an image</p>
             </div>
         );
     }

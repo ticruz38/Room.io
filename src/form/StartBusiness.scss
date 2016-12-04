@@ -2,6 +2,15 @@
     label {
         color: white;
     }
+    .dragdrop {
+        position: absolute;
+        bottom: 0;
+        font-family: monospace;
+        font-size: 1.3em;
+        background: rgba(255, 215, 0, 0.5);
+        padding: 5px;
+        border-radius: 5px;
+    }
     .intro-layer {
         position: absolute;
         height: 100%;
