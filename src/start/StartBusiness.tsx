@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 import { observable, extendObservable, computed } from 'mobx';
 import { observer } from 'mobx-react';
-import { nonEmpty, email, Input, Textarea } from '../../crankshaft/Input';
+import { nonEmpty, email, atLeast, atMost, Input, Textarea, Form } from '../../crankshaft/Input';
 //import ipfs from '../IpfsStore';
 import ipfsApi from '../IpfsApiStore';
 
@@ -23,91 +23,78 @@ export const start = new StartBusinessState();
 
 @observer
 export class StartBusiness extends React.Component< any, {isValid: boolean} > {
-    state = {isValid: false};
-    @observable errorChecker: {[prop: string]: string} = {
-        name: '',
-        description: '',
-        email: '',
-        phoneNumber: ''
-    };
 
-    initForm () {
-        Object.keys( this.errorChecker ).map( (key: string) => {
-        })
-    }
+    @observable isValid: boolean = false;
 
     uploadDataToIPFS() {
-        if( !this.isFormValid ) return this.initForm();
-        console.log(ipfsApi.nodeID);
+        if( !this.isValid ) return this.initForm();
         ipfsApi.restaurant.put({
             _id: "ambrosia",
             doc: start.name,
         });
     }
 
-    onDrop = (e: any) => {
-
-  };
+    /** this method is used to init required form values */
+    initForm() {
+        Object.keys( start ).map( key => {
+            if(start[key] === undefined) start[key] = '';
+        } )
     }
-      console.log(e.target.result);
-    fileReader.onloadend = (e: any) => {
-    fileReader.readAsDataURL(e.dataTransfer.files[0]);
-    const fileReader = new FileReader();
-    e.preventDefault();
+
+    onDrop(e: any): void {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(e.dataTransfer.files[0]);
+        fileReader.onloadend = (e: any) => {
+            console.log(e);
+        }
+    }
+
     getDataFromIpfs() {
         ipfsApi.restaurant.get( ipfsApi.nodeID ).map( (e: any) => console.log(e) );
-        const all = ipfsApi.restaurant.query((doc: any) => !!doc.name)
+        const all = ipfsApi.restaurant.query( (doc: any) => !!doc.name );
         console.log(all);
     }
 
-    @computed get isFormValid() {
-        return !Object.keys( this.errorChecker ).filter( error => !!this.errorChecker[error] ).length;
-    }
-
     render() {
+        console.log(this.isValid);
         return (
-            <div className="start-business" onDrop={ e => this.onDrop(e)} onDragOver={e => e.preventDefault()}>>
+            <div className="start-business" onDrop={ e => this.onDrop(e)} onDragOver={e => e.preventDefault()}>
                 <div className="intro-layer"/>
-                <Input
-                    id="name"
-                    type="text"
-                    label="Business Name"
-                    errorChecker={ this.errorChecker }
-                    value={start.name}
-                    onChange={ (e: any) => start.name = e.currentTarget.value }
-                    constraints={ [ nonEmpty ]}
-                />
-                <Textarea
-                    id="description"
-                    errorChecker={ this.errorChecker }
-                    label="Put a brief description on what your business offer"
-                    value={start.description} 
-                    onChange={ (e: any) => start.description = e.currentTarget.value } />
-                <Input
-                    id="email"
-                    errorChecker={ this.errorChecker }
-                    label="Email Address"
-                    type='email'
-                    value={start.email}
-                    onChange={ (e:any) => start.email = e.currentTarget.value }
-                    constraints={ [ email ] }
-                />
-                <Input
-                    id="phone number"
-                    errorChecker={ this.errorChecker }
-                    label="Phone Number"
-                    type="tel"
-                    value={start.phoneNumber}
-                    onChange={ (e: any) => start.phoneNumber = e.currentTarget.value }
-                />
-                <button
-                    className={ classnames( 'button', { disabled: !this.isFormValid }) }
-                    onClick={ _ => this.uploadDataToIPFS() }
-                >Open it
-                </button>
-                <div className="room">
+                <Form validityChange={ isValid => this.isValid = isValid } >
+                    <Input
+                        id="name"
+                        type="text"
+                        label="Business Name"
+                        value={start.name}
+                        onChange={ (e: any) => start.name = e.currentTarget.value }
+                        constraints={ [ nonEmpty() ]}
+                    />
+                    <Textarea
+                        id="description"
+                        label="Put a brief description on what your business offer"
+                        value={ start.description }
+                        onChange={ (e: any) => start.description = e.currentTarget.value }
+                        constraints={ [ atLeast(10), atMost(200) ]} 
+                    />
+                    <Input
+                        id="email"
+                        label="Email Address"
+                        type='email'
+                        value={start.email}
+                        onChange={ (e:any) => start.email = e.currentTarget.value }
+                        constraints={ [ email() ] }
+                    />
+                    <Input
+                        id="phone number"
+                        label="Phone Number"
+                        type="tel"
+                        value={start.phoneNumber}
+                        onChange={ (e: any) => start.phoneNumber = e.currentTarget.value }
+                    />
+                </Form>
+                <div className={ classnames( "room", { hidden: !this.isValid } ) }>
                     <Link to="room">
-                        <div>Set your room up</div> 
+                        <div>Set your room up</div>
                         <i className="material-icons">expand_more</i>
                     </Link>
                 </div>

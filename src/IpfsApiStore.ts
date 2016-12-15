@@ -16,16 +16,10 @@ class IpfsStore {
         this.nodeID = this.node.id().then((config: any) => this.nodeID = config.id);
         const orbitdb = new Orbitdb(this.node);
         try {
-            this.restaurant = orbitdb.docstore('restaurants');
-            this.chat = orbitdb.kvstore('chat');
+            this.restaurant = orbitdb.docstore('restaurant');
         } catch (e) {
             console.log(e);
         }
-        this.chat.events.on('ready', () => {
-            console.log(this.chat.get('hello'))
-        })
-        console.log(orbitdb);
-        console.log(this.restaurant);
     }
 }
 
