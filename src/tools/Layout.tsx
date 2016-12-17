@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-import { Login } from '../src/login/login';
+import { Login } from '../login/login';
 
 interface LayoutProps {
   children: React.Component< any, any >,
@@ -19,22 +19,14 @@ export class LayoutState {
   @observable modal: boolean | React.ReactElement< any >;
   @observable searchBar: boolean = true;
   @observable backRoute: string;
-
+  @observable toolBar: React.ReactElement< any >;
+  @observable title: string;
 }
 
 export const layoutState = new LayoutState();
 
 @observer
 export class Layout extends React.Component<any, any> {
-
-  get searchbar() {
-    return (
-      <div className={ classnames('search-wrapper', { hidden: !layoutState.searchBar} ) }>
-        <i className="material-icons">search</i>
-        <div className='search-bar'><input type='text' placeholder='search..' /></div>
-      </div>
-    );
-  }
 
   get backButton() {
     return (
@@ -52,13 +44,20 @@ export class Layout extends React.Component<any, any> {
     );
   }
 
+  get toolBar(): React.ReactElement< any > {
+    return layoutState.toolBar;
+  }
+
   render() {
     return (
       <div className='layout'>
         <header className="navigation">
           { this.icon }
+          <div className="title">
+            { layoutState.title }
+          </div>
           { this.backButton }
-          { this.searchbar }  
+          { this.toolBar }  
           <div className='signin' onClick={_ => {console.log('layoutState'); layoutState.modal = <Login/>} }>
             <button className='ambrosia-button'>
             <i className="fa fa-sign-in" />
@@ -73,6 +72,15 @@ export class Layout extends React.Component<any, any> {
     </div>
     )
   }
+}
+
+const SearchBar = () => {
+    return (
+      <div className="search-wrapper">
+        <i className="material-icons">search</i>
+        <div className='search-bar'><input type='text' placeholder='search..' /></div>
+      </div>
+    );
 }
 
 const Modal = (props: any) => {

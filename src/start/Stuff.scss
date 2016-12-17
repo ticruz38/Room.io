@@ -4,6 +4,9 @@
     .top-line {
         display: none;
     }
+    .close {
+        float: right;
+    }
     &:first-child {
         .top-line {
             display: block;

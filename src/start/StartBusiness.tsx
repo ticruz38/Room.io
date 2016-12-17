@@ -4,9 +4,9 @@ import { Link } from 'react-router';
 
 import { observable, extendObservable, computed } from 'mobx';
 import { observer } from 'mobx-react';
-import { nonEmpty, email, atLeast, atMost, Input, Textarea, Form } from '../../crankshaft/Input';
+import { nonEmpty, email, atLeast, atMost, Input, Textarea, Form } from '../tools/Input';
 //import ipfs from '../IpfsStore';
-import ipfsApi from '../IpfsApiStore';
+import db from '../IpfsApiStore';
 
 
 export class StartBusinessState {
@@ -28,7 +28,7 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
 
     uploadDataToIPFS() {
         if( !this.isValid ) return this.initForm();
-        ipfsApi.restaurant.put({
+        db.room.put({
             _id: "ambrosia",
             doc: start.name,
         });
@@ -50,8 +50,8 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
     }
 
     getDataFromIpfs() {
-        ipfsApi.restaurant.get( ipfsApi.nodeID ).map( (e: any) => console.log(e) );
-        const all = ipfsApi.restaurant.query( (doc: any) => !!doc.name );
+        db.room.get( db.nodeID ).map( (e: any) => console.log(e) );
+        const all = db.room.query( (doc: any) => !!doc.name );
         console.log(all);
     }
 

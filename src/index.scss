@@ -24,13 +24,12 @@ a {
   margin: 0 5px;
   border: none;
   cursor: pointer;
-  color: gold;
   display: flex;
   outline: none;
   align-items: center;
-  box-shadow: 0 0 1.5px 1.5px gold;
+  box-shadow: 0 0 1.5px 1.5px;
   background-color: rgba(255, 215, 0, 0.1);
   &:hover {
-    color: black;
+    background-color: gold;
   }
 }

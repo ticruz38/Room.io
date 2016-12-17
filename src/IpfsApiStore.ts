@@ -9,17 +9,15 @@ const IpfsApi = require('@haad/ipfs-api');
 class IpfsStore {
     nodeID: string;
     node: any;
-    restaurant: any;
+    room: any;
+    stuffs: any;
     chat: any;
     constructor() {
-        this.node = new IpfsApi('localhost', '5001', {protocol: 'http'});
-        this.nodeID = this.node.id().then((config: any) => this.nodeID = config.id);
-        const orbitdb = new Orbitdb(this.node);
-        try {
-            this.restaurant = orbitdb.docstore('restaurant');
-        } catch (e) {
-            console.log(e);
-        }
+        this.node = new IpfsApi( 'localhost', '5001', { protocol: 'http' } );
+        this.nodeID = this.node.id().then( (config: any) => this.nodeID = config.id );
+        const orbitdb = new Orbitdb( this.node );
+        this.room = orbitdb.docstore('room');
+        this.stuffs = orbitdb.docstore('stuffs')
     }
 }
 

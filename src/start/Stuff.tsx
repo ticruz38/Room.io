@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { Form, Input, Textarea, nonEmpty } from '../../crankshaft/Input';
+import { Form, Input, Textarea, nonEmpty } from '../tools/Input';
 
 
 
@@ -20,6 +20,7 @@ export class StuffState {
 
 type StuffProps = {
     stuff: StuffState
+    index: Number;
     roomState: any;
 }
 
@@ -54,14 +55,29 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
         }
     }
 
+    get closeButton(): React.ReactElement< any > {
+        if( this.props.index === 0 ) return <span/>
+        return (
+            <i
+                className="close material-icons"
+                onClick={ _ => this.props.roomState.stuffs.splice(this.props.index, 1) }
+            >close
+            </i>
+        );
+    }
+
     loadImageUrl(e) {
-        console.log(e.dataTransfer.files[0]);
         const reader = new FileReader();
+        reader.readAsDataURL(e.dataTransfer.files[0]);
+        reader.onloadend = (e: any) => {
+            this.state.fileUrl = e.target.result;
+        }
     }
 
     render() {
         return (
             <div className="stuff">
+                { this.closeButton }
                 <div className='image-layer' style={ { backgroundImage: `url( ${this.state.fileUrl} )`  } }/>
                 <span className='top-line line'/>
                 <Form validityChange={ (isValid) => this.isValid = isValid } >
@@ -79,12 +95,12 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
                         constraints={ [ nonEmpty() ] }
                         rows={ 3 }
                         value={ this.state.description }
-                        onChange={ (e: any) => this.state.description = e.currentTarget.value }
+                        onChange={ (e) => this.state.description = e.currentTarget.value }
                     />
                     { this.priceField }
                     <input 
                         className='image-upload'
-                        onChange={ e => console.log(e)}
+                        onChange={ this.loadImageUrl }
                         type='file' 
                     />
                     <p><a>Click here</a> to add an image</p>

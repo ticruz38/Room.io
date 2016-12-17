@@ -1,17 +1,25 @@
 import * as React from 'react';
-import { observable } from 'mobx';
+import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
-import { Form, Input, Textarea, nonEmpty } from '../../crankshaft/Input';
+import db from '../IpfsApiStore';
+import { Form, Input, Textarea, nonEmpty } from '../tools/Input';
+import { layoutState as layout } from '../tools/Layout';
 import { StuffState, Stuff } from './Stuff';
 
 
 
 type RoomProps = {
-    stuffs: StuffState[];
 }
 
 class RoomState {
-    @observable stuffs: StuffState[] = [ new StuffState({}) ];
+    @observable stuffs: StuffState[] = [ 
+        <Stuff
+            key={ Math.random() }
+            roomState={ roomState }
+            stuff={ new StuffState({}) }
+            index={ 0 }
+        />
+    ];
 }
 
 export const roomState = new RoomState();
@@ -23,30 +31,50 @@ export class Room extends React.Component< RoomProps, any > {
         super(props);
     }
 
+    componentWillMount() {
+        layout.title = 'Fit the Room'
+        layout.toolBar = (
+            <div className="toolBar">
+                <button 
+                    className="btn"
+                    onClick={ _ => this.saveRoom() }
+                >Save</button>
+            </div>
+        );
+    }
+
+    saveRoom() {
+        roomState.stuffs.map( stuff => {
+            const dbStuff: any = stuff;
+            dbStuff.roomID = db.nodeID;
+            db.stuffs.put(dbStuff);
+        } );
+    }
+
     addStuff() {
         // init required undefined stuffs values
-        roomState.stuffs = roomState.stuffs.map( (stuff: StuffState) => {
-            Object.keys( stuff ).map( key => {
-                console.log(stuff[key]);
-                if( stuff[key] === undefined && key !== 'price' ) stuff[key] = '';
+        roomState.stuffs = roomState.stuffs.map( (stuff: Stuff) => {
+            Object.keys( stuff.props.stuff ).map( key => {
+                if( stuff.props.stuff[key] === undefined && key !== 'price' ) stuff.props.stuff[key] = '';
             } );
             return stuff;
         } );
-        roomState.stuffs.push( new StuffState({}) );
+        roomState.stuffs.push( 
+            <Stuff
+                key={ Math.random() }
+                roomState={ roomState }
+                stuff={ new StuffState({}) }
+                index={ roomState.stuffs.length }
+            />
+         );
     }
 
     render() {
         return (
             <div className='room'>
                 <h2>Welcome to your room, describe all those messy stuffs you'd like to share</h2>
-                { roomState.stuffs.map( stuff => 
-                    <Stuff
-                        key={ Math.random() } 
-                        roomState={ roomState } 
-                        stuff= { stuff }
-                    />
-                )}
-                <button 
+                { roomState.stuffs }
+                <button
                     className="btn add-stuff"
                     onClick={ _ => this.addStuff() }
                 >
@@ -56,10 +84,5 @@ export class Room extends React.Component< RoomProps, any > {
         );
     }
 }
-
-
-
-
-
 
 import './Room.scss';

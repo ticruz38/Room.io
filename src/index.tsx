@@ -5,7 +5,7 @@ import * as ReactRouter from 'react-router';
 
 import { RestaurantsFeed } from './restaurants/RestaurantsFeed';
 import { Welcome } from './welcome/Welcome';
-import { Layout } from '../crankshaft/Layout';
+import { Layout } from './tools/Layout';
 import { StartBusiness } from './start/StartBusiness';
 import { Room } from './start/Room';
 

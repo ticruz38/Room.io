@@ -13,6 +13,16 @@ header {
     font-size: 30px;
   }
 
+  .title {
+    font-size: 18px;
+    display: inline-flex;
+    padding: 6px;
+  }
+  
+  >div {
+    display: inline-flex;
+  }
+
   .back-button {
     cursor: pointer;
     float: left;
@@ -38,19 +48,18 @@ header {
     display: flex;
     float: right;
     height: 30px;
-    button {
-      border-radius: 3px;
-      cursor: pointer;
-      background: lightyellow;
-      display: flex;
-      font-size: 18px;
-      padding: 0;
-      border: none;
-      padding: 0 5px;
-      outline: none;
-      span {
-        padding: 5px;
-      }
+  }
+  button {
+    border-radius: 3px;
+    cursor: pointer;
+    background: lightyellow;
+    display: flex;
+    font-size: 18px;
+    border: none;
+    padding: 0 5px;
+    outline: none;
+    &.disabled {
+      color: gold;
     }
   }
 
