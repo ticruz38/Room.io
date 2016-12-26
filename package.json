@@ -20,6 +20,7 @@
     "@types/node": "^6.0.48",
     "@types/react": "^0.14.42",
     "@types/react-dom": "^0.14.18",
+    "@types/react-motion": "0.0.20",
     "@types/react-router": "^2.0.38",
     "@types/whatwg-fetch": "0.0.32",
     "solc": "^0.4.4",
@@ -28,7 +29,6 @@
   },
   "dependencies": {
     "@haad/ipfs-api": "^13.0.0-beta.2",
-    "@types/react-motion": "0.0.20",
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
     "css-loader": "^0.24.0",

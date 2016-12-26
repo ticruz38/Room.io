@@ -142,17 +142,23 @@ type FormProps = {
 export class Form extends React.Component< FormProps, any > {
     isValid: boolean = false;
 
-    componentWillReceiveProps(nextProps: FormProps) {
-        console.log('componentWillReceiveProps');
-        const isValid = !nextProps.children.find( (c: any ) => {
+    checkValidity(props: FormProps) {
+        const isValid = !props.children.find( (c: any ) => {
             if(!c.props.constraints) return;
             return c.props.constraints.find( (co: any) => {
                 return co(c.props.value)
             });
         });
-        console.log(isValid);
         if( isValid !== this.isValid ) this.props.validityChange(isValid);
         this.isValid = isValid;
+    }
+
+    componentWillMount() {
+        this.checkValidity(this.props);
+    }
+
+    componentWillReceiveProps(nextProps: FormProps) {
+        this.checkValidity(nextProps);
     }
 
     render() {

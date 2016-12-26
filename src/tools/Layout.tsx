@@ -56,8 +56,10 @@ export class Layout extends React.Component<any, any> {
           <div className="title">
             { layoutState.title }
           </div>
-          { this.backButton }
-          { this.toolBar }  
+            { this.backButton }
+          <div className="toolBar">
+            { layoutState.toolBar }
+          </div>
           <div className='signin' onClick={_ => {console.log('layoutState'); layoutState.modal = <Login/>} }>
             <button className='ambrosia-button'>
             <i className="fa fa-sign-in" />

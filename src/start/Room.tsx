@@ -12,7 +12,7 @@ type RoomProps = {
 }
 
 class RoomState {
-    @observable stuffs: StuffState[] = [ 
+    @observable stuffs: React.ReactElement<any>[] = [ 
         <Stuff
             key={ Math.random() }
             roomState={ roomState }
@@ -32,34 +32,30 @@ export class Room extends React.Component< RoomProps, any > {
     }
 
     componentWillMount() {
-        layout.title = 'Fit the Room'
+        layout.title = 'Fill the Room'
         layout.toolBar = (
-            <div className="toolBar">
-                <button 
-                    className="btn"
+                <button
                     onClick={ _ => this.saveRoom() }
                 >Save</button>
-            </div>
         );
     }
 
     saveRoom() {
-        roomState.stuffs.map( stuff => {
-            const dbStuff: any = stuff;
-            dbStuff.roomID = db.nodeID;
-            db.stuffs.put(dbStuff);
+        roomState.stuffs.map( (stuff, index) => {
+            const dbStuff = Object.assign({}, stuff.props.stuff, { roomID: db.nodeID, _id: index });
+            db.stuffs.put(dbStuff).then((hash) => console.log(hash));
         } );
     }
 
     addStuff() {
         // init required undefined stuffs values
-        roomState.stuffs = roomState.stuffs.map( (stuff: Stuff) => {
+        roomState.stuffs = roomState.stuffs.map( (stuff: React.ReactElement< any >) => {
             Object.keys( stuff.props.stuff ).map( key => {
                 if( stuff.props.stuff[key] === undefined && key !== 'price' ) stuff.props.stuff[key] = '';
             } );
             return stuff;
         } );
-        roomState.stuffs.push( 
+        roomState.stuffs.push(
             <Stuff
                 key={ Math.random() }
                 roomState={ roomState }

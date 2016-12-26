@@ -2,9 +2,11 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 import { Link } from 'react-router';
 
-import { observable, extendObservable, computed } from 'mobx';
+import { observable, autorun, extendObservable, computed } from 'mobx';
 import { observer } from 'mobx-react';
+
 import { nonEmpty, email, atLeast, atMost, Input, Textarea, Form } from '../tools/Input';
+import { layoutState as layout } from '../tools/Layout';
 //import ipfs from '../IpfsStore';
 import db from '../IpfsApiStore';
 
@@ -34,6 +36,24 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
         });
     }
 
+    componentWillMount() {
+        layout.title = 'Set your room up';
+        // observe isValid and set up the toolbar relatively
+        autorun( _ => {
+            if( this.isValid ) {
+                layout.toolBar = (
+                    <Link 
+                        className="button"
+                        to="/room"
+                    >Add some stuffs
+                    </Link>
+                );
+            } else {
+                layout.toolBar = null;
+            }
+        } );
+    }
+
     /** this method is used to init required form values */
     initForm() {
         Object.keys( start ).map( key => {
@@ -56,7 +76,6 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
     }
 
     render() {
-        console.log(this.isValid);
         return (
             <div className="start-business" onDrop={ e => this.onDrop(e)} onDragOver={e => e.preventDefault()}>
                 <div className="intro-layer"/>
@@ -92,12 +111,6 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
                         onChange={ (e: any) => start.phoneNumber = e.currentTarget.value }
                     />
                 </Form>
-                <div className={ classnames( "room", { hidden: !this.isValid } ) }>
-                    <Link to="room">
-                        <div>Set your room up</div>
-                        <i className="material-icons">expand_more</i>
-                    </Link>
-                </div>
             </div>
         );
     }

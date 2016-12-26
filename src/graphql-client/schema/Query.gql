@@ -1,0 +1,4 @@
+type Query {
+    room(id: String!): Room
+    rooms: [Room]
+}

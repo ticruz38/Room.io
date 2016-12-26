@@ -7,7 +7,7 @@ import { observer }                           from 'mobx-react';
 import graphStore                             from '../GraphStore';
 import uiStore                                from '../UiStore';
 import RestaurantSelected                     from './RestaurantSelected';
-import { layoutState }                        from '../../crankshaft/Layout';
+import { layoutState }                        from '../tools/Layout';
 
 interface RestaurantsFeedProps {
 

@@ -1,20 +1,22 @@
 import * as React from 'react';
+import * as classnames from 'classnames';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Form, Input, Textarea, nonEmpty } from '../tools/Input';
+import { layoutState as layout } from '../tools/Layout';
 
 
 
 export class StuffState {
-    constructor ( { name, description, fileUrl, price }: StuffState ) {
+    constructor ( { name, description, pictures, price }: StuffState ) {
         this.name = name;
         this.description = description;
-        this.fileUrl = fileUrl;
+        this.pictures = pictures || [];
         this.price = price;
     }
     @observable name ?: string;
     @observable description ?: string;
-    @observable fileUrl ?: string;
+    @observable pictures ?: string[] = [];
     @observable price ?: number;
 }
 
@@ -66,19 +68,39 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
         );
     }
 
-    loadImageUrl(e) {
+    loadImageUrl = (e) => {
+        const reader = new FileReader();
+        const upload:any = this.refs['upload'];
+        reader.readAsDataURL(upload.files[0]);
+        reader.onloadend = (e: any) => {
+            this.state.pictures.push(e.target.result);
+        }
+    }
+
+    _onDrop = (e) => {
+        e.preventDefault();
         const reader = new FileReader();
         reader.readAsDataURL(e.dataTransfer.files[0]);
         reader.onloadend = (e: any) => {
-            this.state.fileUrl = e.target.result;
+          this.state.pictures.push(e.target.result);
         }
     }
 
     render() {
         return (
-            <div className="stuff">
+            <div className="stuff" onDrop={this._onDrop} onDragOver={e => e.preventDefault()}>
                 { this.closeButton }
-                <div className='image-layer' style={ { backgroundImage: `url( ${this.state.fileUrl} )`  } }/>
+                <div className={classnames('image-layer', { hidden: !this.state.pictures.length } ) }>
+                    { this.state.pictures.map( picture =>
+                        <img
+                            key={ Math.random() }
+                            className="stuff-picture"
+                            onClick={ _ => layout.modal = (
+                                <img src={picture} style={{ maxHeight: '100%', maxWidth:'100%'}} />
+                            ) }
+                            src={picture} /> 
+                    ) }
+                </div>
                 <span className='top-line line'/>
                 <Form validityChange={ (isValid) => this.isValid = isValid } >
                     <Input
@@ -98,12 +120,15 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
                         onChange={ (e) => this.state.description = e.currentTarget.value }
                     />
                     { this.priceField }
-                    <input 
-                        className='image-upload'
-                        onChange={ this.loadImageUrl }
-                        type='file' 
-                    />
-                    <p><a>Click here</a> to add an image</p>
+                    <div className='upload'>
+                        <input
+                            ref='upload'
+                            className='image-upload'
+                            onChange={ this.loadImageUrl }
+                            type='file' 
+                        />
+                        <p><a>Click here</a> or <strong>drop in</strong> to add a picture</p>
+                    </div>
                     <span className='bottom-line line'/>
                 </Form>
             </div>

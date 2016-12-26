@@ -1,6 +1,10 @@
 .stuff {
     margin: 1em 0;
     padding: 1em;
+    background: whitesmoke;
+    .upload {
+        text-align: center;
+    }
     .top-line {
         display: none;
     }
@@ -27,11 +31,24 @@
     .price {
         margin: 1em 20px;
     }
+    .image-layer {
+        height: 100px;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        justify-content: flex-end;
+        .stuff-picture {
+            height: 100px;
+            width: 100px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+    }
     .image-upload {
         cursor: pointer !important;
         z-index: 2;
         opacity: 0.01;
         position: absolute;
-        transform: translateY(0.5em);
+        transform: translateX(-11em);
     }
 }
