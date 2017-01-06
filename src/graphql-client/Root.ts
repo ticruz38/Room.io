@@ -1,10 +1,12 @@
-const { Query, Room, Stuff } = require('./schema');
+import * as schema from './schema';
+import * as resolver from './resolvers';
 const { makeExecutableSchema } = require('graphql-tools');
 
-const Schema = makeExecutableSchema({
-    typeDefs: [Query, Room, Stuff],
-    resolvers: {}
+export default makeExecutableSchema({
+    typeDefs: [ schema.Query, schema.Room, schema.Stuff ],
+    resolvers: {
+        Query: resolver.Query,
+        Room: resolver.Room,
+        Stuff: resolver.Stuff
+    }
 });
-
-module.exports = {};
-

@@ -3,6 +3,10 @@ body {
   margin: 0;
 }
 
+.graphiql-container {
+  position: absolute;
+}
+
 .line {
   border: 1px solid black;
   width: 100%;

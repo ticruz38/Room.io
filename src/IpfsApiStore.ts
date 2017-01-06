@@ -1,9 +1,5 @@
 import { observable } from 'mobx';
-
-declare const require: any;
-
-require('./graphql-client/schema/root');
-
+import Schema from './graphql-client/Root';
 
 const Orbitdb = require('orbit-db');
 const IpfsApi = require('@haad/ipfs-api');
