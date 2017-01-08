@@ -17,9 +17,15 @@ const Graphiql = require('graphiql');
 const Graph = _ => 
   <Graphiql
     fetcher={ graphqlParams => {
-      console.log(graphqlParams);
-      return graphql(Schema, graphqlParams.query)
-    } }
+      //console.log(graphqlParams);
+      return graphql(
+        Schema, 
+        graphqlParams.query, 
+        {}, 
+        graphqlParams.variables, 
+        graphqlParams.operationName
+      ) } 
+    }
     schema={Schema}
   />
 
