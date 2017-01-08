@@ -1,28 +1,33 @@
 import * as React from 'react';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import { execute } from 'graphql';
+
 import db from '../IpfsApiStore';
+import Loader from '../graphql-client/Loader';
+
 import { Form, Input, Textarea, nonEmpty } from '../tools/Input';
 import { layoutState as layout } from '../tools/Layout';
+
 import { StuffState, Stuff } from './Stuff';
 
-
+const RoomQuery = require('./Room.gql');
 
 type RoomProps = {
 }
 
-class RoomState {
+class RoomState extends Loader {
     @observable stuffs: React.ReactElement<any>[] = [ 
-        <Stuff
+        /*<Stuff
             key={ Math.random() }
             roomState={ roomState }
             stuff={ new StuffState({}) }
             index={ 0 }
-        />
+        />*/
     ];
 }
 
-export const roomState = new RoomState();
+const roomState = new RoomState({query: RoomQuery});
 
 /** Room input component */
 @observer
@@ -32,19 +37,12 @@ export class Room extends React.Component< RoomProps, any > {
     }
 
     componentWillMount() {
-        layout.title = 'Fill the Room'
+        layout.title = 'Fill the Room';
         layout.toolBar = (
                 <button
-                    onClick={ _ => this.saveRoom() }
+                    onClick={ _ => console.log('saveroom') }
                 >Save</button>
         );
-    }
-
-    saveRoom() {
-        roomState.stuffs.map( (stuff, index) => {
-            const dbStuff = Object.assign({}, stuff.props.stuff, { roomID: db.nodeID, _id: index });
-            db.stuffs.put(dbStuff).then((hash) => console.log(hash));
-        } );
     }
 
     addStuff() {

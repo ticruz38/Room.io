@@ -1,10 +1,8 @@
 query RoomQuery {
-    Query {
-        rooms {
-            id
-            name
-            description
-            pictures
-        }
+    rooms {
+        id
+        name
+        description
+        pictures
     }
 }
