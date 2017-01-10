@@ -10,13 +10,13 @@ class IpfsStore {
     orbitdb: any;
     node: any;
     room: Promise< any >;
-    stuff: any;
+    stuff: Promise< any >;
     chat: any;
 
     constructor() {
         this.startOrbitDb();
-        this.createRoomDb();
-        this.stuff = this.orbitdb.docstore('stuffs');
+        this.createDb('room');
+        this.createDb('stuff');
     }
 
     // roomLoaded number between 0 and 1
@@ -25,16 +25,12 @@ class IpfsStore {
     // stuffLoaded number between 0 and 1
     stuffLoaded: number = 0;
 
-    createRoomDb() {
-        this.room = new Promise( (resolve, reject) => {
-            const room = this.orbitdb.docstore('room');
-            room.events.on('ready', (dbname) => resolve(room))
+    createDb(dbName: string) {
+        this[dbName] = new Promise( (resolve, reject) => {
+            const db = this.orbitdb.docstore(dbName);
+            db.events.on('ready', _ => resolve(db));
         } )
     }
-
-    /*createStuffDb() {
-        this.room = this.orbitdb.docstore('stuff');
-    }*/
 
     startOrbitDb() {
         // IpfsApi is a bridge to the local ipfs client node

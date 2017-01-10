@@ -2,22 +2,40 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
+
+import Loader from '../graphql-client/Loader';
 import { Form, Input, Textarea, nonEmpty } from '../tools/Input';
 import { layoutState as layout } from '../tools/Layout';
 
+const Guid = require('guid');
+
+const StuffDocument = require('./Stuff.gql');
 
 
-export class StuffState {
-    constructor ( { name, description, pictures, price }: StuffState ) {
-        this.name = name;
-        this.description = description;
-        this.pictures = pictures || [];
-        this.price = price;
-    }
+export class StuffState extends Loader {
+    _id: string;
+    roomId: string;
     @observable name ?: string;
     @observable description ?: string;
     @observable pictures ?: string[] = [];
     @observable price ?: number;
+
+    constructor ( roomId: string ) {
+        super(StuffDocument);
+        this._id = Guid.raw();
+        this.roomId = roomId
+    }
+
+    format(): Object {
+        console.log(this, this.name);
+        return {
+            roomId: this.roomId,
+            name: this.name,
+            description: this.description,
+            pictures: this.pictures,
+            price: this.price
+        }
+    }
 }
 
 type StuffProps = {
@@ -48,7 +66,7 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
                         onChange={ (e: any) => this.state.price = e.currentTarget.value } 
                     />
         } else {
-            return <button 
+            return <button
                         className="btn price"
                         onClick={ _ => this.state.price = 0 }
                     >

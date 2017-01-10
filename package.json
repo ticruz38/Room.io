@@ -42,6 +42,7 @@
     "graphiql": "^0.8.1",
     "graphql": "^0.8.2",
     "graphql-tools": "^0.8.4",
+    "guid": "0.0.12",
     "ipfs": "^0.18.0",
     "ipfs-api": "^12.0.0",
     "isomorphic-fetch": "^2.2.1",

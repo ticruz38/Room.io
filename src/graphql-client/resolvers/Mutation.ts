@@ -1,43 +1,39 @@
 import db from '../../IpfsApiStore';
 
+const Guid = require('guid');
+
 export default {
-    addRoom: function( root, {room}, context ) {
-        room._id = 'coucou';
-        console.log(room);
-        db.room.put( room ).then( hash => {
+    addRoom( root, {room}, context ) {
+        db.room.then(dbroom => dbroom.put( room ).then( hash => {
             console.log('successfully added room', hash)
-            console.log('try to get room by id', db.room.get('coucou'))
+            //console.log('try to get room by id', db.room.get('coucou'))
             return room;
-        });
+        }) );
         return room;
     },
-    deleteRoom: function(root, args, context ) {
-        console.log('deletemutation', args.id);
-        db.room.del('undefined').then(removed => console.log('well removed', removed) )
+    deleteRoom(root, {id}, context ) {
+        console.log('deletemutation', id);
+        db.room.then( dbroom => dbroom.del(id).then(removed => console.log('well removed', removed) ) )
     },
-    updateRoom: function( roomID: string, room: any ) {
-        room._id = roomID;
-        console.log('see if room got an id', room);
-        return db.room.put( room ).then( hash => {
+    updateRoom(root, {room}, context ) {
+        return db.room.then( dbroom => dbroom.put( room ).then( hash => {
             console.log('successfully updated room', hash)
-            console.log('try to get room by id', db.room.get(hash))
+            //console.log('try to get room by id', db.room.get(hash))
             return room
-        });
+        }));
     },
-    addStuff: function( stuff: any ) {
-        return db.stuffs.put( stuff ).then( hash => {
-            console.log('successfully added room', hash)
-            console.log('try to get room by id', db.room.get(hash))
+    addStuff(root, {stuff}, context ) {
+        return db.stuff.then(dbStuff => dbStuff.put( stuff ).then( hash => {
+            console.log('successfully added stuff', hash)
+            //console.log('try to get room by id', db.room.get(hash))
             return stuff
-        });
+        } ) );
     },
-    updateStuff: function( stuffID: string, stuff: any) {
-        stuff._id = stuffID;
-        console.log('see if stuff got an id', stuff);
-        return db.stuffs.put( stuff ).then( hash => {
+    updateStuff( root, {stuff} ) {
+        return db.stuff.then(dbStuff => dbStuff.put( stuff ).then( hash => {
             console.log('successfully updated stuff', hash)
-            console.log('try to get stuff by id', db.stuffs.get(hash))
+            //console.log('try to get stuff by id', db.stuff.get(hash))
             return stuff
-        });
+        } ) );
     }
 }

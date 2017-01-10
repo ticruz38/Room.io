@@ -1,8 +1,37 @@
 query RoomQuery {
     rooms {
-        id
         name
         description
         pictures
+    }
+}
+
+mutation AddRoom($room: RoomInput!) {
+    addRoom(room: $room) {
+        _id
+        name
+        description
+    }
+}
+
+mutation DeleteRoom($id: String!) {
+    deleteRoom(id: $id) {
+        name
+    }
+}
+
+mutation UpdateRoom($room: RoomInput!) {
+    updateRoom(room: $room) {
+        _id
+        name
+        description
+    }
+}
+
+mutation AddStuff($stuffs: [StuffInput]) {
+    addStuff(stuff: $stuffs) {
+        name
+        description
+        price
     }
 }

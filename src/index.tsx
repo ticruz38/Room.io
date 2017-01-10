@@ -41,7 +41,7 @@ ReactDOM.render(
       <Route path="/graphiql" component={Graph} />
       <Route component={Layout}>
         <Route path="/start" component={StartBusiness}/>
-        <Route path="/room" component={Room}/>
+        <Route path="/stuffs" component={Room}/>
         <Route path="/" component={Welcome}/>
       </Route>
     </Router>,

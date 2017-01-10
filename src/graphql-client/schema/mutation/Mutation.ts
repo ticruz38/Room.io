@@ -6,10 +6,10 @@ import Stuff from '../query/Stuff';
 const Mutation = `
     type Mutation {
         addRoom(room: RoomInput): Room
+        updateRoom(room: RoomInput!): Room
         deleteRoom(id: String!): Room
-        updateRoom(roomID: String!, room: RoomInput!): Room
-        addStuff(roomID: String!): Stuff
-        updateStuff(stuffID: String!, stuff: StuffInput!): Stuff
+        addStuff(stuff: StuffInput): Stuff
+        updateStuff(stuff: StuffInput!): Stuff
     }
 `;
 

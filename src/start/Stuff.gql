@@ -1,0 +1,13 @@
+mutation AddStuff($stuff: StuffInput) {
+    addStuff(stuff: $stuff) {
+        _id
+        name
+    }
+}
+
+mutation UpdateStuff($stuff: StuffInput) {
+    updateStuff(stuff: $stuff) {
+        _id
+        name
+    }
+}

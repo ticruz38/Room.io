@@ -30,10 +30,6 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
 
     uploadDataToIPFS() {
         if( !this.isValid ) return this.initForm();
-        db.room.put({
-            _id: "ambrosia",
-            doc: start.name,
-        });
     }
 
     componentWillMount() {
@@ -67,12 +63,6 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
         fileReader.onloadend = (e: any) => {
             console.log(e);
         }
-    }
-
-    getDataFromIpfs() {
-        db.room.get( db.nodeID ).map( (e: any) => console.log(e) );
-        const all = db.room.query( (doc: any) => !!doc.name );
-        console.log(all);
     }
 
     render() {

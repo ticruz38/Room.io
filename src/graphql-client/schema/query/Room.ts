@@ -1,8 +1,13 @@
-export default `
+import Stuff from './Stuff';
+
+const Room = `
     type Room {
-        id: ID!
+        _id: String!
         name: String!
         description: String
+        stuffs: [Stuff]
         pictures: [String]
     }
 `;
+
+export default () => [Room, Stuff];

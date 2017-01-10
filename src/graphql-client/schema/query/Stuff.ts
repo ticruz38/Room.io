@@ -1,6 +1,7 @@
 export default `
     type Stuff {
-        id: String!
+        _id: String!
+        roomId: String!
         name: String!
         description: String
         price: Float
