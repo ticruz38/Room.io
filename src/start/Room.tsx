@@ -7,24 +7,42 @@ import { observer } from 'mobx-react';
 
 import { nonEmpty, email, atLeast, atMost, Input, Textarea, Form } from '../tools/Input';
 import { layoutState as layout } from '../tools/Layout';
+import Loader from '../graphql-client/Loader';
 //import ipfs from '../IpfsStore';
 import db from '../IpfsApiStore';
 
+const RoomDocument = require('./Room.gql');
+const Guid = require('guid');
 
-export class StartBusinessState {
+
+export class RoomState extends Loader {
+    _id: string = Guid.raw();
     @observable name: string;
     @observable description: string;
     @observable email: string;
     @observable phoneNumber: string;
-    @observable urPicture: string;
+    @observable pictures: string[];
     @observable nodeError: string;
+
+    format() {
+        return {
+            room : {
+                _id: this._id,
+                name: this.name,
+                description: this.description,
+                email: this.email,
+                phoneNumber: this.phoneNumber,
+                pictures: this.pictures
+            }
+        }
+    }
 }
 
-export const start = new StartBusinessState();
+export const roomState = new RoomState( RoomDocument );
 
 
 @observer
-export class StartBusiness extends React.Component< any, {isValid: boolean} > {
+export class RoomView extends React.Component< any, {isValid: boolean} > {
 
     @observable isValid: boolean = false;
 
@@ -41,6 +59,7 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
                     <Link 
                         className="button"
                         to="/room"
+                        onClick={ _ => roomState.execute( 'AddRoom', roomState.format() ) }
                     >Add some stuffs
                     </Link>
                 );
@@ -52,8 +71,8 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
 
     /** this method is used to init required form values */
     initForm() {
-        Object.keys( start ).map( key => {
-            if(start[key] === undefined) start[key] = '';
+        Object.keys( roomState ).map( key => {
+            if(roomState[key] === undefined) roomState[key] = '';
         } )
     }
 
@@ -67,38 +86,38 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
 
     render() {
         return (
-            <div className="start-business" onDrop={ e => this.onDrop(e)} onDragOver={e => e.preventDefault()}>
+            <div className="room" onDrop={ e => this.onDrop(e)} onDragOver={e => e.preventDefault()}>
                 <div className="intro-layer"/>
                 <Form validityChange={ isValid => this.isValid = isValid } >
                     <Input
                         id="name"
                         type="text"
                         label="Business Name"
-                        value={start.name}
-                        onChange={ (e: any) => start.name = e.currentTarget.value }
+                        value={roomState.name}
+                        onChange={ (e: any) => roomState.name = e.currentTarget.value }
                         constraints={ [ nonEmpty() ]}
                     />
                     <Textarea
                         id="description"
                         label="Put a brief description on what your business offer"
-                        value={ start.description }
-                        onChange={ (e: any) => start.description = e.currentTarget.value }
+                        value={ roomState.description }
+                        onChange={ (e: any) => roomState.description = e.currentTarget.value }
                         constraints={ [ atLeast(10), atMost(200) ]} 
                     />
                     <Input
                         id="email"
                         label="Email Address"
                         type='email'
-                        value={start.email}
-                        onChange={ (e:any) => start.email = e.currentTarget.value }
+                        value={roomState.email}
+                        onChange={ (e:any) => roomState.email = e.currentTarget.value }
                         constraints={ [ email() ] }
                     />
                     <Input
                         id="phone number"
                         label="Phone Number"
                         type="tel"
-                        value={start.phoneNumber}
-                        onChange={ (e: any) => start.phoneNumber = e.currentTarget.value }
+                        value={roomState.phoneNumber}
+                        onChange={ (e: any) => roomState.phoneNumber = e.currentTarget.value }
                     />
                 </Form>
             </div>
@@ -106,4 +125,4 @@ export class StartBusiness extends React.Component< any, {isValid: boolean} > {
     }
 }
 
-import './StartBusiness.scss';
+import './Room.scss';

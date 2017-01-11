@@ -6,4 +6,4 @@ export default `
         description: String
         price: Float
     }
-`
+`;

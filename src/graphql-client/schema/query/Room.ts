@@ -5,6 +5,8 @@ const Room = `
         _id: String!
         name: String!
         description: String
+        email: String
+        phoneNumber: String
         stuffs: [Stuff]
         pictures: [String]
     }

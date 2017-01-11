@@ -28,10 +28,3 @@ mutation UpdateRoom($room: RoomInput!) {
     }
 }
 
-mutation AddStuff($stuffs: [StuffInput]) {
-    addStuff(stuff: $stuffs) {
-        name
-        description
-        price
-    }
-}

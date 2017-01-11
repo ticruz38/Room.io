@@ -17,7 +17,7 @@ const RoomDocument = require('./Room.gql');
 type RoomProps = {
 }
 
-class RoomState extends Loader {
+class StuffsState extends Loader {
     _id: string = Guid.raw();
     name: string;
     description: string;
@@ -26,13 +26,7 @@ class RoomState extends Loader {
         this.execute('AddStuff', stuff.format);
     }
 
-    saveRoom() {
-        this.execute('AddRoom', this.format())
-        this.stuffs.map( s => this.addStuff(s) )
-    }
-
     format(): Object {
-        console.log(this, this.stuffs);
         return {
             _id: this._id,
             name: this.name,
@@ -42,7 +36,7 @@ class RoomState extends Loader {
     @observable stuffs: StuffState[] = [new StuffState(this._id)];
 }
 
-const roomState = new RoomState(RoomDocument, 'RoomQuery');
+const stuffsState = new StuffsState(RoomDocument, 'RoomQuery');
 
 /** Room input component */
 @observer
@@ -58,19 +52,19 @@ export class Room extends React.Component< RoomProps, any > {
 
     addStuff() {
         // init required undefined stuffs values
-        roomState.stuffs.push( new StuffState( roomState._id ) );
+        stuffsState.stuffs.push( new StuffState( stuffsState._id ) );
     }
 
     render() {
         return (
             <div className='room'>
                 <h2>Welcome to your room, describe all those messy stuffs you'd like to share</h2>
-                { roomState.stuffs.map( (stuff, index) =>
+                { stuffsState.stuffs.map( (stuff, index) =>
                     <Stuff
                         key={ stuff._id }
                         stuff={stuff}
                         index={index}
-                        roomState={roomState}
+                        stuffsState={stuffsState}
                     />
                 ) }
                 <button

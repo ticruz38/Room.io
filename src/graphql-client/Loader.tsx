@@ -9,6 +9,7 @@ export default class Loader {
     }
 
     execute(operationName: string, variables?: {[key: string]: any}) {
+        console.log(this.document, variables);
         const errors = validate(Schema, this.document);
         if( errors.length ) return errors;
         execute(

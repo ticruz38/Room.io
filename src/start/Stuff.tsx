@@ -9,10 +9,9 @@ import { layoutState as layout } from '../tools/Layout';
 
 const Guid = require('guid');
 
-const StuffDocument = require('./Stuff.gql');
 
 
-export class StuffState extends Loader {
+export class StuffState {
     _id: string;
     roomId: string;
     @observable name ?: string;
@@ -21,13 +20,11 @@ export class StuffState extends Loader {
     @observable price ?: number;
 
     constructor ( roomId: string ) {
-        super(StuffDocument);
         this._id = Guid.raw();
         this.roomId = roomId
     }
 
     format(): Object {
-        console.log(this, this.name);
         return {
             roomId: this.roomId,
             name: this.name,
@@ -41,7 +38,7 @@ export class StuffState extends Loader {
 type StuffProps = {
     stuff: StuffState
     index: Number;
-    roomState: any;
+    stuffsState: any;
 }
 
 /** Stuff input component */
@@ -66,12 +63,14 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
                         onChange={ (e: any) => this.state.price = e.currentTarget.value } 
                     />
         } else {
-            return <button
-                        className="btn price"
-                        onClick={ _ => this.state.price = 0 }
-                    >
-                        <i className="material-icons">add_circle_outline</i>Give it a Price
-                    </button>
+            return (
+                <button
+                    className="btn price"
+                    onClick={ _ => this.state.price = 0 }
+                >
+                    <i className="material-icons">add_circle_outline</i>Give it a Price
+                </button>
+            );
         }
     }
 
@@ -80,7 +79,7 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
         return (
             <i
                 className="close material-icons"
-                onClick={ _ => this.props.roomState.stuffs.splice(this.props.index, 1) }
+                onClick={ _ => this.props.stuffsState.stuffs.splice(this.props.index, 1) }
             >close
             </i>
         );
@@ -116,7 +115,8 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
                             onClick={ _ => layout.modal = (
                                 <img src={picture} style={{ maxHeight: '100%', maxWidth:'100%'}} />
                             ) }
-                            src={picture} /> 
+                            src={picture} 
+                        /> 
                     ) }
                 </div>
                 <span className='top-line line'/>

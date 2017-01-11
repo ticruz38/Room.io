@@ -6,8 +6,10 @@ const RoomInput = `
         _id: String!
         name: String! # Room Name
         description: String # Room Description
-        stuffs: [StuffInput]  
+        email: String,
+        phoneNumber: String,
         pictures: [String] # Room pictures as a list of hash
+        stuffs: [StuffInput]
     }
 `;
 
