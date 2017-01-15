@@ -38,9 +38,9 @@ export class Layout extends React.Component<any, any> {
 
   get icon() {
     return (
-      <div className='app-icon'>
-        <div><i className="material-icons">local_florist</i></div>
-      </div>
+      <Link className='app-icon' to="/">
+        <i className="material-icons">local_florist</i>
+      </Link>
     );
   }
 

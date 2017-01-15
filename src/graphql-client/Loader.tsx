@@ -9,7 +9,6 @@ export default class Loader {
     }
 
     execute(operationName: string, variables?: {[key: string]: any}) {
-        console.log(this.document, variables);
         const errors = validate(Schema, this.document);
         if( errors.length ) return errors;
         execute(
@@ -19,6 +18,10 @@ export default class Loader {
             null,
             variables,
             operationName
-        )
+        ).then( result => {
+            for ( const key in result.data ) {
+                this[key] = result.data[key]
+            }
+        } );
     }
 }

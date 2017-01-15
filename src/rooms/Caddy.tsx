@@ -3,7 +3,7 @@ import {computed, observable, toJS, autorun }        from 'mobx';
 import { observer }                                 from 'mobx-react';
 import * as classnames                              from 'classnames';
 
-import { Restaurant, Food, Meal }                   from './RestaurantsFeed';
+import { Room, Food, Meal }                   from './RoomFeed';
 
 interface Item {
   id: string;
@@ -16,15 +16,15 @@ interface Item {
 @observer
 export default class Caddy extends React.Component<any, any> {
 
-  get restaurantState() {
-    return this.props.restaurantState
+  get roomState() {
+    return this.props.roomState
   }
   
   /**
    * transform the caddy so that we get a map of FoodType with Items in it
    */ 
   @computed get newCaddy(): { [T: string]: Item[] } {
-    let caddy = [...this.restaurantState.caddy]
+    let caddy = [...this.roomState.caddy]
     const u: { [T: string]: Item } = {};
     const v: { [T: string]: Item[] } = {};
     for (let i = 0; i < caddy.length; i++) {
@@ -42,7 +42,7 @@ export default class Caddy extends React.Component<any, any> {
   }
 
   removeItem(id: string) {
-    this.restaurantState.caddy.splice( this.restaurantState.caddy.findIndex((item: Meal) => item.id === id), 1 );
+    this.roomState.caddy.splice( this.roomState.caddy.findIndex((item: Meal) => item.id === id), 1 );
   }
 
 

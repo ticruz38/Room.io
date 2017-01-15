@@ -5,18 +5,18 @@ import {computed, observable, toJS, autorun} from 'mobx'
 import * as classnames from 'classnames';
 
 import {
-  RestaurantFeedState, Restaurant, Food, Meal,
-} from './restaurantsFeed';
+  RoomFeedState, Room, Food, Meal,
+} from './RoomFeed';
 
 import Caddy from './caddy';
 
 import { observer } from 'mobx-react';
 
 interface props {
-  restaurantFeedState: RestaurantFeedState
+  roomFeedState: RoomFeedState
 }
 
-export class RestaurantState {
+export class RoomState {
 
   @observable selectedFood: Food
 
@@ -24,28 +24,28 @@ export class RestaurantState {
 
 }
 
-export const restaurantState = new RestaurantState();
+export const roomState = new RoomState();
 
 @observer
-export default class RestaurantSelected extends React.Component<props, any> {
+export default class RoomSelected extends React.Component<props, any> {
 
-  /** refresh caddy any time selected restaurant change */
+  /** refresh caddy any time selected room change */
   refreshCaddy = autorun( () => {
-    this.restaurantFeedState.restaurant;
-    restaurantState.caddy = [];
+    this.roomFeedState.room;
+    roomState.caddy = [];
   })
 
-  get restaurantFeedState() {
-    return this.props.restaurantFeedState;
+  get roomFeedState() {
+    return this.props.roomFeedState;
   }
   
   get selectedFood() {
-    return restaurantState.selectedFood || this.restaurantFeedState.restaurant.foods[0];
+    return roomState.selectedFood || this.roomFeedState.room.stuffs[0];
   }
 
   addCaddyItem = (meal: Meal) => {
     let newMeal = Object.assign({}, meal); // send a new object instance here
-    restaurantState.caddy.push(newMeal);
+    roomState.caddy.push(newMeal);
   }
 
   render() {
@@ -60,28 +60,28 @@ export default class RestaurantSelected extends React.Component<props, any> {
       );
     } 
     
-    const restaurant = this.restaurantFeedState.restaurant;
+    const room = this.roomFeedState.room;
     
     return (
       <div className='full-screen'>
-        <i className="material-icons" onClick={_ => this.restaurantFeedState.restaurant = null}>close</i>
+        <i className="material-icons" onClick={_ => this.roomFeedState.room = null}>close</i>
         <span className='arrow-left'>
-          <i className="material-icons" onClick={ _ => this.restaurantFeedState.browseRestaurant(-1) }>keyboard_arrow_left</i>
+          <i className="material-icons" onClick={ _ => this.roomFeedState.browseRoom(-1) }>keyboard_arrow_left</i>
         </span>
         <span className='arrow-right'>
-          <i className="material-icons" onClick={ _ => this.restaurantFeedState.browseRestaurant(1) }>keyboard_arrow_right</i>
+          <i className="material-icons" onClick={ _ => this.roomFeedState.browseRoom(1) }>keyboard_arrow_right</i>
         </span>
-        <div className="restaurant-selected">
-          <h1>{restaurant.name}</h1>
-          <img src={restaurant.picture.url}/>
+        <div className="room-selected">
+          <h1>{room.name}</h1>
+          <img src={room.pictures[0]}/>
         </div>
 
-        <div className='foods-bar'>
-          {restaurant.foods.map(food => {
+        <div className='stuffs-bar'>
+          {room.stuffs.map(food => {
             return (
               <div className={classnames('food-item', { selected: food === this.selectedFood }) }
                 key={food.id}
-                onClick={ () => { restaurantState.selectedFood = food } }>
+                onClick={ () => { roomState.selectedFood = food } }>
                 <strong>{food.name}</strong>
               </div>
             );
@@ -97,11 +97,11 @@ export default class RestaurantSelected extends React.Component<props, any> {
             }
           </tbody>
         </table>
-        {restaurantState.caddy.length ? <Caddy restaurantState={restaurantState} /> : <span/>}
+        {roomState.caddy.length ? <Caddy roomState={roomState} /> : <span/>}
       </div>
     )
   }
 }
 
 
-import './restaurantSelected.scss';
+import './FullScreenRoom.scss';

@@ -1,4 +1,4 @@
-div.restaurants-grid {
+div.rooms-grid {
   display: flex;
   justify-content: center;
   >div.column {
@@ -8,7 +8,7 @@ div.restaurants-grid {
     > div:hover {
       background: lightyellow;
     }
-    div.restaurant {
+    div.room {
       margin-bottom: 2em;
       h2, p {
         margin: 0 0 5px;

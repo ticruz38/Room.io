@@ -4,7 +4,7 @@ import {graphql} from 'graphql';
 
 import * as ReactRouter from 'react-router';
 
-import { RestaurantsFeed } from './restaurants/RestaurantsFeed';
+import { RoomFeed } from './rooms/RoomFeed';
 import { Welcome } from './welcome/Welcome';
 import { Layout } from './tools/Layout';
 import { RoomView } from './start/Room';
@@ -36,6 +36,7 @@ ReactDOM.render(
     <Router history={hashHistory}>
       <Route path="/graphiql" component={Graph} />
       <Route component={Layout}>
+        <Route path="/feed" component={RoomFeed} />
         <Route path="/room" component={RoomView}/>
         <Route path="/stuffs" component={Room}/>
         <Route path="/" component={Welcome}/>

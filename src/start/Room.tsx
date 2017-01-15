@@ -40,7 +40,6 @@ export class RoomState extends Loader {
 
 export const roomState = new RoomState( RoomDocument );
 
-
 @observer
 export class RoomView extends React.Component< any, {isValid: boolean} > {
 

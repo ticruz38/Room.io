@@ -1,4 +1,4 @@
-query RoomQuery {
+query RoomsQuery {
     rooms {
         name
         description

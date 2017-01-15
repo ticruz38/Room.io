@@ -12,7 +12,7 @@ import { StuffState, Stuff } from './Stuff';
 
 const Guid = require('guid');
 
-const RoomDocument = require('./Room.gql');
+const StuffsDocument = require('./Stuffs.gql');
 
 type RoomProps = {
 }
@@ -36,7 +36,7 @@ class StuffsState extends Loader {
     @observable stuffs: StuffState[] = [new StuffState(this._id)];
 }
 
-const stuffsState = new StuffsState(RoomDocument, 'RoomQuery');
+const stuffsState = new StuffsState( StuffsDocument );
 
 /** Room input component */
 @observer

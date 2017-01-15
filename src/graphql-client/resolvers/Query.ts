@@ -7,6 +7,7 @@ export default {
     rooms(root, args, context) {
         // each docStore are a promise, resolved when data are loaded 
         const all = db.room.then(room => room.query( doc => !!doc ) );
+        //return all.map(room => room.pictures ? room.pictures : [];
         return all;
     }
 }
