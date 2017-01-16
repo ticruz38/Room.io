@@ -8,7 +8,7 @@ const RoomInput = `
         description: String # Room Description
         email: String,
         phoneNumber: String,
-        pictures: [String] # Room pictures as a list of hash
+        picture: String # Room pictures as a list of hash
         stuffs: [StuffInput]
     }
 `;

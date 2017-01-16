@@ -4,6 +4,7 @@ export default `
         roomId: String!
         name: String!
         description: String
+        picture: String
         price: Float
     }
 `

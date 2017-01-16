@@ -29,7 +29,7 @@ export class Welcome extends React.Component< any, any > {
                     </p>
                 </div>
                 <div className='pick'>
-                    <Link to="start" className='box'>
+                    <Link to="room" className='box'>
                         <span>Become a caddyer</span>
                     </Link>
                     <Link to="feed" className='box'>

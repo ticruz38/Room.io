@@ -7,8 +7,8 @@ const Room = `
         description: String
         email: String
         phoneNumber: String
+        picture: String
         stuffs: [Stuff]
-        pictures: [String]
     }
 `;
 

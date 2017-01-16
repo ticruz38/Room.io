@@ -55,9 +55,9 @@ export class RoomView extends React.Component< any, {isValid: boolean} > {
         autorun( _ => {
             if( this.isValid ) {
                 layout.toolBar = (
-                    <Link 
+                    <Link
                         className="button"
-                        to="/room"
+                        to="/stuffs"
                         onClick={ _ => roomState.execute( 'AddRoom', roomState.format() ) }
                     >Add some stuffs
                     </Link>

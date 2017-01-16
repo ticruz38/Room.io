@@ -101,7 +101,7 @@ export class RoomFeed extends React.Component< RoomFeedProps, RoomFeedState > {
 
 const Room = (room: Room) =>
     <div className='room'>
-      <img src={room.pictures[0]} onClick={_ => { roomFeedState.room = room } } />
+      <img src={room.pictures ? room.pictures[0] : ''} onClick={_ => { roomFeedState.room = room } } />
       {/*<i>{room.reviews.count} {room.reviews.averageScore}</i>*/}
       <h2>{room.name}</h2>
       <p>{room.description}</p>
