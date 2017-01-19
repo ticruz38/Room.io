@@ -16,31 +16,20 @@ interface RoomFeedProps {
 
 }
 
-export interface Meal {
-  id: string;
-  parent: string,
+export interface Stuff {
+  _id: string,
   name: string,
   description: string,
-  length: number // this is used in caddy
-}
-
-export interface Food {
-  id: string,
-  name: string,
-  description: string,
-  meals: Meal[],
-  picture: {
-    url: string,
-    size: number[]
-  }
+  picture: string,
+  price: number
 }
 
 export interface Room {
   _id: string,
   name?: string,
   description?: string,
-  stuffs: Food[]
-  pictures: string[]
+  stuffs: Stuff[]
+  picture: string
   //reviews?: { count: number, averageScore: number },
 }
 
@@ -69,13 +58,17 @@ export const roomFeedState = new RoomFeedState( RoomDocument, 'RoomsQuery' );
 @observer
 export class RoomFeed extends React.Component< RoomFeedProps, RoomFeedState > {
 
-  modal() {
-    layoutState.modal = <FullScreenRoom roomFeedState = {roomFeedState} />;
+  componentWillMount() {
+    layoutState.title = 'Pick a Room you like';
+  }
+
+  @computed get fullScreenRoom(): React.ReactElement< any > {
+    return roomFeedState.room ?
+      <FullScreenRoom room={ roomFeedState.room } close={ () => roomFeedState.room = null } /> :
+      <span/>
   }
 
   render(): React.ReactElement<any> {
-    console.log(toJS(roomFeedState.rooms));
-    
     //set the array of rooms array
     const columns: Room[][] = [];
 
@@ -94,18 +87,21 @@ export class RoomFeed extends React.Component< RoomFeedProps, RoomFeedState > {
     return (
       <div className='rooms-grid'>
         { columns.map(columnsComponent) }
+        { this.fullScreenRoom }
       </div>
     );
   }
 }
 
-const Room = (room: Room) =>
-    <div className='room'>
-      <img src={room.pictures ? room.pictures[0] : ''} onClick={_ => { roomFeedState.room = room } } />
-      {/*<i>{room.reviews.count} {room.reviews.averageScore}</i>*/}
+const Room = (room: Room) => {
+  return (
+    <div className='room-item'>
+      <img src={ room.picture ? room.picture : 'public/messy_room.jpg' } onClick={ _ => roomFeedState.room = room } />
       <h2>{room.name}</h2>
       <p>{room.description}</p>
     </div>
+  );
+}
 
 import './RoomFeed.scss';
 

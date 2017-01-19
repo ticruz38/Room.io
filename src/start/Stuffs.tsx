@@ -47,12 +47,14 @@ export class Room extends React.Component< RoomProps, any > {
 
     componentWillMount() {
         layout.title = 'Add Some Stuffs';
+        layout.backRoute = 'room';
         layout.toolBar = <button onClick={ _ => console.log('saveroom') } >Save</button>;
     }
 
     addStuff() {
         // init required undefined stuffs values
         stuffsState.stuffs.push( new StuffState( stuffsState._id ) );
+        debugger;
     }
 
     render() {

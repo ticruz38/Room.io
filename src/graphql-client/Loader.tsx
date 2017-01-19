@@ -11,8 +11,8 @@ export default class Loader {
     }
 
     execute(operationName: string, variables?: {[key: string]: any}) {
-        console.log("execute");
         const errors = validate(Schema, this.document);
+        console.log("execute", operationName, errors);
         if( errors.length ) return errors;
         execute(
             Schema,
@@ -22,10 +22,9 @@ export default class Loader {
             variables,
             operationName
         ).then( result => {
-            console.log(result);
             for ( const key in result.data ) {
                 this[key] = result.data[key]
-                this.graphQlErrors = result.errors.map(error => error.message);
+                this.graphQlErrors = result.errors ? result.errors.map(error => error.message) : null;
             }
         } );
     }

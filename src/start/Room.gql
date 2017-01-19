@@ -2,7 +2,7 @@ query RoomsQuery {
     rooms {
         name
         description
-        pictures
+        picture
     }
 }
 

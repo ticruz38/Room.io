@@ -21,7 +21,7 @@ export class RoomState extends Loader {
     @observable description: string;
     @observable email: string;
     @observable phoneNumber: string;
-    @observable pictures: string[];
+    @observable picture: string;
     @observable nodeError: string;
 
     format() {
@@ -32,7 +32,7 @@ export class RoomState extends Loader {
                 description: this.description,
                 email: this.email,
                 phoneNumber: this.phoneNumber,
-                pictures: this.pictures
+                picture: this.picture
             }
         }
     }

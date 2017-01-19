@@ -3,6 +3,6 @@ query RoomsQuery {
         _id
         name
         description
-        pictures
+        picture
     }
 }

@@ -1,9 +1,9 @@
 import * as React                                   from "react";
-import {computed, observable, toJS, autorun }        from 'mobx';
+import {computed, observable, toJS, autorun }       from 'mobx';
 import { observer }                                 from 'mobx-react';
 import * as classnames                              from 'classnames';
 
-import { Room, Food, Meal }                   from './RoomFeed';
+import { Room, Stuff }                         from './RoomFeed';
 
 interface Item {
   id: string;
@@ -42,7 +42,7 @@ export default class Caddy extends React.Component<any, any> {
   }
 
   removeItem(id: string) {
-    this.roomState.caddy.splice( this.roomState.caddy.findIndex((item: Meal) => item.id === id), 1 );
+    this.roomState.caddy.splice( this.roomState.caddy.findIndex((item: Stuff) => item._id === id), 1 );
   }
 
 

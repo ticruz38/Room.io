@@ -2,10 +2,18 @@
 @import '../src/index.scss';
 
 header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   height: 30px;
   padding: 10px;
   margin-bottom: 2em;
   background-color: gold;
+
+  .left-items {
+    display: flex;
+    align-items: center;
+  }
 
   .app-icon {
     float: left;
@@ -28,18 +36,14 @@ header {
   .back-button {
     cursor: pointer;
     float: left;
-    height: 30px;
-    width: 40px;
-    justify-content: center;
     font-family: sans-serif;
     display: flex;
-    align-items: center;
     background: lightyellow;
     margin: 0 5px;
     border-radius: 3px;
     text-decoration: none;
-    >i {
-      font-size: 30px;
+    p {
+      margin: 0;
     }
   }
 

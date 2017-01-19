@@ -32,6 +32,7 @@ export class Layout extends React.Component<any, any> {
     return (
       <Link to={layoutState.backRoute} className={classnames('back-button', {hidden: !layoutState.backRoute})}>
         <i className="material-icons">keyboard_arrow_left</i>
+        <p>{ layoutState.backRoute }</p>
       </Link>
     );
   }
@@ -52,19 +53,23 @@ export class Layout extends React.Component<any, any> {
     return (
       <div className='layout'>
         <header className="navigation">
-          { this.icon }
-          <div className="title">
-            { layoutState.title }
+          <div className="left-items">
+            { this.icon }
+            <div className="title">
+              { layoutState.title }
+            </div>
+              { this.backButton }
+            <div className="toolBar">
+              { layoutState.toolBar }
+            </div>
           </div>
-            { this.backButton }
-          <div className="toolBar">
-            { layoutState.toolBar }
-          </div>
-          <div className='signin' onClick={_ => {console.log('layoutState'); layoutState.modal = <Login/>} }>
-            <button className='ambrosia-button'>
-            <i className="fa fa-sign-in" />
-              <span>Login</span>
-            </button>
+          <div className="right-items">
+            <div className='signin' onClick={_ => {console.log('layoutState'); layoutState.modal = <Login/>} }>
+              <button className='ambrosia-button'>
+                <i className="fa fa-sign-in" />
+                <span>Login</span>
+              </button>
+            </div>
           </div>
         </header>
         { this.props.children }

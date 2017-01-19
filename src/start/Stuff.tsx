@@ -80,8 +80,7 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
             <i
                 className="close material-icons"
                 onClick={ _ => this.props.stuffsState.stuffs.splice(this.props.index, 1) }
-            >close
-            </i>
+            >close</i>
         );
     }
 
