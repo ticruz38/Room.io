@@ -4,22 +4,21 @@ import { observer } from 'mobx-react';
 
 class LoginState {
 
-  @observable login: string;
+  @observable name: string;
 
   @observable password: string;
 
-  @computed get loginError() {
-    console.log('loginError', loginState.login);
-    if (loginState.login === undefined) return;
-    if (!loginState.login.length) return 'login cannot be empty';
+  @computed get nameError() {
+    if (loginState.name === undefined) return;
+    if (!loginState.name.length) return 'name cannot be empty';
     return null;
   }
 
   @computed get passwordError() {
-      if (loginState.password === undefined) return;
-      const re = /^(?=.*\d)[a-zA-Z0-9]{8,}$/i;
-      if (!re.test(loginState.password)) return 'Password must contains 8 characters with uppercase letters and numbers';
-      return null;
+    if (loginState.password === undefined) return;
+    const re = /^(?=.*\d)[a-zA-Z0-9]{8,}$/i;
+    if (!re.test(loginState.password)) return 'Password must contains 8 characters with uppercase letters and numbers';
+    return null;
   }
 }
 
@@ -27,22 +26,18 @@ const loginState = new LoginState();
 
 export class Login extends React.Component< any, LoginState > {
 
-  constructor(props: any) {
-    super(props);
-  }
-
   render() {
     return (
       <div className='form'>
-        <div className='login'>
-          <label>login</label>
+        <div className='name'>
+          <label>Name/Pseudo</label>
           <input
-            id='login'
-            className={loginState.loginError ? 'error' : ''}
-            onChange={(e: any) => loginState.login = e.target.value}
-            value={loginState.login}
+            id='name'
+            className={loginState.nameError ? 'error' : ''}
+            onChange={(e: any) => loginState.name = e.target.value}
+            value={loginState.name}
           />
-          <div className='error'>{loginState.loginError}</div>
+          <div className='error'>{loginState.nameError}</div>
         </div>
         <div className='password'>
           <label>password</label>

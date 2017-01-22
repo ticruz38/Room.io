@@ -3,6 +3,6 @@ export default `
         _id: String!
         name: String!
         password: String! #hash256 password
-        rooms: String[] #user rooms listed by Id
+        rooms: [String] #user rooms listed by Id
     }
-`
+`;

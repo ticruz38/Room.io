@@ -11,19 +11,21 @@ class IpfsStore {
     node: any;
     room: Promise< any >;
     stuff: Promise< any >;
+    user: Promise< any >;
     chat: any;
 
     constructor() {
         this.startOrbitDb();
         this.createDb('room');
         this.createDb('stuff');
+        this.createDb('userDb');
     }
 
     // roomLoaded number between 0 and 1
-    roomLoaded: number = 0;
+    roomLoading: number = 0;
 
     // stuffLoaded number between 0 and 1
-    stuffLoaded: number = 0;
+    stuffLoading: number = 0;
 
     createDb(dbName: string) {
         this[dbName] = new Promise( (resolve, reject) => {

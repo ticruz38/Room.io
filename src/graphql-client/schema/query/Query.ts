@@ -1,9 +1,11 @@
 import Room from './Room';
+import User from './User';
 
 const Query = `
     type Query {
         room(id: String): Room
         rooms: [Room]
+        user(id: String): User 
     }
 `
-export default () => [Room, Query];
+export default () => [Room, User, Query];
