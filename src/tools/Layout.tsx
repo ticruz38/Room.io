@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-import { Login } from '../src/login/login';
+import { Login } from '../login/login';
 
 interface LayoutProps {
   children: React.Component< any, any >,
@@ -19,7 +19,8 @@ export class LayoutState {
   @observable modal: boolean | React.ReactElement< any >;
   @observable searchBar: boolean = true;
   @observable backRoute: string;
-
+  @observable toolBar: React.ReactElement< any >;
+  @observable title: string;
 }
 
 export const layoutState = new LayoutState();
@@ -27,43 +28,48 @@ export const layoutState = new LayoutState();
 @observer
 export class Layout extends React.Component<any, any> {
 
-  get searchbar() {
-    return (
-      <div className={ classnames('search-wrapper', { hidden: !layoutState.searchBar} ) }>
-        <i className="material-icons">search</i>
-        <div className='search-bar'><input type='text' placeholder='search..' /></div>
-      </div>
-    );
-  }
-
   get backButton() {
     return (
       <Link to={layoutState.backRoute} className={classnames('back-button', {hidden: !layoutState.backRoute})}>
         <i className="material-icons">keyboard_arrow_left</i>
+        <p>{ layoutState.backRoute }</p>
       </Link>
     );
   }
 
   get icon() {
     return (
-      <div className='app-icon'>
-        <div><i className="material-icons">local_florist</i></div>
-      </div>
+      <Link className='app-icon' to="/">
+        <i className="material-icons">local_florist</i>
+      </Link>
     );
+  }
+
+  get toolBar(): React.ReactElement< any > {
+    return layoutState.toolBar;
   }
 
   render() {
     return (
       <div className='layout'>
         <header className="navigation">
-          { this.icon }
-          { this.backButton }
-          { this.searchbar }  
-          <div className='signin' onClick={_ => {console.log('layoutState'); layoutState.modal = <Login/>} }>
-            <button className='ambrosia-button'>
-            <i className="fa fa-sign-in" />
-              <span>Login</span>
-            </button>
+          <div className="left-items">
+            { this.icon }
+            <div className="title">
+              { layoutState.title }
+            </div>
+              { this.backButton }
+            <div className="toolBar">
+              { layoutState.toolBar }
+            </div>
+          </div>
+          <div className="right-items">
+            <div className='signin' onClick={_ => {console.log('layoutState'); layoutState.modal = <Login/>} }>
+              <button className='ambrosia-button'>
+                <i className="fa fa-sign-in" />
+                <span>Login</span>
+              </button>
+            </div>
           </div>
         </header>
         { this.props.children }
@@ -75,9 +81,16 @@ export class Layout extends React.Component<any, any> {
   }
 }
 
+const SearchBar = () => {
+    return (
+      <div className="search-wrapper">
+        <i className="material-icons">search</i>
+        <div className='search-bar'><input type='text' placeholder='search..' /></div>
+      </div>
+    );
+}
+
 const Modal = (props: any) => {
-    console.log(props);
-  
     if(!props) return;
 
     const close = (e: MouseEvent ) => {
@@ -98,4 +111,4 @@ const Modal = (props: any) => {
 }
 
 
-import './layout.scss';
+import './Layout.scss';
