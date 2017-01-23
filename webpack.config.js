@@ -30,6 +30,7 @@ module.exports = {
             // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
             {
                 test: /\.tsx?$/,
+                exclude: /node_modules/,
                 loader: "ts-loader"
             }, {
                 test: /\.scss|sass|css$/,
@@ -49,6 +50,7 @@ module.exports = {
             { test: /\.json$/, loader: 'json'},
             {
                 test: /\.js$/,
+                exclude: /node_modules/,
                 loader: "source-map-loader"
             }
         ]
