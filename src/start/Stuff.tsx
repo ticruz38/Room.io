@@ -57,13 +57,12 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
     get priceField(): React.ReactElement< any > {
         if( this.state.price !== undefined ) {
             return (
-                <Input
-                    ref='price'
+                <input
                     label="price"
                     type="number"
                     min={ 0 }
                     value={ this.state.price }
-                    onChange={ (value) => this.state.price = value } 
+                    onChange={ e => this.state.price = JSON.parse(e.currentTarget.value) } 
                 />
             )
         } else {
