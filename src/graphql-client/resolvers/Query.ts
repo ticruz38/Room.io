@@ -6,8 +6,8 @@ export default {
     },
     rooms(root, args, context) {
         // each docStore are a promise, resolved when data are loaded 
-        const all = db.room.then(roomDb => {console.log('room:ready'); return roomDb.query( doc => !!doc )} );
-        console.log('roomsQuery:Resolver', db.room);
+        const all = db.room.then(roomDb => roomDb.query( doc => !!doc ) );
+        //console.log('roomsQuery:Resolver', db.room);
         //return all.map(room => room.pictures ? room.pictures : [];
         return all;
     },
