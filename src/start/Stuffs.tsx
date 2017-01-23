@@ -4,10 +4,7 @@ import { observer } from 'mobx-react';
 import { execute } from 'graphql';
 
 import Loader from '../graphql-client/Loader';
-
-import { Form, Input, Textarea, nonEmpty } from '../tools/Input';
 import { layoutState as layout } from '../tools/Layout';
-
 import { StuffState, Stuff } from './Stuff';
 
 const Guid = require('guid');

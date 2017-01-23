@@ -4,7 +4,9 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
 import Loader from '../graphql-client/Loader';
-import { Form, Input, Textarea, nonEmpty } from '../tools/Input';
+import { nonEmpty } from '../form/Constraint';
+import Form from '../form/Form';
+import Input from '../form/Input';
 import { layoutState as layout } from '../tools/Layout';
 
 const Guid = require('guid');
@@ -54,14 +56,16 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
 
     get priceField(): React.ReactElement< any > {
         if( this.state.price !== undefined ) {
-            return <Input
-                        id="stuff-price"
-                        type="number"
-                        label="price"
-                        min={ 0 }
-                        value={ this.state.price }
-                        onChange={ (e: any) => this.state.price = e.currentTarget.value } 
-                    />
+            return (
+                <Input
+                    ref='price'
+                    label="price"
+                    type="number"
+                    min={ 0 }
+                    value={ this.state.price }
+                    onChange={ (value) => this.state.price = value } 
+                />
+            )
         } else {
             return (
                 <button
@@ -119,23 +123,24 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
                     ) }
                 </div>
                 <span className='top-line line'/>
-                <Form validityChange={ (isValid) => this.isValid = isValid } >
-                    <Input
-                        id="stuff-name"
-                        type="text"
-                        label='name'
-                        constraints={ [ nonEmpty() ]}
-                        value={ this.state.name }
-                        onChange={ (e: any) => this.state.name = e.currentTarget.value }
-                    />
-                    <Textarea
-                        id="stuff-description"
-                        label="description"
-                        constraints={ [ nonEmpty() ] }
-                        rows={ 3 }
-                        value={ this.state.description }
-                        onChange={ (e) => this.state.description = e.currentTarget.value }
-                    />
+                <Form ref='form'
+                    validityChange={ isValid => this.isValid = isValid }
+                    fields={ [
+                        {
+                            element: 'input',
+                            type: 'text',
+                            label: 'name',
+                            value: this.state.name,
+                            constraints:[ nonEmpty() ]
+                        }, {
+                            element: 'textarea',
+                            label:"description",
+                            value: this.state.description,
+                            constraints: [ nonEmpty() ],
+                            rows: 3,
+                        }
+                    ] }
+                />
                     { this.priceField }
                     <div className='upload'>
                         <input
@@ -147,7 +152,6 @@ export class Stuff extends React.Component< StuffProps, StuffState > {
                         <p><a>Click here</a> or <strong>drop in</strong> to add a picture</p>
                     </div>
                     <span className='bottom-line line'/>
-                </Form>
             </div>
         );
     }

@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 
 import { observable, autorun, extendObservable, computed } from 'mobx';
 import { observer } from 'mobx-react';
-
-import { nonEmpty, email, atLeast, atMost, Input, Textarea, Form } from '../tools/Input';
+import { nonEmpty, email, atLeast, atMost } from '../form/Constraint';
+import { Textarea, Input, Field } from '../form';
 import { layoutState as layout } from '../tools/Layout';
 import Loader from '../graphql-client/Loader';
 //import ipfs from '../IpfsStore';
@@ -17,10 +17,27 @@ const Guid = require('guid');
 
 export class RoomState extends Loader {
     _id: string = Guid.raw();
-    @observable name: string;
-    @observable description: string;
-    @observable email: string;
-    @observable phoneNumber: string;
+
+    @observable name: Field = {
+        value: undefined,
+        constraints: [ nonEmpty() ],
+        isValid: false
+    };
+    @observable description: Field = {
+        value: undefined,
+        constraints: [ nonEmpty() ],
+        isValid: false
+    };
+    @observable email: Field = {
+        value: undefined,
+        constraints: [ nonEmpty() ],
+        isValid: false
+    };
+    @observable phoneNumber: Field = {
+        value: undefined,
+        constraints: [ nonEmpty() ],
+        isValid: false
+    };
     @observable picture: string;
     @observable nodeError: string;
 
@@ -43,10 +60,11 @@ export const roomState = new RoomState( RoomDocument );
 @observer
 export class RoomView extends React.Component< any, {isValid: boolean} > {
 
-    @observable isValid: boolean = false;
-
-    uploadDataToIPFS() {
-        if( !this.isValid ) return this.initForm();
+    @computed get isValid() {
+        return roomState.name.isValid &&
+        roomState.description.isValid &&
+        roomState.email.isValid &&
+        roomState.phoneNumber.isValid
     }
 
     componentWillMount() {
@@ -68,13 +86,6 @@ export class RoomView extends React.Component< any, {isValid: boolean} > {
         } );
     }
 
-    /** this method is used to init required form values */
-    initForm() {
-        Object.keys( roomState ).map( key => {
-            if(roomState[key] === undefined) roomState[key] = '';
-        } )
-    }
-
     onDrop(e: any): void {
         const fileReader = new FileReader();
         fileReader.readAsDataURL(e.dataTransfer.files[0]);
@@ -83,42 +94,33 @@ export class RoomView extends React.Component< any, {isValid: boolean} > {
         }
     }
 
+
     render() {
         return (
             <div className="room" onDrop={ e => this.onDrop(e)} onDragOver={e => e.preventDefault()}>
                 <div className="intro-layer"/>
-                <Form validityChange={ isValid => this.isValid = isValid } >
+                <form>
                     <Input
-                        id="name"
-                        type="text"
-                        label="Business Name"
-                        value={roomState.name}
-                        onChange={ (e: any) => roomState.name = e.currentTarget.value }
-                        constraints={ [ nonEmpty() ]}
+                        type='text'
+                        field={roomState.name}
+                        label='Room Name'
                     />
                     <Textarea
-                        id="description"
-                        label="Put a brief description on what your business offer"
-                        value={ roomState.description }
-                        onChange={ (e: any) => roomState.description = e.currentTarget.value }
-                        constraints={ [ atLeast(10), atMost(200) ]} 
+                        field={ roomState.description}
+                        label='Tell something about your room'
+                        rows={3}
                     />
                     <Input
-                        id="email"
-                        label="Email Address"
                         type='email'
-                        value={roomState.email}
-                        onChange={ (e:any) => roomState.email = e.currentTarget.value }
-                        constraints={ [ email() ] }
+                        field={ roomState.email }
+                        label='Email Address'
                     />
                     <Input
-                        id="phone number"
-                        label="Phone Number"
-                        type="tel"
-                        value={roomState.phoneNumber}
-                        onChange={ (e: any) => roomState.phoneNumber = e.currentTarget.value }
+                        type='tel'
+                        field={ roomState.phoneNumber }
+                        label='Phone Number'
                     />
-                </Form>
+                </form>
             </div>
         );
     }
