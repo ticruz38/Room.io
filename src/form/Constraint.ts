@@ -48,3 +48,15 @@ export function email() {
         return {isValid: true, error: ''};
     }
 }
+
+export function password() {
+    return function test(value: string) {
+        if( value === undefined ) return { isValid: false, error: '' };
+        const re = /^(?=.*\d)[a-zA-Z0-9]{8,}$/i;
+        if( !re.test(value) ) return {
+            isValid: false,
+            error: 'The password must contains 8 characters with at least 1 uppercase and 1 number'
+        }
+        return { isValid: true, error: ''};
+    }
+}

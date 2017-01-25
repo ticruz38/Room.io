@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as classnames from 'classnames';
 import { observable, autorun, extendObservable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 
@@ -19,12 +20,19 @@ type InputProps = {
 @observer
 export default class Input extends React.Component< InputProps, any > {
 
+    get isValid(): boolean {
+        const {field} = this.props
+        if( field.value === undefined ) return true;
+        return !field.constraints.find(constraint => !constraint(field.value).isValid)
+    }
+
     render() {
         let { field } = this.props;
         return (
             <div className='input'>
                 <label>{this.props.label}</label>
                 <input
+                    className={classnames({error: !this.isValid})}
                     type={ this.props.type } 
                     defaultValue={ field.value }
                     onChange={ e => {

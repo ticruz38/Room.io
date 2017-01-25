@@ -12,17 +12,18 @@ label {
         border: none;
         padding: 0.5em;
         margin: 0.5em 1em 0;
-        min-width: 20em;
-        width: 100%;
+        max-width: 20em;
+        width: calc(100% - 2.5em);
         font-size: 1em;
         background: rgba(255, 255, 255, 0.5);
-    }
-    &.error {
-        background: rgba(255, 0, 0, 0.7);
+        &.error {
+            background: rgba(255, 0, 0, 0.7);
+        }
     }
 }
 .errors {
-    color: black;
+    color: red;
+    text-align: right;
     padding: 0 1em;
     font-size: 0.8em;
     min-height: 1em;
