@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-import { Login } from '../login/login';
+import Login from '../auth/Login';
 
 interface LayoutProps {
   children: React.Component< any, any >,
@@ -52,27 +52,29 @@ export class Layout extends React.Component<any, any> {
   render() {
     return (
       <div className='layout'>
-        <header className="navigation">
-          <div className="left-items">
-            { this.icon }
-            <div className="title">
-              { layoutState.title }
+        <div className={classnames({blur: !!layoutState.modal})}>
+          <header className="navigation">
+            <div className="left-items">
+              { this.icon }
+              <div className="title">
+                { layoutState.title }
+              </div>
+                { this.backButton }
+              <div className="toolBar">
+                { layoutState.toolBar }
+              </div>
             </div>
-              { this.backButton }
-            <div className="toolBar">
-              { layoutState.toolBar }
+            <div className="right-items">
+              <div className='signin' onClick={_ => {layoutState.modal = <Login/>} }>
+                <button className='ambrosia-button'>
+                  <i className="fa fa-sign-in" />
+                  <span>Login</span>
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="right-items">
-            <div className='signin' onClick={_ => {console.log('layoutState'); layoutState.modal = <Login/>} }>
-              <button className='ambrosia-button'>
-                <i className="fa fa-sign-in" />
-                <span>Login</span>
-              </button>
-            </div>
-          </div>
-        </header>
+          </header>
         { this.props.children }
+        </div>
         <Modal>
           { layoutState.modal }
         </Modal>
