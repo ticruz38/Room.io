@@ -5,12 +5,17 @@ import { observer } from 'mobx-react';
 import Signup from './Signup';
 import { Input, Field } from '../form';
 import { password, nonEmpty } from '../form/Constraint';
-import { layoutState } from '../tools/Layout';
+import { layoutState } from '../layout/Layout';
+import Loader from '../graphql-client/Loader'; 
+
+const Document = require('./Login.gql');
 
 
 
 
-class LoginState {
+class LoginState extends Loader {
+
+  @observable _id: String;
 
   @observable name: Field = {
     value: undefined,
@@ -25,7 +30,7 @@ class LoginState {
   };
 }
 
-const loginState = new LoginState();
+export const loginState = new LoginState(Document);
 
 export default class Login extends React.Component< any, LoginState > {
 
@@ -42,7 +47,7 @@ export default class Login extends React.Component< any, LoginState > {
           field={loginState.password}
           type='text'
         />
-        <div>
+        <div className="question">
           <button onClick={ _ => layoutState.modal = <Signup/> }>Not a member yet ?</button>
         </div>
       </div>

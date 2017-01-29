@@ -31,7 +31,7 @@ class IpfsStore {
         this[dbName] = new Promise( (resolve, reject) => {
             const db = this.orbitdb.docstore(dbName);
             db.events.on('ready', _ => resolve(db));
-        } )
+        } );
     }
 
     startOrbitDb() {

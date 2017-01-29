@@ -1,0 +1,6 @@
+mutation Signup($User: UserInput) {
+    addUser(user: $User) {
+        _id
+        name
+    }
+}

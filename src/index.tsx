@@ -2,13 +2,13 @@ import * as React from 'react';
 import * as ReactDOM from "react-dom";
 import {graphql} from 'graphql';
 
-import * as ReactRouter from 'react-router';
+import { Router, Route, Link, hashHistory } from 'react-router';
 
-import { RoomFeed } from './rooms/RoomFeed';
-import { Welcome } from './welcome/Welcome';
-import { Layout } from './tools/Layout';
-import { RoomView } from './start/Room';
-import { Room } from './start/Stuffs';
+import RoomFeed from './rooms/RoomFeed';
+import Welcome from './welcome/Welcome';
+import Layout from './layout/Layout';
+import Room from './start/Room';
+import Stuffs from './start/Stuffs';
 import Schema from './graphql-client/Root';
 
 
@@ -19,27 +19,28 @@ const Graph = _ =>
     fetcher={ graphqlParams => {
       //console.log(graphqlParams);
       return graphql(
-        Schema, 
+        Schema,
         graphqlParams.query, 
-        {}, 
+        {},
         graphqlParams.variables, 
         graphqlParams.operationName
-      ) } 
+      ) }
     }
     schema={Schema}
   />
-
-const { Router, Route, Link, hashHistory } = ReactRouter;
 
 
 ReactDOM.render(
     <Router history={hashHistory}>
       <Route path="/graphiql" component={Graph} />
       <Route component={Layout}>
-        <Route path="/feed" component={RoomFeed} />
-        <Route path="/room" component={RoomView}/>
-        <Route path="/stuffs" component={Room}/>
         <Route path="/" component={Welcome}/>
+        <Route path="room" component={(prop) => {console.log(prop); return <span/> }} />
+        <Route path="feed" component={RoomFeed} />
+        <Route path="start">
+          <Route path="room" component={Room}/>
+          <Route path="stuffs" component={Room}/>
+        </Route>
       </Route>
     </Router>,
     document.getElementById("app")

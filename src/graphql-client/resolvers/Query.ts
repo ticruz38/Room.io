@@ -13,5 +13,12 @@ export default {
     },
     user(root, args, context) {
         return db.user.then( userDb => userDb.get(args.id) );
+    },
+    login(root, args, context) {
+        return db.user.then( userDb =>
+            userDb.get(args.name).then( user => 
+                user.password === args.password ? user : null 
+            )
+        );
     }
 }
