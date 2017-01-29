@@ -7,7 +7,7 @@ import Loader from '../graphql-client/Loader';
 import { nonEmpty } from '../form/Constraint';
 import Form from '../form/Form';
 import Input from '../form/Input';
-import { layoutState as layout } from '../tools/Layout';
+import { layoutState as layout } from '../layout/Layout';
 
 const Guid = require('guid');
 
@@ -45,7 +45,7 @@ type StuffProps = {
 
 /** Stuff input component */
 @observer
-export class Stuff extends React.Component< StuffProps, StuffState > {
+export default class Stuff extends React.Component< StuffProps, StuffState > {
 
     constructor(props: StuffProps) {
         super(props);

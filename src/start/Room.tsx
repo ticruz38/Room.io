@@ -6,7 +6,7 @@ import { observable, autorun, extendObservable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import { nonEmpty, email, atLeast, atMost } from '../form/Constraint';
 import { Textarea, Input, Field } from '../form';
-import { layoutState as layout } from '../tools/Layout';
+import { layoutState as layout } from '../layout/Layout';
 import Loader from '../graphql-client/Loader';
 //import ipfs from '../IpfsStore';
 import db from '../IpfsApiStore';
@@ -58,7 +58,7 @@ export class RoomState extends Loader {
 export const roomState = new RoomState( RoomDocument );
 
 @observer
-export class RoomView extends React.Component< any, {isValid: boolean} > {
+export default class RoomView extends React.Component< any, {isValid: boolean} > {
 
     @computed get isValid() {
         return roomState.name.isValid &&

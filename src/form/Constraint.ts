@@ -60,3 +60,14 @@ export function password() {
         return { isValid: true, error: ''};
     }
 }
+
+export function sameAs(valueToCompare: string) {
+    return function test(value: string) {
+        if( value === undefined) return {isValid: false, error: '' };
+        if( valueToCompare !== value ) return {
+            isValid: false,
+            error: 'Both Password are\'nt equal'
+        }
+        return { isValid: true, error: '' };
+    }
+}

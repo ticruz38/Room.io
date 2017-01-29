@@ -4,8 +4,8 @@ import { observer } from 'mobx-react';
 import { execute } from 'graphql';
 
 import Loader from '../graphql-client/Loader';
-import { layoutState as layout } from '../tools/Layout';
-import { StuffState, Stuff } from './Stuff';
+import { layoutState as layout } from '../layout/Layout';
+import Stuff, { StuffState } from './Stuff';
 
 const Guid = require('guid');
 
@@ -37,7 +37,7 @@ const stuffsState = new StuffsState( StuffsDocument );
 
 /** Room input component */
 @observer
-export class Room extends React.Component< RoomProps, any > {
+export default class Stuffs extends React.Component< RoomProps, any > {
     constructor(props: RoomProps) {
         super(props);
     }

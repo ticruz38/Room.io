@@ -7,7 +7,7 @@ import { observer }                           from 'mobx-react';
 import graphStore                             from '../GraphStore';
 import uiStore                                from '../UiStore';
 import FullScreenRoom                         from './FullScreenRoom';
-import { layoutState }                        from '../tools/Layout';
+import { layoutState }                        from '../layout/Layout';
 import Loader                                 from '../graphql-client/Loader';
 
 const RoomDocument = require('./RoomFeed.gql');
@@ -56,7 +56,7 @@ export class RoomFeedState extends Loader {
 export const roomFeedState = new RoomFeedState( RoomDocument, 'RoomsQuery' );
 
 @observer
-export class RoomFeed extends React.Component< RoomFeedProps, RoomFeedState > {
+export default class RoomFeed extends React.Component< RoomFeedProps, RoomFeedState > {
 
   componentWillMount() {
     layoutState.title = 'Pick a Room you like';

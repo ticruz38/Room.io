@@ -5,7 +5,7 @@ import {computed, observable, toJS, autorun} from 'mobx'
 
 import { observer } from 'mobx-react';
 
-export class Welcome extends React.Component< any, any > {
+export default class Welcome extends React.Component< any, any > {
     render() {
         return (
             <div>
