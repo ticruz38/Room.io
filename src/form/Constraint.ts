@@ -61,10 +61,10 @@ export function password() {
     }
 }
 
-export function sameAs(valueToCompare: string) {
-    return function test(value: string) {
-        if( value === undefined) return {isValid: false, error: '' };
-        if( valueToCompare !== value ) return {
+export function sameAs( fieldToCompare: Field ) {
+    return function test( value: string ) {
+        if( value === undefined ) return { isValid: false, error: '' };
+        if( fieldToCompare.value !== value ) return {
             isValid: false,
             error: 'Both Password are\'nt equal'
         }

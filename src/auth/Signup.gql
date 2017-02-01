@@ -1,6 +1,7 @@
-mutation Signup($User: UserInput) {
-    addUser(user: $User) {
+mutation Signup($User: UserSignup!) {
+    signup(user: $User) {
         _id
         name
+        email
     }
 }
