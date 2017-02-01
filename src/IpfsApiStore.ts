@@ -18,7 +18,7 @@ class IpfsStore {
         this.startOrbitDb();
         this.createDb('room');
         this.createDb('stuff');
-        this.createDb('userDb');
+        this.createDb('user', 'email');
     }
 
     // roomLoaded number between 0 and 1
@@ -27,9 +27,9 @@ class IpfsStore {
     // stuffLoaded number between 0 and 1
     stuffLoading: number = 0;
 
-    createDb(dbName: string) {
+    createDb(dbName: string, indexBy?: string ) {
         this[dbName] = new Promise( (resolve, reject) => {
-            const db = this.orbitdb.docstore(dbName);
+            const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
             db.events.on('ready', _ => resolve(db));
         } );
     }
