@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
+import * as guid from 'node-uuid';
 import { Link } from 'react-router';
 
 import { observable, autorun, extendObservable, computed } from 'mobx';
@@ -12,11 +13,10 @@ import Loader from '../graphql-client/Loader';
 import db from '../IpfsApiStore';
 
 const RoomDocument = require('./Room.gql');
-const Guid = require('guid');
 
 
 export class RoomState extends Loader {
-    _id: string = Guid.raw();
+    _id: string = guid.v1();
 
     @observable name: Field = {
         value: undefined,
