@@ -10,7 +10,6 @@ import { layoutState } from '../layout/Layout';
 
 
 class SignupState {
-
   @observable _id: String;
 
   @observable name: Field = {
@@ -36,9 +35,9 @@ export const signupState = new SignupState();
 
 
 
-
+@observer
 export default class Signup extends React.Component< any, SignupState > {
-    isValid(): boolean {
+    @computed get isValid(): boolean {
         return (
             signupState.name.isValid &&
             signupState.password.isValid &&
@@ -47,6 +46,7 @@ export default class Signup extends React.Component< any, SignupState > {
     }
 
     render() {
+        console.log(this.isValid);
         return (
         <div className='signup'>
             <Input
@@ -67,7 +67,9 @@ export default class Signup extends React.Component< any, SignupState > {
             <div className="question">
                 <button onClick={ _ => layoutState.modal = <Login/> }>Already a member ?</button>
             </div>
-            { this.isValid ? <button>Signup</button> : <span/> }
+            <div className="action-button">
+                { this.isValid ? <button>Signup</button> : <span/> }
+            </div>
         </div>
         );
     }

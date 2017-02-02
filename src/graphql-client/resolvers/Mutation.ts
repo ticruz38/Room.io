@@ -36,9 +36,8 @@ export default {
             return stuff
         } ) );
     },
-    // User Mutation
     signup(root, { user }, context) {
-        // TODO index user database by email and not by id to avoid dupplicate usermail
+        // TODO index user database by email and not by id to avoid dupplicate user email
         return db.user.then(dbUser => dbUser.put( user ).then( hash => {
             console.log('successfully added user', hash);
             return user;

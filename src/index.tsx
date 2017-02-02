@@ -1,12 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from "react-dom";
 import {graphql} from 'graphql';
+import { observer } from 'mobx-react';
 
 import { Router, Route, Link, hashHistory } from 'react-router';
 
 import RoomFeed from './rooms/RoomFeed';
 import Welcome from './welcome/Welcome';
-import Layout from './layout/Layout';
+import Layout, { layoutState } from './layout/Layout';
 import Room from './start/Room';
 import Stuffs from './start/Stuffs';
 import Schema from './graphql-client/Root';
@@ -29,20 +30,33 @@ const Graph = _ =>
     schema={Schema}
   />
 
+@observer
+class RoomIO extends React.Component< any, any > {
+  get isLogged(): React.ReactElement<any> {
+    if(!layoutState.isLogged) return;
+    return (
+      <Route path="start">
+        <Route path="room" component={Room}/>
+        <Route path="stuffs" component={Room}/>
+      </Route>
+    );
+  }
+  render() {
+    return (
+      <Router history={hashHistory}>
+        <Route path="/graphiql" component={Graph}/>
+        <Route component={Layout}>
+          <Route path="/" component={Welcome}/>
+          <Route path="feed" component={RoomFeed} />
+          { this.isLogged }
+        </Route>
+      </Router>
+    );
+  }
+}
 
 ReactDOM.render(
-    <Router history={hashHistory}>
-      <Route path="/graphiql" component={Graph} />
-      <Route component={Layout}>
-        <Route path="/" component={Welcome}/>
-        <Route path="room" component={(prop) => {console.log(prop); return <span/> }} />
-        <Route path="feed" component={RoomFeed} />
-        <Route path="start">
-          <Route path="room" component={Room}/>
-          <Route path="stuffs" component={Room}/>
-        </Route>
-      </Route>
-    </Router>,
+    <RoomIO/>,
     document.getElementById("app")
 );
 

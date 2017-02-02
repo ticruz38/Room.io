@@ -14,7 +14,6 @@ const Document = require('./Login.gql');
 
 
 class LoginState extends Loader {
-
   @observable _id: String;
 
   @observable name: Field = {
