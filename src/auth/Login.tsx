@@ -13,7 +13,7 @@ const Document = require('./Login.gql');
 
 
 
-class LoginState extends Loader {
+class LoginState {
 
   @observable _id: String;
 
@@ -28,12 +28,15 @@ class LoginState extends Loader {
     constraints: [password()],
     isValid: false
   };
+
+  login() {
+      Loader.execute(Document, 'Login', )
+  }
 }
 
-export const loginState = new LoginState(Document);
+export const loginState = new LoginState();
 
 export default class Login extends React.Component< any, LoginState > {
-
   render() {
     return (
       <div className='login'>

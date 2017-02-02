@@ -21,13 +21,15 @@ export class LayoutState {
   @observable backRoute: string;
   @observable toolBar: React.ReactElement< any >;
   @observable title: string;
-
-  @computed get isLogged(): boolean {
-    return !!loginState._id || !!signupState._id
-  }
+  @observable isLogged: boolean = !!sessionStorage.getItem('user');
 }
 
+
+
 export const layoutState = new LayoutState();
+
+
+
 
 @observer
 export default class Layout extends React.Component<any, any> {

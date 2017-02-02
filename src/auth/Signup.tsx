@@ -12,7 +12,7 @@ const Document = require('./Signup.gql');
 
 
 
-class SignupState extends Loader {
+class SignupState {
 
     @observable _id: String;
 
@@ -40,6 +40,13 @@ class SignupState extends Loader {
         isValid: false
     };
 
+    signup() {
+        Loader.execute( Document, 'Signup', this.format() ).then( result => {
+            sessionStorage.setItem( 'user', JSON.stringify(result.data) )
+            layoutState.isLogged = true;
+        } );
+    }
+
     format() {
         return {
             "User": {
@@ -52,7 +59,7 @@ class SignupState extends Loader {
     }
 }
 
-export const signupState = new SignupState(Document);
+export const signupState = new SignupState();
 
 
 
@@ -96,7 +103,7 @@ export default class Signup extends React.Component<any, SignupState> {
                 <div className="action-button">
                     {
                         this.isValid ? 
-                        <button onClick={_ => signupState.execute('Signup', signupState.format(), sessionStorage)}>
+                        <button onClick={ _ => signupState.signup() }>
                             Signup
                         </button> : 
                         null

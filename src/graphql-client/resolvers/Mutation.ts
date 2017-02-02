@@ -37,7 +37,7 @@ export default {
     },
     // User Mutation
     signup(root, { user }, context: Storage) {
-        console.log('signup', context);
+        debugger;
         return db.user.then(dbUser => {
             return dbUser.put( user ).then( hash => {
                 if( context ) context.setItem( 'user', JSON.stringify( user ) );
@@ -48,7 +48,7 @@ export default {
     },
     // Update User
     updateUser(root, { user }, context) {
-        return db.user.then(dbUser => dbUser.put( user ).then( hash => {
+        return db.user.then( dbUser => dbUser.put( user ).then( hash => {
             console.log('successfully updated user', hash);
             return user;
         } ) );
