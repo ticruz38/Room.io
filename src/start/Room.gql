@@ -1,0 +1,30 @@
+query RoomsQuery {
+    rooms {
+        name
+        description
+        picture
+    }
+}
+
+mutation AddRoom($room: RoomInput!) {
+    addRoom(room: $room) {
+        _id
+        name
+        description
+    }
+}
+
+mutation DeleteRoom($id: String!) {
+    deleteRoom(id: $id) {
+        name
+    }
+}
+
+mutation UpdateRoom($room: RoomInput!) {
+    updateRoom(room: $room) {
+        _id
+        name
+        description
+    }
+}
+

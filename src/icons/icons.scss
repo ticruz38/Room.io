@@ -1,0 +1,21 @@
+/* The animation code */
+@keyframes rotate {
+    from {
+        transform: rotateZ('0');
+    }
+    to {
+        transform: rotateZ(360deg)
+    }
+}
+
+.spinner-wrapper {
+    margin: auto;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    .spinner {
+        animation-name: rotate;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+    }
+}

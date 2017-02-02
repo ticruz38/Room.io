@@ -1,0 +1,14 @@
+.signup {
+    padding: 1em;
+    border: 1px solid beige;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    .question {
+        text-align: center;
+    }
+    .action-button {
+        display: flex;
+        padding: 1em;
+        justify-content: flex-end;
+    }
+}

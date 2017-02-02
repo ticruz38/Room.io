@@ -22,7 +22,7 @@ module.exports = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".json"]
     },
 
     module: {
@@ -30,6 +30,7 @@ module.exports = {
             // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
             {
                 test: /\.tsx?$/,
+                exclude: /node_modules/,
                 loader: "ts-loader"
             }, {
                 test: /\.scss|sass|css$/,
@@ -37,13 +38,19 @@ module.exports = {
             }, {
                 test: /\.(jpe?g|png|gif|svg|eot|woff|ttf)$/i,
                 loader: 'file'
+            }, {
+                test: /\.(graphql|gql)$/,
+                exclude: /node_modules/,
+                loader: 'graphql-tag/loader'
             }
         ],
 
         preLoaders: [
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+            { test: /\.json$/, loader: 'json'},
             {
                 test: /\.js$/,
+                exclude: /node_modules/,
                 loader: "source-map-loader"
             }
         ]

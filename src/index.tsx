@@ -1,20 +1,64 @@
 import * as React from 'react';
 import * as ReactDOM from "react-dom";
+import {graphql} from 'graphql';
+import { observer } from 'mobx-react';
 
-import * as ReactRouter from 'react-router';
+import { Router, Route, Link, hashHistory } from 'react-router';
 
-import { RestaurantsFeed } from './restaurants/restaurantsFeed';
-import { Layout } from '../crankshaft/layout';
+import RoomFeed from './rooms/RoomFeed';
+import Welcome from './welcome/Welcome';
+import Layout, { layoutState } from './layout/Layout';
+import Room from './start/Room';
+import Stuffs from './start/Stuffs';
+import Schema from './graphql-client/Root';
 
-const { Router, Route, Link, browserHistory } = ReactRouter;
+
+const Graphiql = require('graphiql');
+
+const Graph = _ =>
+  <Graphiql
+    fetcher={ graphqlParams => {
+      //console.log(graphqlParams);
+      return graphql(
+        Schema,
+        graphqlParams.query, 
+        {},
+        graphqlParams.variables, 
+        graphqlParams.operationName
+      ) }
+    }
+    schema={Schema}
+  />
+
+@observer
+class RoomIO extends React.Component< any, any > {
+  get isLogged(): React.ReactElement<any> {
+    if(!layoutState.isLogged) return;
+    return (
+      <Route path="start">
+        <Route path="room" component={Room}/>
+        <Route path="stuffs" component={Room}/>
+      </Route>
+    );
+  }
+  render() {
+    return (
+      <Router history={hashHistory}>
+        <Route path="/graphiql" component={Graph}/>
+        <Route component={Layout}>
+          <Route path="/" component={Welcome}/>
+          <Route path="feed" component={RoomFeed} />
+          { this.isLogged }
+        </Route>
+      </Router>
+    );
+  }
+}
 
 ReactDOM.render(
-    <Router history={browserHistory}>
-      <Route component={Layout} >
-        <Route path="/" component={RestaurantsFeed}/>
-      </Route>
-    </Router>,
+    <RoomIO/>,
     document.getElementById("app")
 );
 
 import './index.scss';
+import '../node_modules/graphiql/graphiql.css'

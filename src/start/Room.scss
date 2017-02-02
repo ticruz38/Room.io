@@ -1,0 +1,44 @@
+.room {
+    padding: 2em;
+    label {
+        color: white;
+    }
+    form {
+        max-width: 22em;
+        margin: auto;
+    }
+    .dragdrop {
+        position: absolute;
+        bottom: 0;
+        font-family: monospace;
+        font-size: 1.3em;
+        background: rgba(255, 215, 0, 0.5);
+        padding: 5px;
+        border-radius: 5px;
+    }
+    .intro-layer {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        filter: blur(9px);
+        z-index: -1;
+        background-image: url('../../public/messy_room.jpg');
+        background-size: cover;
+    }
+    .button {
+        float: right;
+        padding: 0.5em;
+        border-radius: 5px;
+        background: gold;
+        border: none;
+        box-shadow: 0 0 2px black;
+        font-size: 1em;
+        &.disabled {
+            color: grey;
+            color: lightyellow;
+            box-shadow: none;
+        }
+    }
+}

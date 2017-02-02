@@ -1,0 +1,23 @@
+div.rooms-grid {
+  display: flex;
+  justify-content: center;
+  >div.column {
+    border-radius: 5px;
+    text-align: center;
+    padding: 1em;
+    div.room-item {
+      &:hover {
+        box-shadow: 0 1px 1px black;
+        border-radius: 5px;
+      }
+      h2, p {
+        margin: 0 0 5px;
+      }
+      img {
+        cursor: zoom-in;
+        width: 100%;
+        border-radius: 5px;
+      }
+    }
+  }
+}
