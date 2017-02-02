@@ -1,15 +1,8 @@
-# Room.io
+# Room.io ®
 
+![Messy RoomMate](https://assets.rbl.ms/2357400/980x.jpg)
 
-## RoomFeed Page
-- Make a fullscreen with Header to order, chat with owner and navigate through stuffs
-- Make a search select to filter room by tag
+----------
+Room.io concept is to let **Roomer** offer any goods or services in a decentralized way.
 
-## Profile Page 
-- Set profile picture, email, rooms, manage your ether wallet etc...
-
-## DashBoard Page
-- make a subtoolbar with all the room the owner have and be able to switch between them by clicking on it
-- for each room the owner have, set a dashboard page to manage orders coming to your room
-- make another page to manage stuffs attach to the room
-
+It uses IPFS as its DataStorage and Ethereum for authentication, transaction and Roomer/Customer contract related logic.
