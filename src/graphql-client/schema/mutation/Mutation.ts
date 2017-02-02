@@ -12,7 +12,7 @@ const Mutation = `
         deleteRoom(id: String!): Room
         addStuff(stuff: StuffInput!): Stuff
         updateStuff(stuff: StuffInput!): Stuff
-        signup(user: UserInput!): User # has to be handled via ethereum for security
+        signup(user: UserSignup!): User # has to be handled via ethereum for security
         updateUser(user: UserInput!): User # has to be handled via ethereum for security
     }
 `;

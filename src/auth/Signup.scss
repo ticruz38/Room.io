@@ -6,4 +6,9 @@
     .question {
         text-align: center;
     }
+    .action-button {
+        display: flex;
+        padding: 1em;
+        justify-content: flex-end;
+    }
 }

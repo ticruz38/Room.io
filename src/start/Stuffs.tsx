@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as guid from 'node-uuid';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { execute } from 'graphql';
@@ -7,7 +8,6 @@ import Loader from '../graphql-client/Loader';
 import { layoutState as layout } from '../layout/Layout';
 import Stuff, { StuffState } from './Stuff';
 
-const Guid = require('guid');
 
 const StuffsDocument = require('./Stuffs.gql');
 
@@ -15,7 +15,7 @@ type RoomProps = {
 }
 
 class StuffsState extends Loader {
-    _id: string = Guid.raw();
+    _id: string = guid.v1();
     name: string;
     description: string;
 

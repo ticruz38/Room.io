@@ -1,5 +1,5 @@
-query Login($id: String) {
-    addUser(id: $id) {
+query Login( $name: String, $password: String ) {
+    login(name: $name, password: $password) {
         _id
         name
     }

@@ -4,6 +4,21 @@ import Schema from './Root';
 
 export default class Loader {
 
+    static execute(Document: DocumentNode, operationName: string, variables?: {[jey: string]: any }, contextValue?, rootValue?): Promise< ExecutionResult > {
+        const errors = validate(Schema, Document);
+        console.log("execute", operationName, errors);
+        if( errors.length ) return Promise.reject(errors);
+        return execute(
+            Schema,
+            Document,
+            rootValue,
+            contextValue,
+            variables,
+            operationName
+        );
+    }
+
+
     graphQlErrors: string[];
 
     constructor(public document: DocumentNode, initialOperation?: string, variables?: {[key: string]: any}, contextValue?) {

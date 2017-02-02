@@ -1,6 +1,5 @@
 import db from '../../IpfsApiStore';
-
-const Guid = require('guid');
+import * as graphql from 'graphql';
 
 export default {
     addRoom( root, {room}, context ) {
@@ -36,16 +35,19 @@ export default {
             return stuff
         } ) );
     },
-    signup(root, { user }, context) {
-        // TODO index user database by email and not by id to avoid dupplicate user email
-        return db.user.then(dbUser => dbUser.put( user ).then( hash => {
-            console.log('successfully added user', hash);
-            return user;
-        } ) );
+    // User Mutation
+    signup(root, { user }, context: Storage) {
+        return db.user.then(dbUser => {
+            return dbUser.put( user ).then( hash => {
+                if( context ) context.setItem( 'user', JSON.stringify( user ) );
+                console.log( 'correctly logged in as' + user.name );
+                return user;
+            } );
+        } );
     },
     // Update User
     updateUser(root, { user }, context) {
-        return db.user.then(dbUser => dbUser.put( user ).then( hash => {
+        return db.user.then( dbUser => dbUser.put( user ).then( hash => {
             console.log('successfully updated user', hash);
             return user;
         } ) );

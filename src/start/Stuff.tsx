@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
+import * as guid from 'node-uuid';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
@@ -8,8 +9,6 @@ import { nonEmpty } from '../form/Constraint';
 import Form from '../form/Form';
 import Input from '../form/Input';
 import { layoutState as layout } from '../layout/Layout';
-
-const Guid = require('guid');
 
 
 
@@ -22,7 +21,7 @@ export class StuffState {
     @observable price ?: number;
 
     constructor ( roomId: string ) {
-        this._id = Guid.raw();
+        this._id = guid.v1();
         this.roomId = roomId
     }
 
