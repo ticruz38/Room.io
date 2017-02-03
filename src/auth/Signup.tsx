@@ -110,9 +110,6 @@ export default class Signup extends React.Component<any, SignupState> {
                         null
                     }
                 </div>
-                <div className="action-button">
-                    { this.isValid ? <button>Signup</button> : <span/> }
-                </div>
             </div>
         );
     }
