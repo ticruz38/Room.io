@@ -22,6 +22,11 @@ export class LayoutState {
   @observable toolBar: React.ReactElement< any >;
   @observable title: string;
   @observable isLogged: boolean = !!sessionStorage.getItem('user');
+
+  get user(): ObjectLitteral {
+    if(!this.isLogged) return;
+    return JSON.parse(sessionStorage.getItem('user'))
+  }
 }
 
 
@@ -74,7 +79,7 @@ export default class Layout extends React.Component<any, any> {
               <div className='auth'>
                 {
                   layoutState.isLogged ?
-                  <span/> :
+                  <button></button> :
                   <button className='ambrosia-button'  
                     onClick={ _ => { layoutState.modal = <Login/> } }
                   >

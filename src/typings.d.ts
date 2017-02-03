@@ -3,3 +3,5 @@ declare type Field = {
     constraints: Function[];
     isValid: boolean;
 }
+
+declare type ObjectLitteral = {[prop: string]: string}
