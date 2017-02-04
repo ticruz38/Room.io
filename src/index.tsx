@@ -30,30 +30,19 @@ const Graph = _ =>
     schema={Schema}
   />
 
-@observer
-class RoomIO extends React.Component< any, any > {
-  get isLogged(): React.ReactElement<any> {
-    if(!layoutState.isLogged) return;
-    return (
+const RoomIO = () => (
+  <Router history={hashHistory}>
+    <Route path="/graphiql" component={Graph}/>
+    <Route component={ Layout }>
+      <Route path="/" component={ Welcome }/>
+      <Route path="feed" component={RoomFeed} />
       <Route path="start">
         <Route path="room" component={Room}/>
         <Route path="stuffs" component={Room}/>
       </Route>
-    );
-  }
-  render() {
-    return (
-      <Router history={hashHistory}>
-        <Route path="/graphiql" component={Graph}/>
-        <Route component={Layout}>
-          <Route path="/" component={Welcome}/>
-          <Route path="feed" component={RoomFeed} />
-          { this.isLogged }
-        </Route>
-      </Router>
-    );
-  }
-}
+    </Route>
+  </Router>
+);
 
 ReactDOM.render(
     <RoomIO/>,

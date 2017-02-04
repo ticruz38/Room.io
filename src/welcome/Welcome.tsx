@@ -35,7 +35,7 @@ export default class Welcome extends React.Component< any, any > {
                 <div className='pick'>
                     {
                         layoutState.isLogged ?
-                        <Link to="room" className='box'>
+                        <Link to="start/room" className='box'>
                             <span>Become a caddyer</span>
                         </Link> :
                         <a className="box" onClick={ _ => layoutState.modal = <Login/> }>

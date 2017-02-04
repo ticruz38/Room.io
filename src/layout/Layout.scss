@@ -23,7 +23,6 @@
       float: left;
       cursor: pointer;
       margin: 0 10px;
-      font-size: 30px;
     }
 
     .title {
@@ -42,22 +41,12 @@
       float: left;
       font-family: sans-serif;
       display: flex;
-      background: lightyellow;
       margin: 0 5px;
-      border-radius: 3px;
-      text-decoration: none;
-      p {
-        margin: 0;
-      }
     }
 
     .auth {
-      i {
-        font-size: 30px;
-      }
       display: flex;
       float: right;
-      height: 30px;
     }
     button, a {
       border-radius: 3px;

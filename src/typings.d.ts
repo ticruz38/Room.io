@@ -5,3 +5,20 @@ declare type Field = {
 }
 
 declare type ObjectLitteral = {[prop: string]: string}
+
+declare interface User {
+    _id: String
+    name: String
+    email?: String
+    password?: String
+    rooms?: String[]
+}
+
+declare interface Stuff {
+    _id?: String
+    roomId: String
+    name: String
+    description?: String
+    picture?: String
+    price?: Number
+}

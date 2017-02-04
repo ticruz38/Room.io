@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 import { observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 
-import Login, { loginState } from '../auth/Login';
-import { signupState } from '../auth/Signup';
+import { Dropdown } from '../components';
+import Login from '../auth/Login';
 
 interface LayoutProps {
   children: React.Component< any, any >,
@@ -25,7 +25,7 @@ export class LayoutState {
 
   get user(): ObjectLitteral {
     if( !this.isLogged ) return;
-    return JSON.parse( sessionStorage.getItem('user') )
+    return JSON.parse( sessionStorage.getItem('user') ).signup
   }
 }
 
@@ -79,18 +79,29 @@ export default class Layout extends React.Component<any, any> {
               <div className='auth'>
                 {
                   layoutState.isLogged ?
-                  <button></button> :
-                  <button className='ambrosia-button'  
+                  <Dropdown
+                    align='right'
+                    button={ <a>{layoutState.user["name"]}</a> }
+                    list={ [
+                      <Link to="profile">Profile</Link>,
+                      <Link to="preferences">Preferences</Link>,
+                      <a>
+                        <i className="material-icons" 
+                          onClick={ _ => { layoutState.isLogged = false } }>
+                          exit_to_app
+                        </i></a>
+                    ] }
+                  /> :
+                  <button className='ambrosia-button'
                     onClick={ _ => { layoutState.modal = <Login/> } }
                   >
-                    <i className="fa fa-sign-in" />
-                    <span>Login</span>
+                    <i className="material-icons">input</i>
                   </button>
                 }
               </div>
             </div>
           </header>
-        { this.props.children }
+        { React.cloneElement( this.props.children, { logged: layoutState.isLogged } ) } }
         </div>
         <Modal>
           { layoutState.modal }

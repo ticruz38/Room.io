@@ -42,6 +42,7 @@ class SignupState {
 
     signup() {
         Loader.execute( Document, 'Signup', this.format() ).then( result => {
+            console.log(result.data);
             sessionStorage.setItem( 'user', JSON.stringify(result.data) )
             layoutState.isLogged = true;
         } );
