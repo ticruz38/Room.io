@@ -25,7 +25,7 @@ export class LayoutState {
 
   get user(): ObjectLitteral {
     if( !this.isLogged ) return;
-    return JSON.parse( sessionStorage.getItem('user') ).signup
+    return JSON.parse( sessionStorage.getItem('user') )
   }
 }
 
@@ -101,7 +101,7 @@ export default class Layout extends React.Component<any, any> {
               </div>
             </div>
           </header>
-        { React.cloneElement( this.props.children, { logged: layoutState.isLogged } ) } }
+          { this.props.children }
         </div>
         <Modal>
           { layoutState.modal }

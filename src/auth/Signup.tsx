@@ -41,14 +41,13 @@ class SignupState {
     };
 
     signup() {
-        Loader.execute( Document, 'Signup', this.format() ).then( result => {
-            console.log(result.data);
-            sessionStorage.setItem( 'user', JSON.stringify(result.data) )
+        Loader.execute( Document, 'Signup', this.format ).then( result => {
+            sessionStorage.setItem( 'user', JSON.stringify(result.data['signup']) )
             layoutState.isLogged = true;
         } );
     }
 
-    format() {
+    get format(): Object {
         return {
             "User": {
                 _id: this._id || guid.v1(),
