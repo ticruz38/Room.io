@@ -45,10 +45,10 @@ export class RoomState extends Loader {
         return {
             room : {
                 _id: this._id,
-                name: this.name,
-                description: this.description,
-                email: this.email,
-                phoneNumber: this.phoneNumber,
+                name: this.name.value,
+                description: this.description.value,
+                email: this.email.value,
+                phoneNumber: this.phoneNumber.value,
                 picture: this.picture
             }
         }
@@ -64,7 +64,7 @@ export default class RoomView extends React.Component< any, {isValid: boolean} >
         return roomState.name.isValid &&
         roomState.description.isValid &&
         roomState.email.isValid &&
-        roomState.phoneNumber.isValid
+        roomState.phoneNumber.isValid;
     }
 
     componentWillMount() {
