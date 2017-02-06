@@ -1,0 +1,19 @@
+.dropdown {
+    display: flex;
+    flex-wrap: wrap;
+    .dropdown-list {
+        outline: none;
+        float: right;
+        position: absolute;
+        margin-top: 40px;
+        >* {
+            display: flex;
+            margin: 2px 0;
+            >* {
+                &:hover {
+                    box-shadow: 0 0 1px black;
+                }
+            }
+        }
+    }
+}

@@ -6,7 +6,7 @@ const Query = `
         room(id: String): Room
         rooms: [Room]
         user(id: String): User
-        login(name: String, password: String): User
+        login(email: String, password: String): User
     }
 `
 export default () => [Room, User, Query];

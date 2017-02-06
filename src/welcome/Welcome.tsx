@@ -1,9 +1,13 @@
 import * as React   from "react";
 import {Link}       from "react-router";
-
 import {computed, observable, toJS, autorun} from 'mobx'
-
 import { observer } from 'mobx-react';
+
+import { layoutState } from '../layout/Layout';
+import Login from '../auth/Login';
+
+
+
 
 export default class Welcome extends React.Component< any, any > {
     render() {
@@ -29,11 +33,17 @@ export default class Welcome extends React.Component< any, any > {
                     </p>
                 </div>
                 <div className='pick'>
-                    <Link to="room" className='box'>
-                        <span>Become a caddyer</span>
-                    </Link>
+                    {
+                        layoutState.isLogged ?
+                        <Link to="start/room" className='box'>
+                            <span>Become a caddyer</span>
+                        </Link> :
+                        <a className="box" onClick={ _ => layoutState.modal = <Login/> }>
+                            <span>Become a caddyer</span>
+                        </a>
+                    }
                     <Link to="feed" className='box'>
-                        <span>Look Around</span>
+                        <span>Look around</span>
                     </Link>
                 </div>
             </div>

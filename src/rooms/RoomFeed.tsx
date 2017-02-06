@@ -4,7 +4,6 @@ import {computed, observable, toJS, autorun}  from 'mobx'
 
 import { observer }                           from 'mobx-react';
 
-import graphStore                             from '../GraphStore';
 import uiStore                                from '../UiStore';
 import FullScreenRoom                         from './FullScreenRoom';
 import { layoutState }                        from '../layout/Layout';

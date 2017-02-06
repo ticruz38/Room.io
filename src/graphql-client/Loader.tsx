@@ -6,7 +6,7 @@ export default class Loader {
 
     static execute(Document: DocumentNode, operationName: string, variables?: {[jey: string]: any }, contextValue?, rootValue?): Promise< ExecutionResult > {
         const errors = validate(Schema, Document);
-        console.log("execute", operationName, errors);
+        console.log("execute", operationName, errors, variables);
         if( errors.length ) return Promise.reject(errors);
         return execute(
             Schema,

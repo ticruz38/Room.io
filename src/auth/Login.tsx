@@ -4,63 +4,95 @@ import { observer } from 'mobx-react';
 
 import Signup from './Signup';
 import { Input, Field } from '../form';
-import { password, nonEmpty } from '../form/Constraint';
+import { password, email } from '../form/Constraint';
 import { layoutState } from '../layout/Layout';
 import Loader from '../graphql-client/Loader';
+import { loadApp } from '../';
 
 const Document = require('./Login.gql');
 
 
 class LoginState {
 
-    @observable _id: String;
+  @observable _id: String;
 
-    @observable name: Field = {
-        value: undefined,
-        constraints: [nonEmpty()],
-        isValid: false
+  @observable email: Field = {
+    value: undefined,
+    constraints: [email()],
+    isValid: false
+  };
+
+  @observable password: Field = {
+    value: undefined,
+    constraints: [password()],
+    isValid: false
     };
 
-    @observable password: Field = {
-        value: undefined,
-        constraints: [password()],
-        isValid: false
-    };
+  @observable errors: String[] = []
 
-    login() {
-        Loader.execute(Document, 'Login', )
+  get format() {
+    return {
+      password: this.password.value,
+      email: this.email.value
     }
+  }
 
-    format() {
-        return {
-            "name": this.name.value,
-            "password": this.password.value
-        }
-    }
+  login() {
+    Loader.execute(Document, 'Login', this.format).then(result => {
+      if (result.data['login']) {
+        sessionStorage.setItem("user", JSON.stringify(result.data['login']))
+        layoutState.isLogged = true
+        layoutState.modal = false;
+        loadApp();
+      }
+      if (result.errors) {
+        loginState.errors = result.errors.map(e => e.message);
+      }
+    });
+  }
 }
 
 export const loginState = new LoginState();
 
+@observer
 export default class Login extends React.Component<any, LoginState> {
-    render() {
-        return (
-            <div className='login'>
-                <Input
-                    label='Name/Pseudo'
-                    field={loginState.name}
-                    type='text'
-                />
-                <Input
-                    label='Password'
-                    field={loginState.password}
-                    type='text'
-                />
-                <div className="question">
-                    <button onClick={_ => layoutState.modal = <Signup />}>Not a member yet ?</button>
-                </div>
-            </div>
-        );
-    }
+  @computed get isValid(): boolean {
+    return (
+      loginState.email.isValid &&
+      loginState.password.isValid
+    );
+  }
+  render() {
+    return (
+      <div className='login'>
+        <Input
+          label='Email'
+          field={loginState.email}
+          type='text'
+        />
+        <Input
+          label='Password'
+          field={loginState.password}
+          type='text'
+        />
+        <div className="question">
+          <button onClick={_ => layoutState.modal = <Signup />}>Not a member yet ?</button>
+        </div>
+        <div className="errors">
+          {loginState.errors.map(e => <div>{e}</div>)}
+        </div>
+        <div className="action-button">
+          {
+            this.isValid ?
+              <button onClick={_ => loginState.login()}>
+                Login
+              </button> :
+              null
+          }
+        </div>
+      </div>
+    );
+  }
 }
 
 import './Login.scss';
