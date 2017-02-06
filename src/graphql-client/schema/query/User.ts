@@ -1,9 +1,13 @@
-export default `
+import Room from './Room';
+
+const User =  `
     type User {
         _id: String!
         name: String
         email: String!
         password: String! #hash256 password
-        rooms: [String] #user rooms listed by Id
+        rooms: [Room] #user rooms listed by Id
     }
 `;
+
+export default () => [User, Room];

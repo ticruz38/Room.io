@@ -4,6 +4,7 @@ import StuffInput from './StuffInput';
 const RoomInput = `
     input RoomInput {
         _id: String!
+        userId: String!
         name: String! # Room Name
         description: String # Room Description
         email: String,
