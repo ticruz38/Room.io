@@ -1,0 +1,14 @@
+.profile {
+  margin: 4vh 4vw;
+  .profile-header {
+    display: flex;
+    img {
+      flex-grow: 1;
+      max-width: 20em;
+      max-height: 20em;
+    }
+    .user-information {
+      flex-grow: 2;
+    }
+  }
+}

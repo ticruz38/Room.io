@@ -3,6 +3,7 @@ import Stuff from './Stuff';
 const Room = `
     type Room {
         _id: String!
+        userId: String!
         name: String!
         description: String
         email: String

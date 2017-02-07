@@ -3,6 +3,7 @@ import * as graphql from 'graphql';
 
 export default {
     addRoom( root, {room}, context ) {
+        console.log("adding room");
         db.room.then(dbroom => dbroom.put( room ).then( hash => {
             console.log('successfully added room', hash)
             //console.log('try to get room by id', db.room.get('coucou'))
@@ -11,10 +12,11 @@ export default {
         return room;
     },
     deleteRoom(root, {id}, context ) {
-        console.log('deletemutation', id);
+        console.log('deleting room', id);
         db.room.then( dbroom => dbroom.del(id).then(removed => console.log('well removed', removed) ) )
     },
     updateRoom(root, {room}, context ) {
+        console.log('updating room', room._id);
         return db.room.then( dbroom => dbroom.put( room ).then( hash => {
             console.log('successfully updated room', hash);
             //console.log('try to get room by id', db.room.get(hash))

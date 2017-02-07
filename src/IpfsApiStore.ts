@@ -30,7 +30,11 @@ class IpfsStore {
     createDb(dbName: string, indexBy?: string ) {
         this[dbName] = new Promise( (resolve, reject) => {
             const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
-            db.events.on('ready', _ => { window[dbName] = db; resolve(db); console.log('db ' + dbName + ' ready') } );
+            db.events.on('ready', _ => {
+              resolve(db);
+              console.log('db ' + dbName + ' ready')
+            } );
+            db.events.on('load', _ => console.log('db ' + dbName + ' syncing with ipfs' ) );
         } );
     }
 

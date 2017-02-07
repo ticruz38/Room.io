@@ -18,6 +18,8 @@ const RoomDocument = require('./Room.gql');
 export class RoomState extends Loader {
     _id: string = guid.v1();
 
+    userId: string = layout.user["_id"]
+
     @observable name: Field = {
         value: undefined,
         constraints: [ nonEmpty() ],
@@ -45,6 +47,7 @@ export class RoomState extends Loader {
         return {
             room : {
                 _id: this._id,
+                userId: this.userId,
                 name: this.name.value,
                 description: this.description.value,
                 email: this.email.value,
@@ -75,8 +78,11 @@ export default class RoomView extends React.Component< any, {isValid: boolean} >
                 layout.toolBar = (
                     <Link
                         className="button"
-                        to="/stuffs"
-                        onClick={ _ => roomState.execute( 'AddRoom', roomState.format() ) }
+                        to="/start/stuffs"
+                        onClick={ _ => {
+                          console.log(roomState.format());
+                          roomState.execute( 'AddRoom', roomState.format() )
+                        } }
                     >Add some stuffs
                     </Link>
                 );

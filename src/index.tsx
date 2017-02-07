@@ -9,6 +9,7 @@ import RoomFeed from './rooms/RoomFeed';
 import Welcome from './welcome/Welcome';
 import Layout, { layoutState } from './layout/Layout';
 import Room from './start/Room';
+import Profile from './profile/Profile';
 import Stuffs from './start/Stuffs';
 import Schema from './graphql-client/Root';
 
@@ -39,12 +40,14 @@ const RoomIO = () => {
       { layoutState.isLogged ?
         <Route component={Layout}>
           <Route path="/" component={RoomFeed} />
+          <Route path="profile" component={Profile} />
           <Redirect from="feed" to="/" />
           <Route path="start">
             <Route path="room" component={Room} />
             <Route path="stuffs" component={Room} />
           </Route>
-        </Route> :
+        </Route>
+        :
         <Route component={Layout}>
           <Route path="/" component={Welcome} />
           <Route path="feed" component={RoomFeed} />

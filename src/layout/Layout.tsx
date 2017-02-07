@@ -56,10 +56,6 @@ export default class Layout extends React.Component<any, any> {
     );
   }
 
-  get toolBar(): React.ReactElement< any > {
-    return layoutState.toolBar;
-  }
-
   render() {
     return (
       <div className='layout'>
@@ -83,7 +79,11 @@ export default class Layout extends React.Component<any, any> {
                     align='right'
                     button={ <a>{layoutState.user["name"]}</a> }
                     list={ [
-                      <Link to="profile">Profile</Link>,
+                      <Link
+                        to="profile" 
+                        onClick={ _ => console.log('click') }
+                      >Profile
+                      </Link>,
                       <Link to="preferences">Preferences</Link>,
                       <a>
                         <i className="material-icons" 

@@ -13,8 +13,7 @@ export default class Dropdown extends React.Component< DropdownProps, {expand: b
 
     expand() {
         const list: any = this.refs['list'];
-        this.setState({expand: !this.state.expand});
-        list.focus()
+        this.setState({expand: !this.state.expand}, () => list.focus());
     }
     
     render() {
@@ -26,9 +25,16 @@ export default class Dropdown extends React.Component< DropdownProps, {expand: b
                     ref='list'
                     tabIndex={-1}
                     className={ classnames("dropdown-list", { hidden: !this.state.expand}) }
-                    onBlur={ _ => this.setState( { expand: false } ) }
+                    onBlur={ _ => setTimeout( _ => this.setState( { expand: false } ), 10 ) }
                 >
-                    { this.props.list.map( (l, i) => <div key={i} style={{ justifyContent: this.props.align === 'right' ? 'flex-end' : 'flex-start'}}>{l}</div> ) }
+                    { this.props.list.map( (l, i) =>
+                      <div
+                        onClick={ _ => console.log('click') }
+                        key={i} 
+                        style={{ justifyContent: this.props.align === 'right' ? 'flex-end' : 'flex-start'}}
+                      >
+                        {l}
+                      </div> ) }
                 </div>
             </div>
         );
