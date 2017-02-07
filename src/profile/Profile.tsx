@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as mobx from 'mobx';
+import { observer } from 'mobx-react';
 import { Link } from 'react-router';
 import {Input} from '../form';
 import {nonEmpty, email} from '../form/Constraint';
@@ -12,26 +14,30 @@ import { layoutState } from '../layout/Layout';
 
 class ProfileState {
     _id: String;
-    name: Field = {
+    @mobx.observable name: Field = {
         value: undefined,
         isValid: false,
         constraints: [nonEmpty()]
     };
-    email: Field = {
+    @mobx.observable email: Field = {
         value: undefined,
         isValid: false,
         constraints: [email()]
     };
-    rooms: Room[] = [];
-    picture: String;
+    @mobx.observable rooms: Room[] = [];
+    @mobx.observable picture: String;
 }
 
 const profileState = new ProfileState();
 
+
+
+@observer
 export default class Profile extends React.Component< any, any > {
 
     componentWillMount() {
         layoutState.title = "Profile";
+        layoutState.backgroundImage = "https://vanessaberryworld.files.wordpress.com/2013/10/teen-room-desk.jpg"
         layoutState.toolBar = (
           <div>
             <Link to="start/room">Open a Room</Link>

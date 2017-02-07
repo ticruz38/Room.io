@@ -22,6 +22,7 @@ export class LayoutState {
   @observable toolBar: React.ReactElement< any >;
   @observable title: string;
   @observable isLogged: boolean = !!sessionStorage.getItem('user');
+  @observable backgroundImage: string;
 
   get user(): ObjectLitteral {
     if( !this.isLogged ) return;
@@ -60,6 +61,7 @@ export default class Layout extends React.Component<any, any> {
     return (
       <div className='layout'>
         <div className={classnames({blur: !!layoutState.modal})}>
+          <div className="background" style={{backgroundImage: 'url(' + layoutState.backgroundImage + ')' } } />
           <header className="navigation">
             <div className="left-items">
               { this.icon }
@@ -81,7 +83,6 @@ export default class Layout extends React.Component<any, any> {
                     list={ [
                       <Link
                         to="profile" 
-                        onClick={ _ => console.log('click') }
                       >Profile
                       </Link>,
                       <Link to="preferences">Preferences</Link>,

@@ -75,7 +75,6 @@ export default class Signup extends React.Component<any, SignupState> {
     }
 
     render() {
-        console.log(this.isValid);
         return (
             <div className='signup'>
                 <Input
