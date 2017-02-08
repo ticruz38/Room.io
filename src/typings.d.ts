@@ -33,3 +33,7 @@ declare interface Room {
     picture: String
     stuffs: Stuff[]
 }
+
+interface NodeRequire {
+   ensure: (paths: string[], callback: (require: <T>(path: string) => T) => void) => void;
+}

@@ -25,8 +25,8 @@ export class LayoutState {
   @observable backgroundImage: string;
 
   get user(): ObjectLitteral {
-    if( !this.isLogged ) return;
-    return JSON.parse( sessionStorage.getItem('user') )
+    if( !this.isLogged ) return {};
+    return JSON.parse( sessionStorage.getItem('user') );
   }
 }
 

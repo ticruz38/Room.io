@@ -5,15 +5,16 @@ import { Link } from 'react-router';
 import {Input} from '../form';
 import {nonEmpty, email} from '../form/Constraint';
 import { layoutState } from '../layout/Layout';
+import Loader from '../graphql-client/Loader';
 
 
-//const Document = require('./Profile.gql');
+const Document = require('./Profile.gql');
 
 
 
 
-class ProfileState {
-    _id: String;
+class ProfileState extends Loader {
+    _id: String = layoutState.user["_id"];
     @mobx.observable name: Field = {
         value: undefined,
         isValid: false,
@@ -28,7 +29,8 @@ class ProfileState {
     @mobx.observable picture: String;
 }
 
-const profileState = new ProfileState();
+const profileState = new ProfileState( Document, 'ProfileQuery', { id: layoutState.user["_id"] } );
+
 
 
 
@@ -53,12 +55,12 @@ export default class Profile extends React.Component< any, any > {
                   <div className="user-information">
                       <Input
                           label='Name'
-                          field={profileState.name}
+                          field={ profileState.name }
                           type="text"
                       />
                       <Input
                           label='Email'
-                          field={profileState.email}
+                          field={ profileState.email }
                           type="email"
                       />
                   </div>

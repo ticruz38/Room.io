@@ -4,9 +4,9 @@ import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { execute } from 'graphql';
 
-import Loader from '../graphql-client/Loader';
-import { layoutState as layout } from '../layout/Layout';
-import Stuff, { StuffState } from './Stuff';
+import Loader from 'graphql-client/Loader';
+import { layoutState as layout } from 'layout/Layout';
+import Stuff, { StuffState } from 'start/stuffs/Stuff';
 
 
 const StuffsDocument = require('./Stuffs.gql');
@@ -77,4 +77,4 @@ export default class Stuffs extends React.Component< RoomProps, any > {
     }
 }
 
-import './Room.scss';
+import '../room/Room.scss';

@@ -4,11 +4,11 @@ import * as guid from 'node-uuid';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-import Loader from '../graphql-client/Loader';
-import { nonEmpty } from '../form/Constraint';
-import Form from '../form/Form';
-import Input from '../form/Input';
-import { layoutState as layout } from '../layout/Layout';
+import Loader from 'graphql-client/Loader';
+import { nonEmpty } from 'form/Constraint';
+import Form from 'form/Form';
+import Input from 'form/Input';
+import { layoutState as layout } from 'layout/Layout';
 
 
 

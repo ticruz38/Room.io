@@ -1,0 +1,12 @@
+query ProfileQuery($id: String!) {
+  profile: user(id: $id) {
+    _id
+    name
+    email
+    rooms {
+      _id
+      name
+      description
+    }
+  }
+}

@@ -5,12 +5,12 @@ import { Link } from 'react-router';
 
 import { observable, autorun, extendObservable, computed } from 'mobx';
 import { observer } from 'mobx-react';
-import { nonEmpty, email, atLeast, atMost } from '../form/Constraint';
-import { Textarea, Input, Field } from '../form';
-import { layoutState as layout } from '../layout/Layout';
-import Loader from '../graphql-client/Loader';
+import { nonEmpty, email, atLeast, atMost } from 'form/Constraint';
+import { Textarea, Input, Field } from 'form';
+import { layoutState as layout } from 'layout/Layout';
+import Loader from 'graphql-client/Loader';
 //import ipfs from '../IpfsStore';
-import db from '../IpfsApiStore';
+import db from 'IpfsApiStore';
 
 const RoomDocument = require('./Room.gql');
 

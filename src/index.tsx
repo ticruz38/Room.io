@@ -5,13 +5,8 @@ import { observer } from 'mobx-react';
 
 import { Router, Redirect, Route, Link, hashHistory } from 'react-router';
 
-import RoomFeed from './rooms/RoomFeed';
-import Welcome from './welcome/Welcome';
-import Layout, { layoutState } from './layout/Layout';
-import Room from './start/Room';
-import Profile from './profile/Profile';
-import Stuffs from './start/Stuffs';
 import Schema from './graphql-client/Root';
+import Layout from 'layout/Layout';
 
 
 const Graphiql = require('graphiql');
@@ -31,17 +26,46 @@ const Graph = _ =>
     }
     schema={Schema}
     />
-console.log(layoutState.isLogged);
 
-const RoomIO = () => {
+
+
+const rootRoute = {
+  childRoutes: [ {
+    path: '/',
+    component: Layout,
+    childRoutes: [
+      require('./profile'),
+      require('./rooms'),
+      require('./start'),
+      require('./welcome'),
+    ]
+  } ]
+}
+
+
+
+export function loadApp() {
+  ReactDOM.render(
+    <Router
+      history={hashHistory}
+      routes={ rootRoute }
+    />,
+    document.getElementById('app')
+  );
+}
+
+loadApp();
+
+
+/*const RoomIO = () => {
   return (
     <Router history={hashHistory}>
       <Route path="/graphiql" component={Graph} />
       { layoutState.isLogged ?
         <Route component={Layout}>
+          <Redirect from="feed" to="/" />
           <Route path="/" component={RoomFeed} />
           <Route path="profile" component={Profile} />
-          <Redirect from="feed" to="/" />
           <Route path="start">
             <Route path="room" component={Room} />
             <Route path="stuffs" component={Room} />
@@ -59,17 +83,7 @@ const RoomIO = () => {
       }
     </Router>
   );
-}
-
-
-export function loadApp() {
-  ReactDOM.render(
-    <RoomIO />,
-    document.getElementById('app')
-  );
-}
-
-loadApp();
+}*/
 
 import './index.scss';
 import '../node_modules/graphiql/graphiql.css'
