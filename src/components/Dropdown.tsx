@@ -25,7 +25,7 @@ export default class Dropdown extends React.Component< DropdownProps, {expand: b
                     ref='list'
                     tabIndex={-1}
                     className={ classnames("dropdown-list", { hidden: !this.state.expand}) }
-                    onBlur={ _ => setTimeout( _ => this.setState( { expand: false } ), 10 ) }
+                    onBlur={ _ => setTimeout( _ => this.setState( { expand: false } ), 100 ) }
                 >
                     { this.props.list.map( (l, i) =>
                       <div
