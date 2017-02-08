@@ -24,6 +24,17 @@ export class LayoutState {
   @observable isLogged: boolean = !!sessionStorage.getItem('user');
   @observable backgroundImage: string;
 
+  reset() {
+    console.log('reset');
+    this.backgroundImage = null;
+    this.modal = false;
+    this.searchBar = false;
+    this.backRoute = null;
+    this.toolBar = null;
+    this.title = null;
+    this.backgroundImage = null;
+  }
+
   get user(): ObjectLitteral {
     if( !this.isLogged ) return {};
     return JSON.parse( sessionStorage.getItem('user') );
@@ -61,7 +72,7 @@ export default class Layout extends React.Component<any, any> {
     return (
       <div className='layout'>
         <div className={classnames({blur: !!layoutState.modal})}>
-          <div className="background" style={{backgroundImage: 'url(' + layoutState.backgroundImage + ')' } } />
+          <div className="background" style={{backgroundImage: layoutState.backgroundImage ? 'url(' + layoutState.backgroundImage + ')' : 'none' } } />
           <header className="navigation">
             <div className="left-items">
               { this.icon }
