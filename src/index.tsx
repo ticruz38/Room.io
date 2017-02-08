@@ -55,33 +55,5 @@ export function loadApp() {
 loadApp();
 
 
-/*const RoomIO = () => {
-  return (
-    <Router history={hashHistory}>
-      <Route path="/graphiql" component={Graph} />
-      { layoutState.isLogged ?
-        <Route component={Layout}>
-          <Redirect from="feed" to="/" />
-          <Route path="/" component={RoomFeed} />
-          <Route path="profile" component={Profile} />
-          <Route path="start">
-            <Route path="room" component={Room} />
-            <Route path="stuffs" component={Room} />
-          </Route>
-        </Route>
-        :
-        <Route component={Layout}>
-          <Route path="/" component={Welcome} />
-          <Route path="feed" component={RoomFeed} />
-          <Route path="start">
-            <Route path="room" component={Room} />
-            <Route path="stuffs" component={Room} />
-          </Route>
-        </Route>
-      }
-    </Router>
-  );
-}*/
-
 import './index.scss';
 import '../node_modules/graphiql/graphiql.css'
