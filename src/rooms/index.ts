@@ -12,8 +12,8 @@ module.exports = {
   },*/
 
   getComponent(nextState, cb) {
-    require.ensure([], function(require) {
-      cb(null, require('./RoomFeed'))
+    require.ensure([], function(require: NodeRequire) {
+      cb(null, require('./RoomFeed').default)
     })
   }
 }

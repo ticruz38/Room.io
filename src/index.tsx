@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import { Router, Redirect, Route, Link, hashHistory } from 'react-router';
 
 import Schema from './graphql-client/Root';
-import Layout from 'layout/Layout';
+import Layout, { layoutState } from 'layout/Layout';
 
 
 const Graphiql = require('graphiql');
@@ -14,7 +14,6 @@ const Graphiql = require('graphiql');
 const Graph = _ =>
   <Graphiql
     fetcher={graphqlParams => {
-      //console.log(graphqlParams);
       return graphql(
         Schema,
         graphqlParams.query,
@@ -31,8 +30,7 @@ const Graph = _ =>
 
 const rootRoute = {
   childRoutes: [ {
-    path: '/',
-    component: Layout,
+    component: require('layout/Layout').default,
     childRoutes: [
       require('./profile'),
       require('./rooms'),
@@ -47,7 +45,7 @@ const rootRoute = {
 export function loadApp() {
   ReactDOM.render(
     <Router
-      history={hashHistory}
+      history={ hashHistory }
       routes={ rootRoute }
     />,
     document.getElementById('app')

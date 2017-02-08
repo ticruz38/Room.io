@@ -58,6 +58,7 @@ export const roomFeedState = new RoomFeedState( RoomDocument, 'RoomsQuery' );
 export default class RoomFeed extends React.Component< RoomFeedProps, RoomFeedState > {
 
   componentWillMount() {
+    console.log('roomWillMount');
     layoutState.title = 'Pick a Room you like';
   }
 

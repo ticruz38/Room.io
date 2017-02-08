@@ -28,7 +28,7 @@ class ProfileState extends Loader {
     @mobx.observable rooms: Room[] = [];
     @mobx.observable picture: String;
 }
-
+// TODO see if the execute should not only happen in the willMount cb of the component
 const profileState = new ProfileState( Document, 'ProfileQuery', { id: layoutState.user["_id"] } );
 
 
