@@ -4,7 +4,7 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        app: ["./src/index.tsx"]
+        app: ["./index.tsx"]
     },
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -22,8 +22,15 @@ module.exports = {
 
     resolve: {
         root: [
-          path.resolve('./src')
+          path.resolve('.')
         ],
+        alias: {
+          routes: path.resolve('./routes'),
+          graph: path.resolve('./graph'),
+          contract: path.resolve('./contract'),
+          public: path.resolve('./public'),
+          components: path.resolve('./components')
+        },
         // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".json"]
     },
