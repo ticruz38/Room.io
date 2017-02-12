@@ -12,6 +12,7 @@ export default makeExecutableSchema({
         Query: resolver.Query,
         Mutation: resolver.Mutation,
         Room: resolver.Room,
-        //Stuff: resolver.Stuff
+        User: resolver.User,
+        Stuff: resolver.Stuff
     }
 });
