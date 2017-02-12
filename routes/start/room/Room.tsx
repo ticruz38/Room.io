@@ -79,7 +79,7 @@ export default class RoomView extends React.Component< any, {isValid: boolean} >
                         to="/start/stuffs"
                         onClick={ _ => {
                           console.log(roomState.format());
-                          roomState.execute( 'AddRoom', roomState.format() )
+                          roomState.execute( 'AddRoom', { variables: roomState.format() } )
                         } }
                     >Add some stuffs
                     </Link>

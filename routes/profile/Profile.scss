@@ -5,15 +5,43 @@
     img {
       border-radius: 10em;
       flex-grow: 1;
-      max-width: 20em;
-      max-height: 20em;
+      max-width: 15em;
+      max-height: 15em;
+    }
+    input {
+      background: white;
     }
     .user-information {
       flex-grow: 2;
       background: whitesmoke;
       padding: 2em;
-      margin: 0 1em;
+      margin-left: 1em;
       border-radius: 10px;
     }
+  }
+  .profile-rooms {
+    background: whitesmoke;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 10px;
+    .rooms {
+      display: flex;
+      .room {
+        background: white;
+        padding: 5px;;
+        border-radius: 5px;
+        cursor: pointer;
+        &:hover {
+          box-shadow: 0 0 1px;
+        }
+      }
+    }
+  }
+}
+
+.profile-buttons {
+  display: flex;
+  >* {
+    margin: 0 2px;
   }
 }

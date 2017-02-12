@@ -33,6 +33,7 @@ export default {
       require('./rooms'),
       require('./start'),
       require('./welcome'),
+      require('./tables')
     ]
   } ]
 }
