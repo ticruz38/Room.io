@@ -105,7 +105,7 @@ export default class Profile extends React.Component<any, any> {
           <h2>Rooms</h2>
           <div className="rooms">
             { profileState.rooms.map( r => (
-              <div className="room">
+              <div className="room" onClick={_ => console.log(this.context)}>
                 <h4>{r.name}</h4>
                 <p>{r.description}</p>
               </div>

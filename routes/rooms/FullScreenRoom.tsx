@@ -3,7 +3,7 @@ import * as classnames from 'classnames';
 
 import {computed, observable, toJS, autorun} from 'mobx'
 import { observer } from 'mobx-react';
-import { SpinnerIcon, EthereumIcon } from 'public/icons';
+import { SpinnerIcon, EthereumIcon } from 'components/icons';
 import Loader from 'graph/Loader';
 import { RoomFeedState, Room, Stuff } from './RoomFeed';
 
