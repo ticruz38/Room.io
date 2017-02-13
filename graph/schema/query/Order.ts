@@ -5,6 +5,8 @@ export default `
         roomId: String!
         message: String # Additional message the customer has put on its order
         payed: Boolean
+        treated: Boolean
+        created: Float
         amount: Float
     }
 `

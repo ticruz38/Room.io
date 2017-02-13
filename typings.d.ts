@@ -34,6 +34,17 @@ declare interface Room {
   stuffs: Stuff[]
 }
 
+declare interface Order {
+  _id: String
+  stuffId: String
+  roomId: String
+  message: String
+  payed: Boolean
+  treated: Boolean
+  created: number
+  amount: number
+}
+
 declare type ExecuteParams = {
   rootValue?: Object
   contextValue?: any
