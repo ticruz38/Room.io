@@ -47,6 +47,7 @@ module.exports = {
                 loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
             }, {
                 test: /\.(jpe?g|png|gif|svg|eot|woff|ttf)$/i,
+                exclude: /node_modules/,
                 loader: 'file'
             }, {
                 test: /\.(graphql|gql)$/,
@@ -72,7 +73,7 @@ module.exports = {
 
     sassLoader: {
         includePaths: [
-            path.resolve(__dirname, 'node_modules') + 'kickstart-node'
+            path.resolve(__dirname, 'node_modules') + 'graphiql'
         ]
     }
 };
