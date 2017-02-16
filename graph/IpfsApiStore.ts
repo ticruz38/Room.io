@@ -11,6 +11,7 @@ class IpfsStore {
     room: Promise< any >;
     stuff: Promise< any >;
     user: Promise< any >;
+    order: Promise< any >;
     chat: any;
 
     constructor() {
@@ -18,6 +19,7 @@ class IpfsStore {
         this.createDb('room');
         this.createDb('stuff');
         this.createDb('user', 'email');
+        this.createDb('order');
     }
 
     // roomLoaded number between 0 and 1

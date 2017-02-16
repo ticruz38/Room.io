@@ -1,4 +1,5 @@
 import Stuff from './Stuff';
+import Order from './Order';
 
 const Room = `
     type Room {
@@ -10,7 +11,8 @@ const Room = `
         phoneNumber: String
         picture: String
         stuffs: [Stuff]
+        orders: [Order]
     }
 `;
 
-export default () => [Room, Stuff];
+export default () => [Room, Stuff, Order];
