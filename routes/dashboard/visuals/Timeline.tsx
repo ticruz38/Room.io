@@ -27,7 +27,6 @@ const Order = (order: Order) => {
 
 @observer
 export default class Timeline extends React.Component<any, any> {
-  
   @mobx.observable width: number;
 
   onClick = (event) => {

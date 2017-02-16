@@ -2,8 +2,12 @@ import * as React from 'react';
 import * as mobx from 'mobx';
 import { observer } from 'mobx-react';
 
-class OrderState {
+import { dashboardState } from '../Dashboard';
 
+
+
+class OrderState {
+  orders: Order[] = [];
 }
 
 @observer
@@ -15,66 +19,37 @@ export default class OrderList extends React.Component< any, any > {
   }
 }
 
-/*class Dashboard extends React.Component {
+class Dashboard extends React.Component< any, any > {
 
   constructor(props, context) {
     super(props, context);
   }
 
-  render() {
-    var i = 0;
-     * A function to return only the 5 next order after timeLineDate
-     * @param  {[object]} order [description]
-     * @param  {[int]} index [description]
-     * @return {[react element]}       []
-    var prevOrder = () => {
-      var orders = [];
-      this.props.orders.reverse();
-      this.props.orders.map(order => {
-        if (timeLineDate.getTime() >= order.node.date && i < 10) {
-          i++;
-          orders.push(<Order className={i <= 5 ? ' visible' : ''} key={order.node.id} order={order.node} restaurantID={this.props.restaurantID}/>);
-        }
-      });
-      i = 0;
-      return orders.reverse();
-    }
-    var postOrder = () => {
-      var orders = [];
-      this.props.orders.reverse();
-      this.props.orders.map(order => {
-        if (order.node.date >= timeLineDate.getTime() && i < 10) {
-          i++;
-          orders.push(<Order className={i <= 5 ? ' visible' : ''} key={order.node.id} order={order.node} restaurantID={this.props.restaurantID}/>);
-        }
-      });
-      i = 0
-      return orders;
-    }
-    var createOrder = (order, index) => {
+  @mobx.computed get prevItems() {
+    return dashboardState.orders.filter( (o: Order)  => o.created < dashboardState.current ).slice( -10 ).map( (o: Order, i) =>
+      <OrderComponent hidden={i < 5} {...o} />
+    );
+  }
 
-      if (order.node.date >= timeLineDate.getTime() && i < 10) {
-        i++
-        return <Order className={i < 15 ? ' visible' : ''} key={order.node.id} order={order.node} restaurantID={this.props.restaurantID}/>;
-      }
-    };
-    // var createOrder = () => {
-    //   var prevTime = 1000;
-    //   var prevOrder = [];
-    //   var postOrder = [];
-    // }
+  @mobx.computed get nextItems() {
+    return dashboardState.orders.filter( (o: Order)  => o.created > dashboardState.current ).slice( 0, 10 ).map( (o: Order, i) =>
+      <OrderComponent hidden={i > 5} {...o} />
+    )
+  }
+
+  render() {
     return (
       <div className = "dashboard">
         <div id = 'dashboard' className = 'container' onWheel={timeLineWheel}>
-          {prevOrder()}
-          {postOrder()}
+          { this.prevItems }
+          { this.nextItems }
         </div>
       </div>
     );
   }
 }
 
-class Order extends React.Component {
+class OrderComponent extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -130,4 +105,4 @@ class Order extends React.Component {
   }
 }
 
-// import 'component.scss'*/
+// import 'component.scss'
