@@ -4,11 +4,12 @@ import { observable, autorun, extendObservable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 
 type InputProps = {
-    label: string;
+    label?: string;
     field: Field;
     type: string;
     min?: number;
     max?: number; 
+    placeholder?: string;
 }
 
 @observer
@@ -24,7 +25,7 @@ export default class Input extends React.Component< InputProps, any > {
         let { field } = this.props;
         return (
             <div className='input'>
-                <label>{this.props.label}</label>
+                { this.props.label ? <label>{this.props.label}</label> : null}
                 <input
                     className={classnames({error: !this.isValid})}
                     type={ this.props.type }
@@ -35,6 +36,7 @@ export default class Input extends React.Component< InputProps, any > {
                     } }
                     min={ this.props.min }
                     max={ this.props.max }
+                    placeholder={this.props.placeholder}
                 />
                 <div className='errors'>
                     { field.constraints

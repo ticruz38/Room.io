@@ -1,7 +1,8 @@
 export default `
     input OrderInput {
         _id: String!
-        stuffId: String!
+        stuffIds: [String]!
+        clientID: String!
         roomId: String!
         message: String
         payed: Boolean!

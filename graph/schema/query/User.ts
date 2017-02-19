@@ -6,7 +6,7 @@ const User =  `
         name: String
         email: String!
         password: String! #hash256 password
-        rooms: [Room] #user rooms listed by Id
+        room: Room #user rooms listed by Id
     }
 `;
 

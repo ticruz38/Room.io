@@ -3,10 +3,11 @@ query ProfileQuery($id: String!) {
     _id
     name
     email
-    rooms {
+    room {
       _id
       name
       description
+      email
     }
   }
 }

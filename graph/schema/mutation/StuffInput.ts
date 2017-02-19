@@ -3,6 +3,7 @@ export default `
         _id: String!
         roomId: String!
         name: String!
+        category: String!
         description: String
         picture: String
         price: Float

@@ -46,17 +46,17 @@ export default class Timeline extends React.Component<any, any> {
           <path d='M0,400 H8640' stroke='black' strokeWidth='1' />
           <rect className='cursor' x={state.x} y='0' width='20' height='800' fill='yellow' />
           { state.orders.map(Order) }
-          <text 
+          <text
             textAnchor='middle' 
-            x='4320' 
-            y='300' 
-            fill='rgba(255, 255, 255, 0.8)' 
-            stroke='black' strokeWidth='3' 
+            x='4320'
+            y='300'
+            fill='rgba(255, 255, 255, 0.8)'
+            stroke='black' strokeWidth='3'
             fontSize='200'
           >
             { moment.unix(state.currentTime).format('L') }
           </text>
-          <text 
+          <text
             textAnchor='middle' 
             x='4320' 
             y='700' 

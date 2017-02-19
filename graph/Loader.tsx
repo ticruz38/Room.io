@@ -28,7 +28,7 @@ export default class Loader {
 
     execute(operationName: string, {variables, contextValue, rootValue, cb}: ExecuteParams = {} ) {
         const errors = validate(Schema, this.document);
-        console.log("execute", operationName, errors);
+        console.log("execute", operationName, errors.map(e => e.message));
         if( errors.length ) return errors;
         execute(
             Schema,

@@ -7,40 +7,44 @@ declare interface Field {
 declare type ObjectLitteral = { [prop: string]: string }
 
 declare interface User {
-  _id: String
-  name: String
-  email?: String
-  password?: String
-  rooms?: String[]
+  _id: string
+  name: string
+  email?: string
+  password?: string
+  room: Room
 }
 
 declare interface Stuff {
-  _id?: String
-  roomId: String
-  name: String
-  description?: String
-  picture?: String
-  price?: Number
+  _id?: string
+  room: Room
+  name: string
+  category?: string
+  description?: string
+  picture?: string
+  price?: number
 }
 
 declare interface Room {
-  _id: String
-  userId: String
-  name: String
-  description: String
-  email: String
-  phoneNumber: String
-  picture: String
+  _id: string
+  owner: User
+  name: string
+  description: string
+  email: string
+  phoneNumber: string
+  picture: string
+  categories: string[]
   stuffs: Stuff[]
+  orders: Order[]
 }
 
 declare interface Order {
-  _id: String
-  stuffId: String
-  roomId: String
-  message: String
-  payed: Boolean
-  treated: Boolean
+  _id: string
+  stuffs: Stuff[]
+  room: Room
+  client: User
+  message: string
+  payed: boolean
+  treated: boolean
   created: number
   amount: number
 }

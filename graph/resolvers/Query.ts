@@ -1,6 +1,5 @@
 import db from 'graph/IpfsApiStore';
 import { GraphQLError } from 'graphql';
-import { debug } from 'graph/resolvers';
 
 export default {
   room(root, args, context) {
@@ -13,12 +12,7 @@ export default {
     //return all.map(room => room.pictures ? room.pictures : [];
   },
   user(root, args, context) {
-    debug('user');
-    console.log('resolve user');
-    return db.user.then(userDb => {
-      const user = userDb.query(u => u._id === args.id)[0]
-      return user;
-    });
+    return db.user.then(userDb => userDb.query(u => u._id === args.id)[0]);
   },
   login(root, args, context) {
     return new Promise((resolve, reject) => {

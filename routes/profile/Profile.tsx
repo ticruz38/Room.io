@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as mobx from 'mobx';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router';
-import { Input } from 'components/form';
+import { Input, newField } from 'components/form';
 import { nonEmpty, email, hasChanged } from 'components/form/Constraint';
 import { layoutState } from 'routes/layout/Layout';
 import Loader from 'graph/Loader';
@@ -28,9 +28,25 @@ class ProfileState extends Loader {
     constraints: [ email(), hasChanged( layoutState.user["email"] ) ]
   };
 
-  @mobx.observable rooms: Room[] = [];
+  @mobx.observable room: Room;
 
   @mobx.observable picture: String;
+
+  @mobx.computed get saveable(): Boolean {
+    return (
+      this.name.isValid ||
+      this.email.isValid
+    );
+  }
+
+  @mobx.computed get toolbar() {
+    return (
+      <div className="profile-buttons">
+        <Link to="start/room">Open a Room</Link>
+        { this.saveable ? <button>Save Changes</button> : null }
+      </div>
+    );
+  }
 
   read(data) {
     const profile = data['profile'];
@@ -38,7 +54,7 @@ class ProfileState extends Loader {
     if (!profile) throw 'data prop profile is null';
     this.name.value = profile.name;
     this.email.value = profile.email;
-    this.rooms = profile.rooms || [];
+    this.room = mobx.extendObservable(this.room || {}, profile.room);
     this.picture = profile.picture;
   }
 }
@@ -50,22 +66,6 @@ const profileState = new ProfileState( Document );
 
 @observer
 export default class Profile extends React.Component<any, any> {
-
-  @mobx.computed get saveable(): Boolean {
-    return (
-      profileState.name.isValid ||
-      profileState.email.isValid
-    );
-  }
-
-  @mobx.computed get toolbar() {
-    return (
-      <div className="profile-buttons">
-        <Link to="start/room">Open a Room</Link>
-        { this.saveable ? <button>Update User</button> : null }
-      </div>
-    );
-  }
 
   loadData() {
     profileState.execute('ProfileQuery', {
@@ -80,7 +80,7 @@ export default class Profile extends React.Component<any, any> {
     this.loadData();
     layoutState.title = "Profile";
     layoutState.backgroundImage = "https://vanessaberryworld.files.wordpress.com/2013/10/teen-room-desk.jpg";
-    mobx.autorun( _ => layoutState.toolBar = this.toolbar );
+    mobx.autorun( _ => layoutState.toolBar = profileState.toolbar );
   }
 
   render() {
@@ -101,19 +101,39 @@ export default class Profile extends React.Component<any, any> {
             />
           </div>
         </div>
-        <div className='profile-rooms'>
-          <h2>Rooms</h2>
-          <div className="rooms">
-            { profileState.rooms.map( r => (
-              <div className="room" onClick={_ => console.log(this.context)}>
-                <h4>{r.name}</h4>
-                <p>{r.description}</p>
-              </div>
-            ) ) }
-          </div>
+        <div className='profile-room'>
+          { profileState.room ? <RoomElement { ...profileState.room} /> : null }
         </div>
       </div>
     )
+  }
+}
+
+
+@observer
+class RoomElement extends React.Component< Room, any > {
+  componentWillMount() {
+    const {name, description, email} = this.props;
+    this.state = mobx.observable({
+      name: newField( name, [hasChanged(name), nonEmpty()], false ),
+      description: newField( description, [hasChanged(description), nonEmpty()], false ),
+      email: newField( email, [hasChanged(email), nonEmpty()], false )
+    })
+  }
+
+  render() {
+    const {name, description, email} = this.state;
+    return (
+      <div className="room">
+        <div className="action-button">
+          <button className='btn'>Add Stuff</button>
+        </div>
+        <h2>Room</h2>
+        <Input field={ this.state.name } type="text" placeholder="room name" />
+        <Input field={ this.state.description } type="text" placeholder="room description" />
+        <Input field={ this.state.email } type="text" placeholder="room email" />
+      </div>
+    );
   }
 }
 

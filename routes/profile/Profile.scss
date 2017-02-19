@@ -1,5 +1,8 @@
 .profile {
   margin: 4vh 4vw;
+  input {
+    background: white !important;
+  }
   .profile-header {
     display: flex;
     img {
@@ -7,9 +10,6 @@
       flex-grow: 1;
       max-width: 15em;
       max-height: 15em;
-    }
-    input {
-      background: white;
     }
     .user-information {
       flex-grow: 2;
@@ -19,7 +19,7 @@
       border-radius: 10px;
     }
   }
-  .profile-rooms {
+  .profile-room {
     background: whitesmoke;
     padding: 1em;
     margin: 1em 0;

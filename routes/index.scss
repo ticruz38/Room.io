@@ -25,15 +25,17 @@ a {
 }
 
 .btn {
-  margin: 0 5px;
-  border: none;
+  border-radius: 3px;
   cursor: pointer;
+  background: lightyellow;
   display: flex;
+  font-size: 18px;
+  border: none;
   outline: none;
-  align-items: center;
-  box-shadow: 0 0 1.5px 1.5px;
-  background-color: rgba(255, 215, 0, 0.1);
-  &:hover {
-    background-color: gold;
+  color: black;
+  padding: 5px;
+  font-family: inherit;
+  &.disabled {
+    color: gold;
   }
 }

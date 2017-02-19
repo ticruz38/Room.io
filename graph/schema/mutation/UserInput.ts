@@ -4,6 +4,7 @@ export default `
         name: String!
         email: String!
         password: String!
+        roomId: String
     }
     input UserSignup {
         _id: String!

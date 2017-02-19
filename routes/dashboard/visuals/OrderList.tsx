@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as classnames from 'classnames';
 import * as mobx from 'mobx';
 import { observer } from 'mobx-react';
 
@@ -11,94 +12,90 @@ class OrderState {
 }
 
 @observer
-export default class OrderList extends React.Component< any, any > {
+export default class OrderList extends React.Component<any, any> {
   render() {
     return (
-      <div/>
+      <div />
     );
   }
 }
 
-class Dashboard extends React.Component< any, any > {
+class Dashboard extends React.Component<any, any> {
 
   constructor(props, context) {
     super(props, context);
   }
 
   @mobx.computed get prevItems() {
-    return dashboardState.orders.filter( (o: Order)  => o.created < dashboardState.current ).slice( -10 ).map( (o: Order, i) =>
-      <OrderComponent hidden={i < 5} {...o} />
+    return dashboardState.orders.filter((o: Order) => o.created < dashboardState.currentTime).slice(-10).map((o: Order, i) =>
+      <OrderComponent hidden={i < 5} order={o} />
     );
   }
 
   @mobx.computed get nextItems() {
-    return dashboardState.orders.filter( (o: Order)  => o.created > dashboardState.current ).slice( 0, 10 ).map( (o: Order, i) =>
-      <OrderComponent hidden={i > 5} {...o} />
+    return dashboardState.orders.filter((o: Order) => o.created > dashboardState.currentTime).slice(0, 10).map((o: Order, i) =>
+      <OrderComponent hidden={i > 5} order={o} />
     )
   }
 
   render() {
     return (
-      <div className = "dashboard">
-        <div id = 'dashboard' className = 'container' onWheel={timeLineWheel}>
-          { this.prevItems }
-          { this.nextItems }
+      <div className="dashboard">
+        <div id='dashboard' className='container' onWheel={dashboardState.onWheel}>
+          {this.prevItems}
+          {this.nextItems}
         </div>
       </div>
     );
   }
 }
 
-class OrderComponent extends React.Component {
+
+interface OrderProps {
+  hidden: boolean,
+  order: Order
+}
+
+class OrderComponent extends React.Component< OrderProps, any> {
+
+  @mobx.observable state = {
+    expand: false
+  }
 
   constructor(props, context) {
     super(props, context);
-    this.state = {expand: false};
+    this.state = { expand: false };
   }
 
-  _update = (e) => {
-    e.stopPropagation();
-    var order = {
-      id: this.props.order.id,
-      restaurantID: this.props.restaurantID
-    };
-    order[e.currentTarget.id] = !this.props.order[e.currentTarget.id];
-    var onFailure = () => console.log('failure');
-    var onSuccess = () => console.log('success');
-    //Relay.Store.update(new UpdateOrderMutation({order: order}), {onFailure, onSuccess});
-  };
-
   componentWillUnmount = () => {
-    this.refs.order.className = 'leave';
-    setTimeout(() => {
-      console.log('leave');
-     }, 250);
+    const Order: any = this.refs['order']
+    Order.className = 'leave';
   };
 
   render() {
-    var order = this.props.order;
-    var createItem = (item) => {
+    const order: Order = this.props.order;
+    const createItem = (item: Stuff) => {
       return (
-        <div className = 'item'>
-          {item.parent}<br/>
+        <div className='item'>
+          {item.category}<br />
           {item.name}
         </div>
       );
     };
-    var date = new Date(order.date);
-    var Hours = date.getHours();
-    var Minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
     return (
-      <div className={'order' + this.props.className + (this.state.expand ? ' expand' : '')} ref='order' onClick={()=>{this.setState({expand: !this.state.expand});}} onWheel={(e) => {if(this.state.expand === true) e.stopPropagation();}}>
-        <h1>{order.userName}<span className='price'>{order.price + ' mB'}</span><span className='time'>{Hours} : {Minutes}</span></h1>
-        <div className={classnames('items', {hidden: !this.state.expand})}>
-          {order.items.map(createItem)}
+      <div ref='order' 
+        className={classnames( 'order', { hidden: this.props.hidden, expand: this.state.expand } ) } 
+        onClick={() => this.state.expand = !this.state.expand }
+        onWheel={ e => { if (this.state.expand === true) e.stopPropagation(); }}>
+        <h1>{order.client.name}<span className='price'>{order.price + ' mB'}</span></h1>
+        <div className={classnames('items', { hidden: !this.state.expand })}>
+          {order.stuffs.map(createItem)}
         </div>
-        <span className = 'cursor-payed'>
-          Payed <Cursor id={'payed'} on={order.payed} update={this._update}/>
+        <span className='cursor-payed'>
+          Payed <input type="checkbox" checked={order.payed} onChange={ _ => order.payed = !order.payed } />
         </span>
-        <span className = 'cursor-treated'>
-          Treated <Cursor id={'treated'} on={order.treated} update={this._update}/>
+        <span className='cursor-treated'>
+          Treated <input type="checkbox" checked={order.treated} onChange={ _ => order.treated = !order.treated } />
         </span>
       </div>
     );
