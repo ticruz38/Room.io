@@ -7,6 +7,8 @@ import { nonEmpty, email, hasChanged } from 'components/form/Constraint';
 //profile
 import { profileState } from '../Profile';
 
+//layout
+import { layoutState } from 'routes/layout/Layout';
 
 @observer
 export default class StuffEditor extends React.Component< any, any > {
@@ -38,7 +40,10 @@ export default class StuffEditor extends React.Component< any, any > {
     console.log(this.formattedStuff);
     profileState.execute( 'SaveStuff', {
       variables: this.formattedStuff,
-      cb: (data: any) => profileState.room.stuffs.push(data.addStuff) 
+      cb: (data: any) => {
+        profileState.room.stuffs.push(data.addStuff)
+        layoutState.modal = null;
+      } 
     } );
   }
 
