@@ -8,6 +8,24 @@ query ProfileQuery($id: String!) {
       name
       description
       email
+      stuffs {
+        _id
+        name
+        description
+        category
+        picture
+      }
     }
   }
 }
+
+mutation SaveStuff($stuff: StuffInput!) {
+  addStuff(stuff: $stuff) {
+    _id
+    name
+    category
+    description
+    picture
+    price
+  }
+} 

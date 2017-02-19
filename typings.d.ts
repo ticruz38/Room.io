@@ -16,8 +16,8 @@ declare interface User {
 
 declare interface Stuff {
   _id?: string
-  room: Room
-  name: string
+  room?: Room
+  name?: string
   category?: string
   description?: string
   picture?: string

@@ -7,6 +7,13 @@ import { nonEmpty, email, hasChanged } from 'components/form/Constraint';
 import { layoutState } from 'routes/layout/Layout';
 import Loader from 'graph/Loader';
 
+//Profile 
+import RoomEditor from './visuals/RoomEditor';
+import StuffEditor from './visuals/StuffEditor';
+
+
+
+
 
 const Document = require('./Profile.gql');
 
@@ -25,7 +32,7 @@ class ProfileState extends Loader {
   @mobx.observable email: Field = {
     value: layoutState.user['email'],
     isValid: false,
-    constraints: [ email(), hasChanged( layoutState.user["email"] ) ]
+    constraints: [email(), hasChanged(layoutState.user["email"])]
   };
 
   @mobx.observable room: Room;
@@ -43,7 +50,7 @@ class ProfileState extends Loader {
     return (
       <div className="profile-buttons">
         <Link to="start/room">Open a Room</Link>
-        { this.saveable ? <button>Save Changes</button> : null }
+        {this.saveable ? <button>Save Changes</button> : null}
       </div>
     );
   }
@@ -59,7 +66,7 @@ class ProfileState extends Loader {
   }
 }
 // TODO see if the execute should not only happen in the willMount cb of the component
-const profileState = new ProfileState( Document );
+export const profileState = new ProfileState(Document);
 
 
 
@@ -73,14 +80,21 @@ export default class Profile extends React.Component<any, any> {
       cb: (data) => {
         profileState.read(data);
       }
-    } );
+    });
   }
 
   componentWillMount() {
     this.loadData();
     layoutState.title = "Profile";
     layoutState.backgroundImage = "https://vanessaberryworld.files.wordpress.com/2013/10/teen-room-desk.jpg";
-    mobx.autorun( _ => layoutState.toolBar = profileState.toolbar );
+    mobx.autorun(_ => layoutState.toolBar = profileState.toolbar);
+  }
+
+  @mobx.computed get categories() {
+    const categories = {}
+    profileState.room.stuffs.map(s => categories[s.category] ? categories[s.category].push(s) : categories[s.category] = [s])
+    console.log(categories)
+    return categories;
   }
 
   render() {
@@ -102,38 +116,27 @@ export default class Profile extends React.Component<any, any> {
           </div>
         </div>
         <div className='profile-room'>
-          { profileState.room ? <RoomElement { ...profileState.room} /> : null }
+          {profileState.room ? <RoomEditor { ...profileState.room } /> : null}
         </div>
+        { profileState.room ?
+          Object.keys(this.categories).map(key => (
+              <div className="category">
+                <h1>{key}</h1>
+                <div key={key} className='profile-stuffs'>
+                { this.categories[key].map(s => (
+                  <div key={s._id} className="stuff">
+                    <h3>{s.name}</h3>
+                    <div>{s.description}</div>
+                    <div>{s.category}</div>
+                  </div>)
+                ) }
+                </div>
+              </div>
+           ) ) :
+          null
+        }
       </div>
     )
-  }
-}
-
-
-@observer
-class RoomElement extends React.Component< Room, any > {
-  componentWillMount() {
-    const {name, description, email} = this.props;
-    this.state = mobx.observable({
-      name: newField( name, [hasChanged(name), nonEmpty()], false ),
-      description: newField( description, [hasChanged(description), nonEmpty()], false ),
-      email: newField( email, [hasChanged(email), nonEmpty()], false )
-    })
-  }
-
-  render() {
-    const {name, description, email} = this.state;
-    return (
-      <div className="room">
-        <div className="action-button">
-          <button className='btn'>Add Stuff</button>
-        </div>
-        <h2>Room</h2>
-        <Input field={ this.state.name } type="text" placeholder="room name" />
-        <Input field={ this.state.description } type="text" placeholder="room description" />
-        <Input field={ this.state.email } type="text" placeholder="room email" />
-      </div>
-    );
   }
 }
 

@@ -29,7 +29,8 @@ module.exports = {
           graph: path.resolve('./graph'),
           contract: path.resolve('./contract'),
           public: path.resolve('./public'),
-          components: path.resolve('./components')
+          components: path.resolve('./components'),
+          models: path.resolve('./models')
         },
         // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".json"]

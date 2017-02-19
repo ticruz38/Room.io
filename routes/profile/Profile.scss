@@ -37,6 +37,21 @@
       }
     }
   }
+  .category {
+    h1 {
+      background: whitesmoke;
+    }
+    .profile-stuffs {
+      display: flex;
+      padding: 0 2em;
+      .stuff {
+        >* {
+          padding: 0 5px;
+          background: whitesmoke;
+        }
+      }
+    }
+  }
 }
 
 .profile-buttons {
