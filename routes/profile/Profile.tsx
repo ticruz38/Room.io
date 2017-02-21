@@ -10,7 +10,7 @@ import Loader from 'graph/Loader';
 //Profile 
 import RoomEditor from './visuals/RoomEditor';
 import StuffEditor from './visuals/StuffEditor';
-
+import EditButtons from './visuals/EditButtons';
 
 
 
@@ -93,9 +93,38 @@ export default class Profile extends React.Component<any, any> {
   @mobx.computed get categories() {
     const categories = {}
     profileState.room.stuffs.map(s => categories[s.category] ? categories[s.category].push(s) : categories[s.category] = [s])
-    console.log(categories)
     return categories;
   }
+
+  get categoriesElement() {
+    const onClose = (stuff) => {
+      const index = profileState.room.stuffs.findIndex( s => stuff._id === s._id );
+      profileState.room.stuffs.splice(index, 1);
+    };
+    const onEdit = (stuff) => {
+      layoutState.modal = <StuffEditor {...stuff} mode='update'/>;
+    }
+    return profileState.room ?
+      Object.keys(this.categories).map(key => (
+          <div className="category">
+            <h2>{key}</h2>
+            <div key={key} className='profile-stuffs'>
+            { this.categories[key].map(s => (
+                <div key={s._id} className="stuff">
+                  <h3>
+                    <span>{s.name}</span>
+                    <EditButtons onClose={ _ => onClose(s) } onEdit={ _ => onEdit(s) }/>
+                  </h3>
+                  <div>{s.description}</div>
+                  <div>{s.category}</div>
+                </div>
+              )
+            ) }
+            </div>
+          </div>
+      ) ) :
+      null
+  } 
 
   render() {
     return (
@@ -117,24 +146,8 @@ export default class Profile extends React.Component<any, any> {
         </div>
         <div className='profile-room'>
           {profileState.room ? <RoomEditor { ...profileState.room } /> : null}
+          { this.categoriesElement }
         </div>
-        { profileState.room ?
-          Object.keys(this.categories).map(key => (
-              <div className="category">
-                <h1>{key}</h1>
-                <div key={key} className='profile-stuffs'>
-                { this.categories[key].map(s => (
-                  <div key={s._id} className="stuff">
-                    <h3>{s.name}</h3>
-                    <div>{s.description}</div>
-                    <div>{s.category}</div>
-                  </div>)
-                ) }
-                </div>
-              </div>
-           ) ) :
-          null
-        }
       </div>
     )
   }

@@ -10,8 +10,16 @@ import { profileState } from '../Profile';
 //layout
 import { layoutState } from 'routes/layout/Layout';
 
+interface StuffProps extends Stuff {
+  roomId?: string;
+  mode?: 'create' | 'update';
+}
+
 @observer
-export default class StuffEditor extends React.Component< any, any > {
+export default class StuffEditor extends React.Component< StuffProps, any > {
+  static defaultProps: {
+    mode: 'create'
+  }
 
   @mobx.computed get isValid(): boolean {
     const { name, description, category } = this.state;
@@ -23,7 +31,8 @@ export default class StuffEditor extends React.Component< any, any > {
   }
 
   get formattedStuff() {
-    const { _id, roomId } = this.props; 
+    const { _id } = this.props;
+    const roomId = this.props.mode === 'create' ? this.props.room._id : this.props.roomId;
     const { name, description, category } = this.state;
     return {
       stuff: {
@@ -37,8 +46,17 @@ export default class StuffEditor extends React.Component< any, any > {
   }
 
   save() {
-    console.log(this.formattedStuff);
     profileState.execute( 'SaveStuff', {
+      variables: this.formattedStuff,
+      cb: (data: any) => {
+        profileState.room.stuffs.push(data.addStuff)
+        layoutState.modal = null;
+      } 
+    } );
+  }
+
+  update() {
+    profileState.execute( 'UpdateStuff', {
       variables: this.formattedStuff,
       cb: (data: any) => {
         profileState.room.stuffs.push(data.addStuff)
