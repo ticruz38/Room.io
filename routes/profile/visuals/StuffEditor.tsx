@@ -23,16 +23,23 @@ export default class StuffEditor extends React.Component< StuffProps, any > {
 
   @mobx.computed get isValid(): boolean {
     const { name, description, category } = this.state;
-    return (
-      name.isValid &&
-      description.isValid &&
-      category.isValid
-    );
+    if( this.props.mode === "create") {
+      return (
+        name.isValid &&
+        description.isValid &&
+        category.isValid
+      );
+    } else {
+      return (
+        name.isValid ||
+        description.isValid ||
+        category.isValid
+      );
+    }
   }
 
   get formattedStuff() {
-    const { _id } = this.props;
-    const roomId = this.props.mode === 'create' ? this.props.room._id : this.props.roomId;
+    const { _id, roomId } = this.props;
     const { name, description, category } = this.state;
     return {
       stuff: {
@@ -59,7 +66,8 @@ export default class StuffEditor extends React.Component< StuffProps, any > {
     profileState.execute( 'UpdateStuff', {
       variables: this.formattedStuff,
       cb: (data: any) => {
-        profileState.room.stuffs.push(data.addStuff)
+        const index = profileState.room.stuffs.findIndex( s => s._id === data.updateStuff._id );
+        profileState.room.stuffs.splice( index, 1, data.updateStuff)
         layoutState.modal = null;
       } 
     } );
@@ -81,7 +89,10 @@ export default class StuffEditor extends React.Component< StuffProps, any > {
         <Input field={ this.state.name } type="text" placeholder="Stuff Name" />
         <Input field={ this.state.description } type="text" placeholder="Stuff Description" />
         <Input field={ this.state.category } type="text" placeholder="Stuff Category" />
-        { this.isValid ? <button className="btn" onClick={ _ => this.save() }>Save</button> : null }
+        { this.isValid ? 
+          <button className="btn" onClick={ _ => this.props.mode === "create" ? this.save() : this.update() }>Save</button> : 
+          null 
+        }
       </div>
     );
   }
