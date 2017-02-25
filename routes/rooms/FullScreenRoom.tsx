@@ -63,7 +63,7 @@ export default class FullscreenRoom extends React.Component<props, any> {
           <td className='caddy-icon'><i onClick={ () => this.addCaddyItem( props ) } className="material-icons">add_shopping_cart</i></td>
         </tr>
       );
-    } 
+    }
     
     const {room} = this.roomState;
     
@@ -89,7 +89,7 @@ export default class FullscreenRoom extends React.Component<props, any> {
               </div>
             ) }
           </div>
-          {this.roomState.caddy.length ? <Caddy roomState={this.roomState} /> : <span/>}
+          { this.roomState.caddy.length ? <Caddy roomState={this.roomState} /> : <span/> }
         </div>
       </div>
     );
