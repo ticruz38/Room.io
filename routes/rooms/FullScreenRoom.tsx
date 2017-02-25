@@ -5,7 +5,7 @@ import {computed, observable, toJS, autorun} from 'mobx'
 import { observer } from 'mobx-react';
 import { SpinnerIcon, EthereumIcon } from 'components/icons';
 import Loader from 'graph/Loader';
-import { RoomFeedState, Room, Stuff } from './RoomFeed';
+import { RoomFeedState } from './RoomFeed';
 
 import Caddy from './caddy';
 
@@ -52,6 +52,12 @@ export default class FullscreenRoom extends React.Component<props, any> {
   addCaddyItem = (stuff: Stuff) => {
     let newStuff = Object.assign({}, stuff); // send a new object instance here
     this.roomState.caddy.push(newStuff);
+  }
+
+  @computed get categories() {
+    const categories = {}
+    this.roomState.room.stuffs.map(s => categories[s.category] ? categories[s.category].push(s) : categories[s.category] = [s])
+    return categories;
   }
 
   render() {

@@ -11,6 +11,17 @@ div.full-screen-wrapper {
     height: 90%;
     width: 90%;
     margin: auto;
+    .room-stuffs {
+      display: flex;
+      flex-wrap: wrap;
+      > * {
+        border: 1px solid;
+        padding: 5px;
+        border-radius: 5px;
+        width: 10em;
+        margin: 0 5px;
+      }
+    }
     .room-bar {
       margin: 0 1em;
       display: flex;

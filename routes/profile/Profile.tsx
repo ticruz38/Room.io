@@ -47,12 +47,7 @@ class ProfileState extends Loader {
   }
 
   @mobx.computed get toolbar() {
-    return (
-      <div className="profile-buttons">
-        <Link to="start/room">Open a Room</Link>
-        {this.saveable ? <button>Save Changes</button> : null}
-      </div>
-    );
+    return this.saveable ? <button>Save Changes</button> : null
   }
 
   read(data) {
@@ -102,7 +97,7 @@ export default class Profile extends React.Component<any, any> {
       profileState.room.stuffs.splice(index, 1);
     };
     const onEdit = (stuff) => {
-      layoutState.modal = <StuffEditor {...stuff} mode='update'/>;
+      layoutState.modal = <StuffEditor { ...{...stuff, roomId: profileState.room._id } } mode='update'/>;
     }
     return profileState.room ?
       Object.keys(this.categories).map(key => (
@@ -133,14 +128,14 @@ export default class Profile extends React.Component<any, any> {
           <img src={profileState.picture ? 'https://ipfs.io/ipfs/' + profileState.picture : 'https://www.jimfitzpatrick.com/wp-content/uploads/2012/10/Che-detail-1.jpg'} />
           <div className="user-information">
             <Input
-              label='Name'
               field={profileState.name}
               type="text"
+              placeholder="name"
             />
             <Input
-              label='Email'
               field={profileState.email}
               type="email"
+              placeholder="email"
             />
           </div>
         </div>
