@@ -1,0 +1,66 @@
+
+.full-screen {
+  background: white;
+  height: 85%;
+  width: 85%;
+  margin: auto;
+  padding: 5px;
+  position: relative;
+  .caddy {
+    position: absolute;
+    bottom: 0;
+  }
+  .category {
+    padding: 0 10px;
+    .stuffs {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      overflow: scroll;
+      >.stuff {
+        h4 {
+          margin: 0 0 5px;
+        }
+        border: 1px solid;
+        padding: 5px;
+        border-radius: 5px;
+        width: 10em;
+        max-height: 5em;
+        overflow: hidden;
+        margin: 0 5px;
+      }
+    }
+  }
+  .room-bar {
+    padding: 0 1em;
+    margin-bottom: 5px;
+    background: gold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h1 {
+      margin: 5px 0;
+    }
+    .right-buttons {
+      display: flex;
+      align-items: center;
+      .chat {
+        padding: 5px;
+        &:hover {
+          border-radius: 5px;
+          cursor: pointer;
+          box-shadow: 0 0 1px black;
+        }
+      }
+      >div {
+        height: 30px;
+        margin: 0 1em;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+  .room-description {
+    margin: 0 1em;
+  }
+}

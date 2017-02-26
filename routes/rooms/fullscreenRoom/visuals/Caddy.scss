@@ -1,0 +1,50 @@
+
+.caddy {
+  width: calc(100% - 10px);
+  max-height: 9em;
+  overflow-y: scroll;
+  .caddy-line {
+    border-bottom: 1px solid black;
+  }
+  .caddy-flex {
+    padding: 0 5px;
+    .caddy-category {
+      overflow: scroll;
+      h4 {
+        margin: 5px 0 0;
+      }
+    }
+    .caddy-stuffs {
+      display: flex;
+      overflow-x: scroll;
+      padding: 12px 0 0;
+      .caddy-stuff {
+        h3 {
+          margin: 0 0 5px;
+        }
+        display: table;
+        position: relative;
+        padding: 10px;
+        margin: 3px;
+        border: 1px solid gold;
+        cursor: default;
+        .close {
+          position: absolute;
+          right: -12px;
+          border: 1px solid gold;
+          border-radius: 12px;
+          background: white;
+          z-index: 10;
+          cursor: pointer;
+          top: -12px;
+          visibility: hidden;
+        }
+        &:hover {
+          .close {
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+}

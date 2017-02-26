@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { execute, validate, DocumentNode, ExecutionResult, GraphQLError } from 'graphql'
+import * as mobx from 'mobx';
 import Schema from './index';
 
 
@@ -41,7 +42,8 @@ export default class Loader {
           if( result.errors ) this.graphQlErrors = result.errors.map(error => error.message);
           if( cb ) return cb(result.data, this);
           for ( const key in result.data ) {
-              this[key] = result.data[key]
+            // this[key] = typeof this[key] === "object" && this[key].length === 0 ? result.data[key] : mobx.extendObservable( this[key] || {}, result.data[key] );
+            this[key] = result.data[key];
           }
         } );
     }

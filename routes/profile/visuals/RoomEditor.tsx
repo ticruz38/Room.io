@@ -16,6 +16,7 @@ import StuffEditor from './StuffEditor';
 
 @observer
 export default class RoomEditor extends React.Component< Room, any > {
+  state: any;
   componentWillMount() {
     const {name, description, email} = this.props;
     this.state = mobx.observable({

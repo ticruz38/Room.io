@@ -23,6 +23,7 @@ export class LayoutState {
   @observable title: string;
   @observable isLogged: boolean = !!sessionStorage.getItem('user');
   @observable backgroundImage: string;
+  onClose: Function;
 
   reset() {
     console.log('reset');
@@ -137,17 +138,13 @@ const Modal = (props: any) => {
 
     const close = (e: MouseEvent ) => {
       e.preventDefault();
+      if( layoutState.onClose ) layoutState.onClose();
       layoutState.modal = false;
     }
     
     return (
       <div className={classnames('modal', {hidden: !props.children})} onClick={ (e: any) => close(e) } >
-        <div className='modal-content' 
-          tabIndex={-1}
-          onClick={ (e) => e.stopPropagation() }
-          autoFocus>
-          { props.children }
-        </div>
+        { props.children }
       </div>
     );
 }

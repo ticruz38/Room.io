@@ -6,6 +6,7 @@ query OnlyRoomStuffs($id: String ) {
         picture
         stuffs {
             _id
+            category
             name
             description
             picture

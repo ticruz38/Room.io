@@ -58,13 +58,13 @@ interface OrderProps {
 
 class OrderComponent extends React.Component< OrderProps, any> {
 
-  @mobx.observable state = {
+  @mobx.observable roomState = {
     expand: false
   }
 
   constructor(props, context) {
     super(props, context);
-    this.state = { expand: false };
+    this.roomState = { expand: false };
   }
 
   componentWillUnmount = () => {
@@ -84,11 +84,11 @@ class OrderComponent extends React.Component< OrderProps, any> {
     };
     return (
       <div ref='order' 
-        className={classnames( 'order', { hidden: this.props.hidden, expand: this.state.expand } ) } 
-        onClick={() => this.state.expand = !this.state.expand }
-        onWheel={ e => { if (this.state.expand === true) e.stopPropagation(); }}>
+        className={classnames( 'order', { hidden: this.props.hidden, expand: this.roomState.expand } ) } 
+        onClick={() => this.roomState.expand = !this.roomState.expand }
+        onWheel={ e => { if (this.roomState.expand === true) e.stopPropagation(); }}>
         <h1>{order.client.name}<span className='price'>{order.price + ' mB'}</span></h1>
-        <div className={classnames('items', { hidden: !this.state.expand })}>
+        <div className={classnames('items', { hidden: !this.roomState.expand })}>
           {order.stuffs.map(createItem)}
         </div>
         <span className='cursor-payed'>
