@@ -1,15 +1,19 @@
 module.exports = {
   path: ':roomId',
 
-  /*getChildRoutes(partialNextState, callback) {
-    require.ensure([], function (require) {
+  getChildRoutes(partialNextState, callback) {
+    require.ensure([], function (require: NodeRequire) {
       callback(null, [
-        require('../rooms'),
-        require('../profile'),
-        require('../start'),
+        require('./Order').default
       ])
     })
-  },*/
+  },
+
+  getIndexRoute(nextState, cb) {
+    require.ensure([], function(require: NodeRequire) {
+      cb(null, require('./RoomContent').default)
+    })
+  },
 
   getComponent(nextState, cb) {
     require.ensure([], function(require: NodeRequire) {

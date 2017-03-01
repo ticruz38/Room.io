@@ -16,7 +16,7 @@ const ModalContent = () => {
 }
 
 export class LayoutState {
-  @observable modal: boolean | React.ReactElement< any >;
+  @observable modal: boolean | React.ReactElement< any > | React.ReactNode;
   @observable searchBar: boolean = true;
   @observable backRoute: string;
   @observable toolBar: React.ReactElement< any >;

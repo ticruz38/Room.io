@@ -1,10 +1,11 @@
 import * as React from "react";
 import * as classnames from 'classnames';
-
+import { Link } from 'react-router';
 import {computed, observable, toJS, autorun} from 'mobx'
 import { observer } from 'mobx-react';
 import { SpinnerIcon, EthereumIcon } from 'components/icons';
 import Loader from 'graph/Loader';
+
 
 //layout
 import { layoutState } from 'routes/layout/Layout';
@@ -19,11 +20,13 @@ interface props {
   room: Room,
   params: any;
   router: any;
+  children: any;
 }
 
 export class RoomState extends Loader {
   @observable room: Room
   @observable caddy: Stuff[] = [];
+  @observable message: string;
 
   @computed get amount(): number {
     return this.caddy.reduce((prev, cur) => prev + cur.price || 0, 0 )
@@ -59,26 +62,6 @@ export default class FullscreenRoom extends React.Component<props, RoomState> {
     this.roomState.execute('OnlyRoomStuffs', { variables: { "id": this.props.params.roomId } } )
   }
 
-  renderStuffs(): React.ReactElement< any > | React.ReactElement< any >[] {
-    const { room, caddy, amount } = this.roomState;
-    if( !room.stuffs ) return <SpinnerIcon size={'5em'} />;
-      return Object.keys(this.roomState.categories).map(key => (
-          <div className="category">
-            <h4>{key}</h4>
-            <div key={key} className='stuffs'>
-            { this.roomState.categories[key].map(s =>
-                <div key={s._id} className="stuff" onClick={ _ => this.roomState.addCaddyItem(s) }>
-                  <h4>
-                    <span>{s.name}</span>
-                  </h4>
-                  <div>{s.description}</div>
-                </div>
-              ) }
-            </div>
-          </div>
-      ) );
-  }
-
   render() {
     const { room, caddy, amount } = this.roomState;
     if( !room ) return <SpinnerIcon size="5em" />;
@@ -89,11 +72,11 @@ export default class FullscreenRoom extends React.Component<props, RoomState> {
           <div className='right-buttons'>
             <div>{amount} <EthereumIcon/> </div>
             <div className="chat"><i className="material-icons">chat</i></div>
-            { caddy.length ? <button className="btn">Order</button> : null }
+            { caddy.length ? <Link to={ this.props.params.roomId + "/order" } className="btn">Order</Link> : null }
           </div>
         </div>
         <p className="room-description">{room.description}</p>
-        { this.renderStuffs() }
+        { React.cloneElement(this.props.children, { roomState: this.roomState } ) }
         { caddy.length ? <Caddy roomState={this.roomState} /> : <span/> }
       </div>
     );

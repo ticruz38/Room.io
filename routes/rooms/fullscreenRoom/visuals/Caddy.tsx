@@ -36,10 +36,12 @@ export default class Caddy extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="caddy">
+      <div className="caddy-container">
         <div className="caddy-line"><i className="shopping material-icons">shopping_cart</i></div>
-        <div className='caddy-flex'>
-          { this.renderStuffs() }
+        <div className="caddy">
+          <div className='caddy-flex'>
+            { this.renderStuffs() }
+          </div>
         </div>
       </div>
     );

@@ -1,10 +1,9 @@
-
 .caddy {
   width: calc(100% - 10px);
   max-height: 9em;
   overflow-y: scroll;
+  border-top: 1px solid black;
   .caddy-line {
-    border-bottom: 1px solid black;
   }
   .caddy-flex {
     padding: 0 5px;
