@@ -10,8 +10,6 @@ import Loader from 'graph/Loader';
 //layout
 import { layoutState } from 'routes/layout/Layout';
 
-import Caddy from './visuals/caddy';
-
 const Document = require('./FullScreenRoom.gql');
 
 
