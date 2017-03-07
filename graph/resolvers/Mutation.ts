@@ -25,7 +25,6 @@ export default {
     },
     addStuff(root, {stuff}, context ) {
         return db.stuff.then(dbStuff => dbStuff.put( stuff ).then( hash => {
-            console.log('successfully added stuff', hash);
             //console.log('try to get room by id', db.room.get(hash))
             return stuff
         } ) );

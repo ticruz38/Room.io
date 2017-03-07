@@ -1,5 +1,5 @@
 module.exports = {
-  path: '/',
+  path: 'rooms',
 
   getChildRoutes(partialNextState, callback) {
     require.ensure([], function (require) {

@@ -57,7 +57,7 @@ export default class FullscreenRoom extends React.Component<props, RoomState> {
   roomState: RoomState = new RoomState(Document);
 
   componentWillMount() {
-    layoutState.onClose = () => this.props.router.push({pathname: '/'})
+    layoutState.onClose = () => this.props.router.push( { pathname: '/' } )
     this.roomState.room = this.props.room;
     this.roomState.execute('OnlyRoomStuffs', { variables: { "id": this.props.params.roomId } } )
   }
@@ -72,12 +72,11 @@ export default class FullscreenRoom extends React.Component<props, RoomState> {
           <div className='right-buttons'>
             <div>{amount} <EthereumIcon/> </div>
             <div className="chat"><i className="material-icons">chat</i></div>
-            { caddy.length ? <Link to={ this.props.params.roomId + "/order" } className="btn">Order</Link> : null }
+            { caddy.length ? <Link to={ 'rooms/' + this.props.params.roomId + '/order' } className="btn">Order</Link> : null }
           </div>
         </div>
-        <p className="room-description">{room.description}</p>
-        { React.cloneElement(this.props.children, { roomState: this.roomState } ) }
-        { caddy.length ? <Caddy roomState={this.roomState} /> : <span/> }
+        <p className="room-description">{ room.description }</p>
+        { React.cloneElement( this.props.children, { roomState: this.roomState } ) }
       </div>
     );
   }

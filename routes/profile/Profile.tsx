@@ -80,6 +80,7 @@ export default class Profile extends React.Component<any, any> {
 
   componentWillMount() {
     this.loadData();
+    layoutState.reset();
     layoutState.title = "Profile";
     layoutState.backgroundImage = "https://vanessaberryworld.files.wordpress.com/2013/10/teen-room-desk.jpg";
     mobx.autorun(_ => layoutState.toolBar = profileState.toolbar);
@@ -103,19 +104,22 @@ export default class Profile extends React.Component<any, any> {
       Object.keys(this.categories).map(key => (
           <div className="category">
             <h2>{key}</h2>
-            <div key={key} className='profile-stuffs'>
+            <table key={key} className='profile-stuffs'>
             { this.categories[key].map(s => (
-                <div key={s._id} className="stuff">
-                  <h3>
-                    <span>{s.name}</span>
-                    <EditButtons onClose={ _ => onClose(s) } onEdit={ _ => onEdit(s) }/>
-                  </h3>
-                  <div>{s.description}</div>
-                  <div>{s.category}</div>
-                </div>
+                <tr key={s._id} className="stuff">
+                  <td className="name">{s.name}</td>
+                  <td>
+                    <div className="description">
+                      {s.description}
+                      <button className="btn" onClick={ e => onClose(e) }>
+                        <i className="material-icons">close</i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
               )
             ) }
-            </div>
+            </table>
           </div>
       ) ) :
       null

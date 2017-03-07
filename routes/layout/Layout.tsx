@@ -26,7 +26,6 @@ export class LayoutState {
   onClose: Function;
 
   reset() {
-    console.log('reset');
     this.backgroundImage = null;
     this.modal = false;
     this.searchBar = false;
@@ -34,6 +33,7 @@ export class LayoutState {
     this.toolBar = null;
     this.title = null;
     this.backgroundImage = null;
+    this.onClose = null;
   }
 
   get user(): ObjectLitteral {
@@ -63,7 +63,7 @@ export default class Layout extends React.Component<any, any> {
 
   get icon() {
     return (
-      <Link className='app-icon' to="/">
+      <Link className='app-icon' to="/rooms">
         <i className="material-icons">local_florist</i>
       </Link>
     );
@@ -138,12 +138,18 @@ const Modal = (props: any) => {
 
     const close = (e: MouseEvent ) => {
       e.preventDefault();
+      const clickedElement: any = e.target;
+      console.log( clickedElement.id, e.target )
       if( layoutState.onClose ) layoutState.onClose();
-      layoutState.modal = false;
+      if( clickedElement.id === "wrapper" ) layoutState.modal = false;
     }
     
     return (
-      <div className={classnames('modal', {hidden: !props.children})} onClick={ (e: any) => close(e) } >
+      <div 
+        id="wrapper"
+        className={ classnames( 'modal', { hidden: !props.children } ) }
+        onClick={ (e: any) => close(e) }
+      >
         { props.children }
       </div>
     );

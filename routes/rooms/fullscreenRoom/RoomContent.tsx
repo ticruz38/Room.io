@@ -1,6 +1,7 @@
 import * as React from "react";
 
-import { RoomState } from './FullscreenRoom';
+import { RoomState } from 'routes/rooms/fullscreenRoom/FullScreenRoom';
+import Caddy from './visuals/caddy';
 
 type props = {
   roomState: RoomState
@@ -10,7 +11,8 @@ export class RoomContent extends React.Component< props, any> {
   render() {
     const { roomState } = this.props;
     return (
-      <div>
+      <div className="room-content-wrapper">
+        <div className="room-content">
         { Object.keys(roomState.categories).map( key => (
             <div key={key} className="category">
               <h4>{key}</h4>
@@ -26,6 +28,8 @@ export class RoomContent extends React.Component< props, any> {
               </div>
             </div>
         ) ) }
+        </div>
+        { roomState.caddy.length ? <Caddy roomState={ roomState } /> : <span/> }
       </div>
     )
   }

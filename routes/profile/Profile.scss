@@ -26,7 +26,6 @@
     }
   }
   .profile-room {
-    background: rgba(0, 0, 0, 0.5);
     margin: 1em 0;
     border-radius: 10px;
     overflow: hidden;
@@ -39,10 +38,10 @@
       }
     }
     .room {
+      background: whitesmoke;
       h1 {
         margin-top: 0;
         padding: 0 1em;
-        background: whitesmoke
       }
     }
     .category {
@@ -51,44 +50,32 @@
       overflow: hidden;
       border: 1px solid whitesmoke;
       h2 {
-        margin-top: 0;
+        margin: 0;
         background: whitesmoke;
       }
-      .profile-stuffs {
-        display: flex;
-        padding: 0 2em;
-        align-items: flex-start;
+      table.profile-stuffs {
+        width: 100%;
+        >* {
+          padding: 0 0 0 5px;
+          background: whitesmoke;
+        }
+        .name {
+          width: 12em;
+        }
         .stuff {
-          max-width: 11em;
-          margin: 5px;
-          border: 1px solid whitesmoke;
-          border-radius: 5px;
-          &:hover {
-            .buttons {
-              visibility: visible;
-            }
-          }
-          h3 {
-            margin-top: 0;
-            display: flex;
+          padding: 0 0 0 5px;
+          .description {
+            align-items: center;
             justify-content: space-between;
-            align-items: flex-start;
-            i {
-              font-size: 18px;
-            }
-            .buttons {
-              display: flex;
+            display: flex;
+            button {
               visibility: hidden;
             }
-            .btn {
-              padding: 2px;
-              display: inline;
-              height: 22px;
+            &:hover {
+              button {
+                visibility: visible;
+              }
             }
-          }
-          >* {
-            padding: 0 5px;
-            background: whitesmoke;
           }
         }
       }
