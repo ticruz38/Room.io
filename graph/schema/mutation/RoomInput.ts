@@ -10,7 +10,7 @@ const RoomInput = `
         email: String,
         phoneNumber: String,
         picture: String # Room pictures as a list of hash
-        categories: [String]! # A room class its stuff under categories
+        categories: [String] # A room class its stuff under categories
         stuffs: [StuffInput]
     }
 `;

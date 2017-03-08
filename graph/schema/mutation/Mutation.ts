@@ -12,9 +12,9 @@ const Mutation = `
         deleteRoom(id: String!): Room
         addStuff(stuff: StuffInput!): Stuff
         updateStuff(stuff: StuffInput!): Stuff
+        deleteStuff(id: String!): Stuff
         signup(user: UserSignup!): User # has to be handled via ethereum for security
         updateUser(user: UserInput!): User # has to be handled via ethereum for security
     }
 `;
-
 export default () => [RoomInput, StuffInput, UserInput, Room, Stuff, User, Mutation];

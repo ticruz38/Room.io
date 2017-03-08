@@ -19,6 +19,18 @@ query ProfileQuery($id: String!) {
   }
 }
 
+mutation CreateRoom($room: RoomInput!) {
+    addRoom(room: $room) {
+        _id
+    }
+}
+
+mutation DeleteRoom($id: String!) {
+    deleteRoom(id: $id) {
+        _id
+    }
+}
+
 mutation SaveStuff($stuff: StuffInput!) {
   addStuff(stuff: $stuff) {
     _id
@@ -39,4 +51,10 @@ mutation UpdateStuff($stuff: StuffInput!) {
     picture
     price
   }
+}
+
+mutation DeleteStuff($id: String!) {
+    deleteStuff(id: $id) {
+        _id
+    }
 }

@@ -1,8 +1,11 @@
 import { observable } from 'mobx';
 
+const Logger = require('logplease');
 const Orbitdb = require('orbit-db');
 const IpfsApi = require('@haad/ipfs-api');
 
+const logger = Logger.create('Ipfs-server');
+console.log(logger);
 
 class IpfsStore {
     nodeID: string;
@@ -33,9 +36,9 @@ class IpfsStore {
             const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
             db.events.on('ready', _ => {
               resolve(db);
-              console.log('db ' + dbName + ' ready')
+              logger.info('db ' + dbName + ' ready')
             } );
-            db.events.on('load', _ => console.log('db ' + dbName + ' syncing with ipfs' ) );
+            db.events.on('load', _ => logger.info('db ' + dbName + ' syncing with ipfs' ) );
         } );
     }
 

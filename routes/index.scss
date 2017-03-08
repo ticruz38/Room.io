@@ -24,6 +24,13 @@ a {
   cursor: pointer;
 }
 
+.buttons {
+    display: flex;
+    >* {
+        margin: 0 5px;
+    }
+}
+
 .btn {
   border-radius: 3px;
   cursor: pointer;
