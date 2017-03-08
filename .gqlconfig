@@ -1,0 +1,14 @@
+/* .gqlconfig */
+ {
+   "schema": {
+     "files": "graph/**/*.ts"
+   },
+   query: {
+     files: [
+       {
+         match: 'routes/**/*.gql',
+         parser: 'QueryParser',
+       },
+     ],
+   },
+ }
