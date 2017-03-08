@@ -7,11 +7,26 @@ declare interface Field {
 declare type ObjectLitteral = { [prop: string]: string }
 
 declare interface User {
-  _id: string
-  name: string
+  _id?: string
+  name?: string
   email?: string
   password?: string
   room: Room
+}
+
+declare interface UserInput {
+    _id: string
+    name: string
+    email: string
+    password: string
+    roomId: string
+}
+
+declare interface UserSignup {
+    _id: string
+    name: string
+    email: string
+    password: string
 }
 
 declare interface Stuff {
@@ -24,17 +39,39 @@ declare interface Stuff {
   price?: number
 }
 
+declare interface StuffInput {
+    _id: string
+    roomId: string
+    name: string
+    category: string
+    description?: string
+    picture?: string
+    price?: number
+}
+
 declare interface Room {
-  _id: string
-  owner: User
-  name: string
-  description: string
-  email: string
-  phoneNumber: string
-  picture: string
-  categories: string[]
-  stuffs: Stuff[]
-  orders: Order[]
+  _id?: string
+  owner?: User
+  name?: string
+  description?: string
+  email?: string
+  phoneNumber?: string
+  picture?: string
+  categories?: string[]
+  stuffs?: Stuff[]
+  orders?: Order[]
+}
+
+declare interface RoomInput {
+    _id: string
+    userId: string
+    name: string
+    description?: string
+    email?: string,
+    phoneNumber?: string,
+    picture?: string
+    categories?: string[]
+    stuffs?: StuffInput[]
 }
 
 declare interface Order {
@@ -47,6 +84,16 @@ declare interface Order {
   treated: boolean
   created: number
   amount: number
+}
+
+declare interface OrderInput {
+    _id: string
+    stuffIds: string[]
+    clientID: string
+    roomId: string
+    message: string
+    payed: boolean
+    amount: number
 }
 
 declare type ExecuteParams = {
