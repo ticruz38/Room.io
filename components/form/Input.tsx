@@ -15,10 +15,26 @@ type InputProps = {
 @observer
 export default class Input extends React.Component< InputProps, any > {
 
+    i: number = -1;
+
     get isValid(): boolean {
         const {field} = this.props
         if( field.value === undefined ) return true;
         return !field.constraints.find(constraint => !constraint(field.value).isValid)
+    }
+
+    get errors(): React.ReactElement< any > {
+        this.i++;
+        if(this.i === 0) return <div className="errors"/>;
+        const { field } = this.props;
+        return (
+            <div className='errors'>
+                { field.constraints
+                    .filter( c => !!c(field.value).error )
+                    .map( c => <div key={ c(field.value).error}>{ c(field.value).error }</div> )
+                }
+            </div>
+        );
     }
 
     render() {
@@ -38,12 +54,7 @@ export default class Input extends React.Component< InputProps, any > {
                     max={ this.props.max }
                     placeholder={this.props.placeholder}
                 />
-                <div className='errors'>
-                    { field.constraints
-                        .filter( c => !!c(field.value).error )
-                        .map( c => <div key={ c(field.value).error}>{ c(field.value).error }</div> )
-                    }
-                </div>
+                { this.errors }
             </div>
         );
     }

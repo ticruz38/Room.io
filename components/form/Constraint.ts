@@ -1,6 +1,5 @@
 export function nonEmpty() {
   return function test(value: string) {
-    if (value === undefined) return { isValid: false, error: '' };
     if (value.length === 0) {
       return {
         isValid: false,
@@ -13,7 +12,6 @@ export function nonEmpty() {
 
 export function atLeast(least: number) {
   return function test(value: string) {
-    if (value === undefined) return { isValid: false, error: '' };
     if (value.length < least) {
       return {
         isValid: false,
@@ -26,7 +24,6 @@ export function atLeast(least: number) {
 
 export function atMost(most: number) {
   return function test(value: string) {
-    if (value === undefined) return { isValid: false, error: '' };
     if (value.length > most) {
       return {
         isValid: false,
@@ -39,7 +36,6 @@ export function atMost(most: number) {
 
 export function email() {
   return function test(value: string) {
-    if (value === undefined) return { isValid: false, error: '' };
     const re = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
     if (!re.test(value)) return {
       isValid: false,
@@ -51,7 +47,6 @@ export function email() {
 
 export function password() {
   return function test(value: string) {
-    if (value === undefined) return { isValid: false, error: '' };
     const re = /^(?=.*\d)[a-zA-Z0-9]{8,}$/i;
     if (!re.test(value)) return {
       isValid: false,
@@ -63,7 +58,6 @@ export function password() {
 
 export function sameAs(fieldToCompare: Field) {
   return function test(value: string) {
-    if (value === undefined) return { isValid: false, error: '' };
     if (fieldToCompare.value !== value) return {
       isValid: false,
       error: 'Both Password are\'nt equal'
