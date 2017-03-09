@@ -14,6 +14,7 @@ declare interface User {
   room: Room
 }
 
+// this one is used to interact with user data inside the app
 declare interface UserInput {
     _id: string
     name: string
@@ -22,9 +23,15 @@ declare interface UserInput {
     roomId: string
 }
 
-declare interface UserSignup {
+// this one is used for signup and login
+declare interface Signup {
     _id: string
     name: string
+    email: string
+    password: string
+}
+
+declare interface Login {
     email: string
     password: string
 }
@@ -88,9 +95,9 @@ declare interface Order {
 
 declare interface OrderInput {
     _id: string
-    stuffIds: string[]
     clientID: string
     roomId: string
+    stuffIds: string[]
     message: string
     payed: boolean
     amount: number

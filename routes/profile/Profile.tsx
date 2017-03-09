@@ -3,7 +3,7 @@ import * as mobx from 'mobx';
 import * as guid from 'node-uuid';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router';
-import { Input, newField } from 'components/form';
+import { Input } from 'components/form';
 import { nonEmpty, email, hasChanged } from 'components/form/Constraint';
 import { layoutState } from 'routes/layout/Layout';
 import Loader from 'graph/Loader';
