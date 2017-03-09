@@ -6,15 +6,17 @@ import { Field, EditableRoom } from 'models';
 
 export class EditableUser {
     _id: string;
-    name: Field< string >
+    @mobx.observable name: Field<string>
     email: Field< string >
     password: Field< string >
     confirmPassword: Field< string >
+    picture: Field< string >
     room?: EditableRoom
     constructor(user: User) {
         this._id = user._id || guid.v1();
         this.name = new Field( user.name || "", [ C.nonEmpty(), C.atLeast(4) ]  );
         this.email = new Field( user.email || "", [ C.nonEmpty(), C.email() ]  );
+        this.picture = new Field( user.picture || "" );
         this.password = new Field( user.password || "", [ C.nonEmpty(), C.password() ]  );
         this.confirmPassword = new Field( "", [ C.nonEmpty(), C.password(), C.sameAs(this.password) ]  );
         this.room = user.room ? new EditableRoom(user.room) : null;
@@ -52,6 +54,7 @@ export class UserInput implements UserInput {
     constructor(
         public name: string,
         public email: string,
-        public roomId?: string
+        public roomId?: string,
+        public picture?: string
     ) {}
 }

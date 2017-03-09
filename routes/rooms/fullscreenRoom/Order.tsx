@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from 'react-router';
 
-import { Input, newField } from 'components/form';
+import { Input } from 'components/form';
 
 import { RoomState } from './FullscreenRoom';
 

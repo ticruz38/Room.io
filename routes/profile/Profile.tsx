@@ -21,44 +21,29 @@ const Document = require('./Profile.gql');
 
 
 class ProfileState extends Loader {
-    _id: string = layoutState.user._id;
-
-    @mobx.observable name: Field = new models.Field( "", [nonEmpty(), hasChanged(layoutState.user['name'])])
-
-    @mobx.observable email: Field = new models.Field( "", [email(), hasChanged(layoutState.user["email"])])
-
-    @mobx.observable room: Room;
-
-    @mobx.observable picture: string;
-
-    @mobx.computed get saveable(): boolean {
-        return (
-            this.name.isValid ||
-            this.email.isValid
-        );
+    @mobx.observable user: models.EditableUser
+    get room(): models.EditableRoom {
+        return this.user.room;
     }
-
     createRoom() {
         this.execute('CreateRoom', {
-            variables: {room: new models.RoomInput(this._id) },
+            variables: {room: new models.RoomInput(this.user._id) },
             cb: (data: any) => {
-                this.room = data.addRoom;
+                this.user.room = data.addRoom;
             }
         })
     }
-
     deleteRoom() {
         this.execute( 'DeleteRoom', {
-            variables: {id: this.room._id },
+            variables: {id: this.user.room._id },
             cb: (data: any) => {
-                this.room = null;
+                this.user.room = null;
             }
         })
     }
-
     @mobx.computed get toolbar() {
-        const SaveButton = this.saveable ? <button>Save Changes</button> : null;
-        const CreateRoom = this.room ?
+        const SaveButton = this.user && this.user.hasChanged ? <button>Save Changes</button> : null;
+        const CreateRoom = this.user && this.user.room ?
             null :
             <button onClick={ _ => this.createRoom() } >Add a room</button>;
         return (
@@ -68,14 +53,15 @@ class ProfileState extends Loader {
             </div>
         );
     }
-
-    read(data) {
-        const { profile } = data;
-        if (!profile) throw 'oops, profile hasnt been fetched';
-        this.name.value = profile.name;
-        this.email.value = profile.email;
-        this.room = profile.room ? mobx.extendObservable(this.room || {}, profile.room) : null;
-        this.picture = profile.picture;
+    loadProfile() {
+        this.execute('ProfileQuery', {
+            variables: { id: layoutState.user["_id"] },
+            cb: (data: any) => {
+                const { profile } = data;
+                if (!profile) throw 'oops, profile hasnt been fetched';
+                this.user = new models.EditableUser( profile );
+            }
+        });
     }
 }
 // TODO see if the execute should not only happen in the willMount cb of the component
@@ -87,17 +73,8 @@ export const profileState = new ProfileState(Document);
 @observer
 export default class Profile extends React.Component<any, any> {
 
-    loadData() {
-        profileState.execute('ProfileQuery', {
-            variables: { id: layoutState.user["_id"] },
-            cb: (data) => {
-                profileState.read(data);
-            }
-        });
-    }
-
     componentWillMount() {
-        this.loadData();
+        profileState.loadProfile();
         layoutState.reset();
         layoutState.title = "Profile";
         layoutState.backgroundImage = "https://vanessaberryworld.files.wordpress.com/2013/10/teen-room-desk.jpg";
@@ -106,7 +83,7 @@ export default class Profile extends React.Component<any, any> {
 
     @mobx.computed get categories() {
         const categories = {};
-        ( profileState.room.stuffs || []).map( s => categories[s.category] ? categories[s.category].push(s) : categories[s.category] = [s] )
+        ( profileState.room.stuffs || []).map( s => categories[s.category.value] ? categories[s.category.value].push(s) : categories[s.category.value] = [s] )
         return categories;
     }
 
@@ -140,26 +117,28 @@ export default class Profile extends React.Component<any, any> {
     }
 
     render() {
+        const { user } = profileState;
+        if(!user) return <span/>
         return (
             <div className="profile">
                 <div className="profile-header">
-                    <img src={profileState.picture ? 'https://ipfs.io/ipfs/' + profileState.picture : 'https://www.jimfitzpatrick.com/wp-content/uploads/2012/10/Che-detail-1.jpg'} />
+                    <img src={ user.picture.value ? 'https://ipfs.io/ipfs/' + user.picture : 'https://www.jimfitzpatrick.com/wp-content/uploads/2012/10/Che-detail-1.jpg'} />
                     <div className="user-information card">
                         <h2>Profile Information</h2>
                         <Input
-                            field={profileState.name}
+                            field={user.name}
                             type="text"
                             placeholder="name"
                         />
                         <Input
-                            field={profileState.email}
+                            field={user.email}
                             type="email"
                             placeholder="email"
                         />
                     </div>
                 </div>
                 <div className='profile-room'>
-                    { profileState.room ? <RoomEditor { ...profileState } /> : null }
+                    { user.room ? <RoomEditor { ...user.room } /> : null }
                     { this.categoriesElement }
                 </div>
             </div>

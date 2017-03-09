@@ -10,6 +10,7 @@ declare interface User {
   _id?: string
   name?: string
   email?: string
+  picture?: string;
   password?: string
   room: Room
 }
@@ -64,7 +65,6 @@ declare interface Room {
   email?: string
   phoneNumber?: string
   picture?: string
-  categories?: string[]
   stuffs?: Stuff[]
   orders?: Order[]
 }
@@ -77,8 +77,6 @@ declare interface RoomInput {
     email?: string,
     phoneNumber?: string,
     picture?: string
-    categories?: string[]
-    stuffs?: StuffInput[]
 }
 
 declare interface Order {
