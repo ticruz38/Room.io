@@ -2,6 +2,7 @@ declare interface Field {
   value: any;
   constraints: Function[];
   isValid: boolean;
+  hasChanged: boolean;
 }
 
 declare type ObjectLitteral = { [prop: string]: string }
