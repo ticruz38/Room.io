@@ -3,7 +3,9 @@ import * as mobx from 'mobx';
 import * as C from 'components/form/Constraint';
 
 import { Field, EditableStuff, EditableOrder } from 'models';
+import Loader from "graph/Loader";
 
+const Document = require('./models.gql');
 
 export class EditableRoom {
     _id: string;
@@ -25,6 +27,15 @@ export class EditableRoom {
             phoneNumber: this.phoneNumber.value,
             picture: this.picture.value
         }
+    }
+    save(cb?: Function): void {
+        Loader.execute( Document, 'SaveRoom', { room: this.toRoomInput } )
+            .then( room => cb(room), error => console.log( error ) );
+    }
+
+    delete(cb?: Function): void {
+        Loader.execute( Document, 'DeleteRoom', {id: this._id } )
+            .then( room => cb(room), error => console.log( error ) );
     }
     constructor(room?: Room, userId?: string ) {
         if( !room && !userId ) throw 'please pass either a room or an userId as arguments in EditableRoom constructor';

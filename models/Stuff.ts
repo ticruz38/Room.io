@@ -2,7 +2,9 @@ import * as guid from 'node-uuid';
 import * as mobx from 'mobx';
 import * as C from 'components/form/Constraint';
 import { Field } from 'models';
+import Loader from "graph/Loader";
 
+const Document = require('./models.gql');
 
 
 export class EditableStuff {
@@ -23,6 +25,15 @@ export class EditableStuff {
             picture: this.picture.value,
             price: this.price.value
         }
+    }
+    save(cb?: Function): void {
+        Loader.execute( Document, 'SaveStuff', { stuff: this.toStuffInput } )
+            .then( stuff => cb(stuff), error => console.log( error ) );
+    }
+
+    delete(cb?: Function): void {
+        Loader.execute( Document, 'DeleteStuff', {id: this._id } )
+            .then( stuff => cb(stuff), error => console.log( error ) );
     }
     constructor(stuff: Stuff, roomId?: string) {
         if( !stuff && !roomId ) throw 'please pass either Stuff or roomId as EditableStuff constructor arguments';

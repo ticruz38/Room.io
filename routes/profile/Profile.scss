@@ -12,10 +12,13 @@
     display: flex;
     align-items: flex-start;
     img {
-      border-radius: 10em;
-      flex-grow: 1;
-      max-width: 15em;
-      max-height: 15em;
+        border-radius: 10em;
+        flex-grow: 1;
+        margin: 1em;
+        min-width: 8em;
+        width: 10%;
+        max-width: 15em;
+        max-height: 15em;
     }
     .user-information {
       flex-grow: 2;

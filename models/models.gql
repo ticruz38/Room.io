@@ -1,0 +1,52 @@
+mutation SaveOrder($order: OrderInput!) {
+    updateOrder(order: $order) {
+        _id
+    }
+}
+
+mutation DeleteOrder($id: String!) {
+    deleteOrder(id: $id) {
+        _id
+        name
+    }
+}
+
+mutation SaveRoom($room: RoomInput!) {
+    updateRoom(room: $room) {
+        _id
+    }
+}
+
+mutation DeleteRoom($id: String!) {
+    deleteRoom(id: $id) {
+        _id
+        name
+    }
+}
+
+mutation SaveStuff($stuff: StuffInput!) {
+    updateStuff(stuff: $stuff) {
+        _id
+    }
+}
+
+mutation DeleteStuff($id: String!) {
+    deleteStuff(id: $id) {
+        _id
+        name
+    }
+}
+
+mutation SaveUser($user: UserInput!) {
+    updateUser(user: $user) {
+        _id
+    }
+}
+
+mutation DeleteUser($id: String!) {
+    deleteUser(id: $id) {
+        _id
+        name
+    }
+}
+

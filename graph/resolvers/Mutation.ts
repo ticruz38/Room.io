@@ -4,6 +4,30 @@ import * as graphql from 'graphql';
 const logger = require('logplease');
 
 export default {
+    addOrder( root, {order}, context ) {
+        logger.info("adding order");
+        db.order.then(dborder => dborder.put( order ).then( hash => {
+            logger.info('successfully added order', hash);
+            return order
+        } ) );
+        return order;
+    },
+    deleteOrder(root, {id}, context ) {
+        logger.info('deleting order', id);
+        db.order.then( dborder => dborder.del(id)
+            .then(removed => {
+                logger.info('well removed', removed)
+                return removed;
+            } ) )
+    },
+    updateOrder(root, {order}, context ) {
+        logger.info('updating order', order._id);
+        return db.order.then( dborder => dborder.put( order ).then( hash => {
+            logger.info('successfully updated order', hash);
+            //logger.info('try to get order by id', db.order.get(hash))
+            return order
+        }));
+    },
     addRoom( root, {room}, context ) {
         logger.info("adding room");
         db.room.then(dbroom => dbroom.put( room ).then( hash => {
@@ -15,7 +39,11 @@ export default {
     },
     deleteRoom(root, {id}, context ) {
         logger.info('deleting room', id);
-        db.room.then( dbroom => dbroom.del(id).then(removed => logger.info('well removed', removed) ) )
+        db.room.then( dbroom => dbroom.del(id)
+            .then(removed => {
+                logger.info('well removed', removed)
+                return removed;
+            } ) )
     },
     updateRoom(root, {room}, context ) {
         logger.info('updating room', room._id);
@@ -31,15 +59,20 @@ export default {
             return stuff
         } ) );
     },
+    deleteStuff( root, {id}, context) {
+        db.stuff.then( dbStuff => dbStuff.del(id)
+            .then(removed => {
+                logger.info('well removed', removed);
+                return removed;
+            } ) 
+        )
+    },
     updateStuff( root, {stuff} ) {
         return db.stuff.then(dbStuff => dbStuff.put( stuff ).then( hash => {
             logger.info('successfully updated stuff', hash);
             //logger.info('try to get stuff by id', db.stuff.get(hash))
             return stuff
         } ) );
-    },
-    deleteStuff( root, {id}, context) {
-        db.stuff.then( dbStuff => dbStuff.del(id).then(removed => logger.info('well removed', removed) ) )
     },
     // User Mutation
     signup(root, { user }, context: Storage) {
@@ -50,6 +83,14 @@ export default {
                 return user;
             } );
         } );
+    },
+    deleteUser( root, { id }, context ) {
+        db.user.then( dbUser => dbUser.del(id)
+            .then(removed => {
+                logger.info('well removed', removed);
+                return removed;
+            } )
+        )
     },
     // Update User
     updateUser(root, { user }, context) {
