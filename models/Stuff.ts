@@ -35,6 +35,8 @@ export class EditableStuff {
         Loader.execute( Document, 'DeleteStuff', {id: this._id } )
             .then( stuff => cb(stuff), error => console.log( error ) );
     }
+
+    // observe (graphql subscription...)
     constructor(stuff: Stuff, roomId?: string) {
         if( !stuff && !roomId ) throw 'please pass either Stuff or roomId as EditableStuff constructor arguments';
         this._id = stuff ? stuff._id : guid.v1();

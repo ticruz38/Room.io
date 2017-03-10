@@ -37,6 +37,8 @@ export class EditableRoom {
         Loader.execute( Document, 'DeleteRoom', {id: this._id } )
             .then( room => cb(room), error => console.log( error ) );
     }
+
+    // observe graphql subscription
     constructor(room?: Room, userId?: string ) {
         if( !room && !userId ) throw 'please pass either a room or an userId as arguments in EditableRoom constructor';
         this._id = room ? room._id : guid.v1();

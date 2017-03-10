@@ -16,10 +16,13 @@ type InputProps = {
 export default class Input extends React.Component< InputProps, any > {
 
     i: number = -1;
+    initialValue: any;
+    componentWillMount() {
+        this.initialValue = this.props.field.value;
+    }
 
     get isValid(): boolean {
         const {field} = this.props
-        if( field.value === undefined ) return true;
         return !field.constraints.find(constraint => !constraint(field.value).isValid)
     }
 
@@ -48,6 +51,7 @@ export default class Input extends React.Component< InputProps, any > {
                     value={ field.value }
                     onChange={ e => {
                         field.isValid = !field.constraints.find(constraint => !constraint(e.currentTarget.value).isValid )
+                        field.hasChanged = e.currentTarget.value === this.initialValue;
                         field.value = e.currentTarget.value
                     } }
                     min={ this.props.min }

@@ -14,32 +14,19 @@ import StuffEditor from './visuals/StuffEditor';
 import EditButtons from './visuals/EditButtons';
 
 //models 
-import * as models from 'models';
+import { EditableRoom, EditableUser } from "models";
 
 const Document = require('./Profile.gql');
 
 
 
 class ProfileState extends Loader {
-    @mobx.observable user: models.EditableUser
-    get room(): models.EditableRoom {
+    @mobx.observable user: EditableUser
+    get room(): EditableRoom {
         return this.user.room;
     }
     createRoom() {
-        this.execute('CreateRoom', {
-            variables: {room: new models.RoomInput(this.user._id) },
-            cb: (data: any) => {
-                this.user.room = data.addRoom;
-            }
-        })
-    }
-    deleteRoom() {
-        this.execute( 'DeleteRoom', {
-            variables: {id: this.user.room._id },
-            cb: (data: any) => {
-                this.user.room = null;
-            }
-        })
+        this.user.room = new EditableRoom( null, this.user._id );
     }
     @mobx.computed get toolbar() {
         const SaveButton = this.user && this.user.hasChanged ? <button>Save Changes</button> : null;
@@ -59,7 +46,7 @@ class ProfileState extends Loader {
             cb: (data: any) => {
                 const { profile } = data;
                 if (!profile) throw 'oops, profile hasnt been fetched';
-                this.user = new models.EditableUser( profile );
+                this.user = new EditableUser( profile );
             }
         });
     }
