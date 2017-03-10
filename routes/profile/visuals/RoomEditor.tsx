@@ -3,7 +3,7 @@ import * as mobx from 'mobx';
 import { observer } from 'mobx-react';
 import { Input } from 'components/form';
 //models
-import { StuffInput, Field, EditableRoom } from 'models';
+import { StuffInput, Field, EditableRoom, EditableStuff } from 'models';
 //layout
 import { layoutState } from 'routes/layout/Layout';
 
@@ -17,7 +17,7 @@ import StuffEditor from './StuffEditor';
 @observer
 export default class RoomEditor extends React.Component< EditableRoom, any > {
     render() {
-        const { name, description, email } = this.props;
+        const { name, description, email, stuffs } = this.props;
         return (
             <div className="room card">
                 <h2>Room</h2>
@@ -28,7 +28,7 @@ export default class RoomEditor extends React.Component< EditableRoom, any > {
                 <div className="action-button">
                     <button
                         className='btn'
-                        onClick={_ => layoutState.modal = <StuffEditor { ...new StuffInput( this.props._id ) }/>}
+                        onClick={_ => layoutState.modal = <StuffEditor { ...new EditableStuff(this.props._id) }/>}
                     >Add Stuff
                     </button>
                 </div>

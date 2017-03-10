@@ -16,5 +16,8 @@ export class Field< T > {
         value: T,
         public constraints: Function[] = [],
         isValid: boolean = false
-    ) {}
+    ) {
+        this.value = value;
+        this.isValid = isValid;
+    }
 }
