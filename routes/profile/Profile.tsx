@@ -59,7 +59,6 @@ export const profileState = new ProfileState(Document);
 
 @observer
 export default class Profile extends React.Component<any, any> {
-
     componentWillMount() {
         profileState.loadProfile();
         layoutState.reset();

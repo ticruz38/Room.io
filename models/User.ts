@@ -7,25 +7,30 @@ import { Field, EditableRoom } from 'models';
 export class EditableUser {
     _id: string;
     @mobx.observable name: Field<string>
-    email: Field< string >
-    password: Field< string >
-    confirmPassword: Field< string >
-    picture: Field< string >
+    email: Field<string>
+    password: Field<string>
+    confirmPassword: Field<string>
+    picture: Field<string>
     room?: EditableRoom
-    constructor(user: User) {
+    constructor( user: User ) {
         this._id = user._id || guid.v1();
-        this.name = new Field( user.name || "", [ C.nonEmpty(), C.atLeast(4) ]  );
-        this.email = new Field( user.email || "", [ C.nonEmpty(), C.email() ]  );
+        this.name = new Field( user.name ||  "", [C.nonEmpty(), C.atLeast( 4 )] );
+        this.email = new Field( user.email ||  "", [C.nonEmpty(), C.email()] );
         this.picture = new Field( user.picture || "" );
-        this.password = new Field( user.password || "", [ C.nonEmpty(), C.password() ]  );
-        this.confirmPassword = new Field( "", [ C.nonEmpty(), C.password(), C.sameAs(this.password) ]  );
-        this.room = user.room ? new EditableRoom(user.room) : null;
+        this.password = new Field( user.password ||  "", [C.nonEmpty(), C.password()] );
+        this.confirmPassword = new Field( "", [C.nonEmpty(), C.password(), C.sameAs( this.password )] );
+        this.room = user.room ? new EditableRoom( user.room ) : null;
     }
     @mobx.computed get hasChanged(): boolean {
-        return this.name.hasChanged || this.email.hasChanged || this.room.hasChanged
+        return this.name.hasChanged ||
+        this.email.hasChanged
     }
     @mobx.computed get isValid(): boolean {
-        return this.name.isValid || this.email.isValid || this.password.isValid || this.room.isValid
+        return (
+            this.name.isValid ||
+            this.email.isValid ||
+            this.password.isValid
+        )
     }
     toSignup(): Signup {
         return {
@@ -56,5 +61,5 @@ export class UserInput implements UserInput {
         public email: string,
         public roomId?: string,
         public picture?: string
-    ) {}
+    ) { }
 }

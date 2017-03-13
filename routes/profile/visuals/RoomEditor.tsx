@@ -31,12 +31,12 @@ export default class RoomEditor extends React.Component< EditableRoom, any > {
                         onClick={_ => layoutState.modal = <StuffEditor { ...new EditableStuff(this.props._id) }/>}
                     >Add Stuff
                     </button>
-                    hasChanged ?
+                    { hasChanged ?
                     <button
                         className="btn"
                         onClick={ _ => this.props.save() }
                     >Save Changes
-                    </button>
+                    </button> : null }
                 </div>
             </div>
         );

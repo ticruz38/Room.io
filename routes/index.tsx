@@ -31,7 +31,6 @@ export default {
       { path: 'graphiql', component: Graph },
       require('./profile'),
       require('./rooms'),
-      require('./start'),
       require('./welcome'),
       require('./dashboard'),
       require('./tables')

@@ -25,24 +25,20 @@ export class RoomState extends Loader {
   @observable room: Room
   @observable caddy: Stuff[] = [];
   @observable message: string;
-
   @computed get amount(): number {
     return this.caddy.reduce((prev, cur) => prev + cur.price || 0, 0 )
   }
-
   // stuff listed by categories
   @computed get categories(): {string?: Stuff[]} {
     const categories: {string?: Stuff[]} = {};
     this.room.stuffs.map(s => categories[s.category] ? categories[s.category].push(s) : categories[s.category] = [s])
     return categories;
   }
-
   @computed get caddyByCategories(): {string?: Stuff[]} {
     const categories: {string?: Stuff[]} = {};
     this.caddy.map(s => categories[s.category] ? categories[s.category].push(s) : categories[s.category] = [s])
     return categories;
   }
-
   addCaddyItem(stuff: Stuff) {
     this.caddy.push(stuff);
   }

@@ -13,7 +13,7 @@ declare interface User {
   email?: string
   picture?: string;
   password?: string
-  room: Room
+  room?: Room
 }
 
 // this one is used to interact with user data inside the app
