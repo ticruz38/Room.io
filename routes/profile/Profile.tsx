@@ -22,17 +22,18 @@ const Document = require('./Profile.gql');
 
 class ProfileState extends Loader {
     @mobx.observable user: EditableUser;
+
     get room(): EditableRoom {
         return this.user.room;
     }
     createRoom() {
-        this.user.room = new EditableRoom( null, this.user._id );
+        this.user.room = new EditableRoom(null, this.user._id);
     }
     @mobx.computed get toolbar() {
         const SaveButton = this.user && this.user.hasChanged ? <button>Save Changes</button> : null;
         const CreateRoom = this.user && this.user.room ?
             null :
-            <button onClick={ _ => this.createRoom() }>Add a room</button>;
+            <button onClick={_ => this.createRoom()}>Add a room</button>;
         return (
             <div>
                 {SaveButton}
@@ -46,7 +47,7 @@ class ProfileState extends Loader {
             cb: (data: any) => {
                 const { profile } = data;
                 if (!profile) throw 'oops, profile hasnt been fetched';
-                this.user = new EditableUser( profile );
+                this.user = new EditableUser(profile);
             }
         });
     }
@@ -69,33 +70,35 @@ export default class Profile extends React.Component<any, any> {
 
     @mobx.computed get categories() {
         const categories = {};
-        ( profileState.room.stuffs || []).map( s => categories[s.category.value] ? categories[s.category.value].push(s) : categories[s.category.value] = [s] )
+        (profileState.room.stuffs || []).map(s => categories[s.category.value] ? categories[s.category.value].push(s) : categories[s.category.value] = [s])
         return categories;
     }
 
     get categoriesElement() {
         const onClose = (stuff) => {
-            const index = profileState.room.stuffs.findIndex( s => stuff._id === s._id );
+            const index = profileState.room.stuffs.findIndex(s => stuff._id === s._id);
             profileState.room.stuffs.splice(index, 1);
         };
         return profileState.room ?
-            Object.keys(this.categories).map(key => (
-                <div className="category card">
+            Object.keys(this.categories).sort( (a, b) => a > b ? 1 : 0 ).map(key => (
+                <div key={key} className="category card">
                     <h2>{key}</h2>
-                    <table key={key} className='profile-stuffs'>
-                        { this.categories[key].map(s => (
-                            <tr key={s._id} className="stuff">
-                                <td className="name">{s.name}</td>
-                                <td>
-                                    <div className="description">
-                                        {s.description}
-                                        <button className="btn" onClick={e => onClose(e)}>
-                                            <i className="material-icons">close</i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ) ) }
+                    <table className='profile-stuffs'>
+                        <tbody>
+                            {this.categories[key].map(s => (
+                                <tr key={s._id} className="stuff">
+                                    <td className="name">
+                                        <Input type="text" field={s.name} />
+                                    </td>
+                                    <td>
+                                        <div className="description">
+                                            <Input type="text" field={s.description} />
+                                            <i className="material-icons close" onClick={ e => s.delete( _ => onClose(s) ) }>close</i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </table>
                 </div>
             )) :
@@ -104,12 +107,11 @@ export default class Profile extends React.Component<any, any> {
 
     render() {
         const { user } = profileState;
-        console.log(user);
-        if(!user) return <span/>
+        if (!user) return <span />;
         return (
             <div className="profile">
                 <div className="profile-header">
-                    <img src={ user.picture.value ? 'https://ipfs.io/ipfs/' + user.picture : 'https://www.jimfitzpatrick.com/wp-content/uploads/2012/10/Che-detail-1.jpg'} />
+                    <img src={user.picture.value ? 'https://ipfs.io/ipfs/' + user.picture : 'https://www.jimfitzpatrick.com/wp-content/uploads/2012/10/Che-detail-1.jpg'} />
                     <div className="user-information card">
                         <h2>Profile Information</h2>
                         <Input
@@ -125,8 +127,8 @@ export default class Profile extends React.Component<any, any> {
                     </div>
                 </div>
                 <div className='profile-room'>
-                    { user.room ? <RoomEditor { ...user } /> : null }
-                    { this.categoriesElement }
+                    {user.room ? <RoomEditor { ...user } /> : null}
+                    {this.categoriesElement}
                 </div>
             </div>
         )

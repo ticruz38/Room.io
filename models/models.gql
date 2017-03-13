@@ -7,7 +7,6 @@ mutation SaveOrder($order: OrderInput!) {
 mutation DeleteOrder($id: String!) {
     deleteOrder(id: $id) {
         _id
-        name
     }
 }
 

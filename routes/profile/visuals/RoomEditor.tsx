@@ -3,7 +3,7 @@ import * as mobx from 'mobx';
 import { observer } from 'mobx-react';
 import { Input } from 'components/form';
 //models
-import { StuffInput, Field, EditableRoom, EditableStuff } from 'models';
+import { StuffInput, Field, EditableRoom, EditableStuff, EditableUser } from 'models';
 //layout
 import { layoutState } from 'routes/layout/Layout';
 
@@ -17,24 +17,24 @@ import StuffEditor from './StuffEditor';
 @observer
 export default class RoomEditor extends React.Component< EditableUser, any > {
     render() {
-        const { name, description, email, stuffs, hasChanged } = this.props.room;
+        const { room } = this.props;
         return (
             <div className="room card">
                 <h2>Room</h2>
-                <i className="material-icons close" onClick={ e => this.props.delete( _ => profileState.user.room = null ) }>close</i>
-                <Input field={name} type="text" placeholder="room name" />
-                <Input field={description} type="text" placeholder="room description" />
-                <Input field={email} type="text" placeholder="room email" />
+                <i className="material-icons close" onClick={ e => room.delete( _ => profileState.user.room = null ) }>close</i>
+                <Input field={room.name} type="text" placeholder="room name" />
+                <Input field={room.description} type="text" placeholder="room description" />
+                <Input field={room.email} type="text" placeholder="room email" />
                 <div className="action-button">
                     <button
                         className="btn"
                         onClick={_ => layoutState.modal = <StuffEditor { ...new EditableStuff(this.props._id) }/>}
                     >Add Stuff
                     </button>
-                    { hasChanged ?
+                    { room.hasChanged ?
                     <button
                         className="btn"
-                        onClick={ _ => this.props.save() }
+                        onClick={ _ => room.save() }
                     >Save Changes
                     </button> : null }
                 </div>

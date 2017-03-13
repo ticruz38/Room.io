@@ -44,11 +44,6 @@
           right: -10px;
           transition: opacity 0.2s linear
       }
-      &:hover {
-          .close {
-              opacity: 1;
-          }
-      }
   }
   .profile-room {
     margin: 1em 0;
@@ -63,6 +58,11 @@
       }
     }
     .room {
+      &:hover {
+          .close {
+              opacity: 1;
+          }
+      }
     }
     .category {
       table.profile-stuffs {
@@ -79,13 +79,11 @@
             align-items: center;
             justify-content: space-between;
             display: flex;
-            button {
-              visibility: hidden;
-            }
+            position: relative;
             &:hover {
-              button {
-                visibility: visible;
-              }
+                .close {
+                    opacity: 1;
+                }
             }
           }
         }
