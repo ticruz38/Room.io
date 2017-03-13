@@ -21,7 +21,7 @@ const Document = require('./Profile.gql');
 
 
 class ProfileState extends Loader {
-    @mobx.observable user: EditableUser
+    @mobx.observable user: EditableUser;
     get room(): EditableRoom {
         return this.user.room;
     }
@@ -32,7 +32,7 @@ class ProfileState extends Loader {
         const SaveButton = this.user && this.user.hasChanged ? <button>Save Changes</button> : null;
         const CreateRoom = this.user && this.user.room ?
             null :
-            <button onClick={ _ => this.createRoom() } >Add a room</button>;
+            <button onClick={ _ => this.createRoom() }>Add a room</button>;
         return (
             <div>
                 {SaveButton}
@@ -104,6 +104,7 @@ export default class Profile extends React.Component<any, any> {
 
     render() {
         const { user } = profileState;
+        console.log(user);
         if(!user) return <span/>
         return (
             <div className="profile">
@@ -124,7 +125,7 @@ export default class Profile extends React.Component<any, any> {
                     </div>
                 </div>
                 <div className='profile-room'>
-                    { user.room ? <RoomEditor { ...user.room } /> : null }
+                    { user.room ? <RoomEditor { ...user } /> : null }
                     { this.categoriesElement }
                 </div>
             </div>

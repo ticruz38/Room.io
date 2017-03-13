@@ -10,7 +10,7 @@ const Document = require('./models.gql');
 export class EditableRoom {
     _id: string;
     userId: string;
-    name: Field< string >;
+    @mobx.observable name: Field< string >;
     description: Field< string >;
     email: Field< string >;
     phoneNumber: Field< string >;
@@ -52,6 +52,7 @@ export class EditableRoom {
         this.orders = !!room && !!room.orders ? room.orders.map( o => new EditableOrder(o) ) : [];
     }
     @mobx.computed get hasChanged(): boolean {
+        console.log('roomChanged');
         return this.name.hasChanged || 
         this.description.hasChanged || 
         this.email.hasChanged ||
@@ -59,11 +60,11 @@ export class EditableRoom {
         this.picture.hasChanged
     }
     @mobx.computed get isValid(): boolean {
-        return this.name.hasChanged ||
-        this.description.hasChanged ||
-        this.email.hasChanged ||
-        this.phoneNumber.hasChanged ||
-        this.picture.hasChanged
+        return this.name.isValid &&
+        this.description.isValid &&
+        this.email.isValid &&
+        this.phoneNumber.isValid &&
+        this.picture.isValid
     }
 }
 export class RoomInput implements RoomInput {

@@ -15,9 +15,9 @@ import StuffEditor from './StuffEditor';
 
 
 @observer
-export default class RoomEditor extends React.Component< EditableRoom, any > {
+export default class RoomEditor extends React.Component< EditableUser, any > {
     render() {
-        const { name, description, email, stuffs, hasChanged, isValid } = this.props;
+        const { name, description, email, stuffs, hasChanged } = this.props.room;
         return (
             <div className="room card">
                 <h2>Room</h2>

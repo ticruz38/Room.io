@@ -11,7 +11,7 @@ export class EditableUser {
     password: Field<string>
     confirmPassword: Field<string>
     picture: Field<string>
-    room?: EditableRoom
+    @mobx.observable room?: EditableRoom
     constructor( user: User ) {
         this._id = user._id || guid.v1();
         this.name = new Field( user.name ||  "", [C.nonEmpty(), C.atLeast( 4 )] );
