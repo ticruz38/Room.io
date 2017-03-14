@@ -74,17 +74,25 @@
           width: 12em;
         }
         .stuff {
+          .close {
+            position: static;
+          }
+          &:hover {
+              .close {
+                  opacity: 1;
+              }
+          }
+          >:first-child {
+            position: relative;
+            text-align: center;
+            width: 2em;
+          }
           padding: 0 0 0 5px;
           .description {
             align-items: center;
             justify-content: space-between;
             display: flex;
             position: relative;
-            &:hover {
-                .close {
-                    opacity: 1;
-                }
-            }
           }
         }
       }

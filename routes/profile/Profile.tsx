@@ -87,13 +87,15 @@ export default class Profile extends React.Component<any, any> {
                         <tbody>
                             {this.categories[key].map(s => (
                                 <tr key={s._id} className="stuff">
+                                    <td>
+                                        <i className="material-icons close" onClick={ e => s.delete( _ => onClose(s) ) }>close</i>
+                                    </td>
                                     <td className="name">
                                         <Input type="text" field={s.name} />
                                     </td>
                                     <td>
                                         <div className="description">
                                             <Input type="text" field={s.description} />
-                                            <i className="material-icons close" onClick={ e => s.delete( _ => onClose(s) ) }>close</i>
                                         </div>
                                     </td>
                                 </tr>
