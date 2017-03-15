@@ -3,6 +3,9 @@ import * as mobx from 'mobx';
 import * as C from 'components/form/Constraint';
 
 import { Field, EditableRoom } from 'models';
+import Loader from "graph/Loader";
+
+const Document = require('./models.gql');
 
 export class EditableUser {
     _id: string;
@@ -53,7 +56,23 @@ export class EditableUser {
             this.room ? this.room._id : undefined
         )
     }
+    save(cb?: Function): void {
+        Loader.execute( Document, 'SaveUser', { user: this.toUserInput } )
+            .then( room => cb(room), error => console.log( error ) );
+    }
+    login(cb?: Function): void {
+        Loader.execute( Document, 'Login', { user: this.toLogin } )
+            .then( user => cb(user), error => console.log(error ) );
+    }
+    signup(cb?: Function): void {
+        Loader.execute( Document, 'Signup')
+    }
+    delete(cb?: Function): void {
+        Loader.execute( Document, 'DeleteUser', {id: this._id } )
+            .then( room => cb(room), error => console.log( error ) );
+    }
 }
+
 export class UserInput implements UserInput {
     _id: string = guid.v1();
     constructor(

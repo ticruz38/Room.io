@@ -11,32 +11,29 @@ import { EditableStuff } from "models";
 //layout
 import { layoutState } from 'routes/layout/Layout';
 
-interface StuffProps extends StuffInput {
+interface StuffProps {
     roomId: string;
 }
 
 @observer
-export default class StuffEditor extends React.Component<EditableStuff, any> {
+export default class StuffEditor extends React.Component<StuffProps, any> {
 
-    save() {
-        profileState.execute('SaveStuff', {
-            variables: this.props.toStuffInput(),
-            cb: (data: any) => {
-                profileState.room.stuffs.push(data.addStuff)
-                layoutState.modal = null;
-            }
-        });
+    stuff: EditableStuff = new EditableStuff(null, this.props.roomId )
+
+    onSave = ( result ) => {
+        profileState.room.stuffs.push( this.stuff )
+        layoutState.modal = null;
     }
 
     render(): React.ReactElement< any > {
-        const { name, description, picture, price, category } = this.props;
+        const { name, description, picture, price, category } = this.stuff;
         return (
             <div className="stuff">
                 <Input field={name} type="text" placeholder="Stuff Name" />
                 <Input field={description} type="text" placeholder="Stuff Description" />
                 <Input field={category} type="text" placeholder="Stuff Category" />
-                {this.props.isValid ?
-                    <button className="btn" onClick={_ => this.save() }>Save</button> :
+                { this.stuff.isValid ?
+                    <button className="btn" onClick={_ => this.stuff.save( this.onSave ) }>Save</button> :
                     null
                 }
             </div>

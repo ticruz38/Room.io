@@ -24,13 +24,30 @@ class ProfileState extends Loader {
     @mobx.observable user: EditableUser;
 
     get room(): EditableRoom {
-        return this.user.room;
+        if( this.user ) return this.user.room;
+        return null;
     }
     createRoom() {
         this.user.room = new EditableRoom(null, this.user._id);
     }
+    // save potential changes in the profile
+    saveChanges: Function = () => {
+        if( this.user.hasChanged ) {
+            this.user.save();
+        }
+        if( this.room.hasChanged ) {
+            this.room.save();
+        }
+        this.room.stuffs.forEach( s => s.hasChanged ? s.save() : '' );
+    };
+
     @mobx.computed get toolbar() {
-        const SaveButton = this.user && this.user.hasChanged ? <button>Save Changes</button> : null;
+        const SaveButton = 
+            this.user && this.user.hasChanged ||
+            this.room && this.room.hasChanged ||
+            this.room && this.room.stuffs && this.room.stuffs.some(s => !!s.hasChanged) ? 
+            <button onClick={ _ => this.saveChanges() }>Save Changes</button> : 
+            null;
         const CreateRoom = this.user && this.user.room ?
             null :
             <button onClick={_ => this.createRoom()}>Add a room</button>;
@@ -103,7 +120,7 @@ export default class Profile extends React.Component<any, any> {
                         </tbody>
                     </table>
                 </div>
-            )) :
+            ) ) :
             null
     }
 
@@ -130,7 +147,7 @@ export default class Profile extends React.Component<any, any> {
                 </div>
                 <div className='profile-room'>
                     {user.room ? <RoomEditor { ...user } /> : null}
-                    {this.categoriesElement}
+                    { this.categoriesElement }
                 </div>
             </div>
         )

@@ -30,12 +30,12 @@ export class EditableRoom {
     }
     save(cb?: Function): void {
         Loader.execute( Document, 'SaveRoom', { room: this.toRoomInput } )
-            .then( room => cb(room), error => console.log( error ) );
+            .then( room => cb ? cb(room) : room, error => console.log( error ) );
     }
 
     delete(cb?: Function): void {
         Loader.execute( Document, 'DeleteRoom', {id: this._id } )
-            .then( room => cb(room), error => console.log( error ) );
+            .then( room => cb ? cb(room) : room, error => console.log( error ) );
     }
 
     // observe graphql subscription
@@ -48,8 +48,8 @@ export class EditableRoom {
         this.email = new Field( room ? room.email  : "" ); 
         this.phoneNumber = new Field( room ? room.phoneNumber  : "" );
         this.picture = new Field(room ? room.picture : null );
-        this.stuffs = !!room && !!room.stuffs ? room.stuffs.map( s => new EditableStuff(s) ) : [];
-        this.orders = !!room && !!room.orders ? room.orders.map( o => new EditableOrder(o) ) : [];
+        this.stuffs = !!room && !!room.stuffs ? room.stuffs.map( s => new EditableStuff(s, this._id) ) : [];
+        this.orders = !!room && !!room.orders ? room.orders.map( o => new EditableOrder(o, this._id) ) : [];
     }
     @mobx.computed get hasChanged(): boolean {
         console.log('roomChanged');

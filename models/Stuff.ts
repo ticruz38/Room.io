@@ -3,11 +3,12 @@ import * as mobx from 'mobx';
 import * as C from 'components/form/Constraint';
 import { Field } from 'models';
 import Loader from "graph/Loader";
+import Editable from "models/Editable";
 
 const Document = require('./models.gql');
 
 
-export class EditableStuff {
+export class EditableStuff extends Editable {
     _id: string;
     roomId: string;
     name: Field< string >;
@@ -15,29 +16,14 @@ export class EditableStuff {
     description: Field< string >;
     picture: Field< string >;
     price: Field< number >;
-    toStuffInput(): StuffInput {
-        return {
-            _id: this._id,
-            roomId: this.roomId,
-            name: this.name.value,
-            category: this.category.value,
-            description: this.description.value,
-            picture: this.picture.value,
-            price: this.price.value
-        }
-    }
-    save(cb?: Function): void {
-        Loader.execute( Document, 'SaveStuff', { stuff: this.toStuffInput } )
-            .then( stuff => cb(stuff), error => console.log( error ) );
-    }
 
-    delete(cb?: Function): void {
-        Loader.execute( Document, 'DeleteStuff', {id: this._id } )
-            .then( stuff => cb(stuff), error => console.log( error ) );
-    }
+    save = ( cb?: Function ) => this.execute( 'SaveStuff', { stuff: this.toInput() }, cb )
+    
+    delete = ( cb?: Function ) => this.execute( 'DeleteStuff', { id: this._id }, cb )
 
     // observe (graphql subscription...)
     constructor(stuff: Stuff, roomId?: string) {
+        super();
         if( !stuff && !roomId ) throw 'please pass either Stuff or roomId as EditableStuff constructor arguments';
         this._id = stuff ? stuff._id : guid.v1();
         this.roomId = stuff && stuff.room ? stuff.room._id : roomId;
@@ -47,21 +33,8 @@ export class EditableStuff {
         this.picture = new Field( stuff ? stuff.picture : "" );
         this.price = new Field( stuff ? stuff.price || 0 : 0 );
     }
-    @mobx.computed get hasChanged() {
-        return this.name.hasChanged ||
-        this.category.hasChanged ||
-        this.description.hasChanged ||
-        this.picture.hasChanged ||
-        this.price.hasChanged
-    }
-    @mobx.computed get isValid() {
-        return this.name.isValid ||
-        this.category.isValid ||
-        this.description.isValid ||
-        this.picture.isValid ||
-        this.price.isValid
-    }
 }
+
 export class StuffInput implements StuffInput {
     _id: string = guid.v1();
 

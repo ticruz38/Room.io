@@ -8,6 +8,10 @@ const User =  `
         password: String! #hash256 password
         room: Room #user rooms listed by Id
     }
+    input UserLogin {
+        email: String!
+        password: String!
+    }
 `;
 
 export default () => [User, Room];

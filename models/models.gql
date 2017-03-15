@@ -42,6 +42,20 @@ mutation SaveUser($user: UserInput!) {
     }
 }
 
+mutation Signup($user: UserSignup!) {
+    signup(user: $user) {
+        _id
+        name
+    }
+}
+
+query Login($user: UserLogin!) {
+    login(user: $user) {
+        _id
+        name
+    }
+}
+
 mutation DeleteUser($id: String!) {
     deleteUser(id: $id) {
         _id
