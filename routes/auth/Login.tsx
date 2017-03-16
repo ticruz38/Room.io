@@ -11,58 +11,50 @@ import loadApp from '../../';
 
 import { EditableUser } from "models";
 
-const Document = require( './Login.gql' );
-
-
-class LoginState {
-    user: EditableUser = new EditableUser( {} );
-    @observable errors: String[] = []
-    login() {
-        Loader.execute( Document, 'Login', this.user.toUserInput() ).then( result => {
-            if ( result.data['login'] ) {
-                sessionStorage.setItem( "user", JSON.stringify( result.data['login'] ) )
-                layoutState.isLogged = true
-                layoutState.modal = false;
-                loadApp();
-            }
-            if ( result.errors ) {
-                loginState.errors = result.errors.map( e => e.message );
-            }
-        } );
-    }
-}
-
-export const loginState = new LoginState();
-
-
-
-
 @observer
-export default class Login extends React.Component<any, LoginState> {
+export default class Login extends React.Component<any, any> {
+
+    user = new EditableUser({})
+    @observable errors: string[] = []
+
+    onSave = (result) => {
+        if( result.errors) {
+            return this.errors = result.errors;
+        }
+        sessionStorage.setItem( 'user', JSON.stringify( result.data.login ) );
+        layoutState.isLogged = true
+        layoutState.modal = null;
+    }
+
+    @computed get isValid() {
+        return (
+            this.user.email.isValid &&
+            this.user.password.isValid
+        )
+    }
     render() {
-        const { user } = loginState;
         return (
             <div className='login'>
                 <Input
                     label='Email'
-                    field={user.email}
+                    field={this.user.email}
                     type='text'
                 />
                 <Input
                     label='Password'
-                    field={user.password}
+                    field={this.user.password}
                     type='text'
                 />
                 <div className="question">
                     <button onClick={_ => layoutState.modal = <Signup />}>Not a member yet ?</button>
                 </div>
                 <div className="errors">
-                    {loginState.errors.map( e => <div>{e}</div> )}
+                    {this.errors.map( e => <div>{e}</div> )}
                 </div>
                 <div className="action-button">
                     {
-                        user.isValid ?
-                            <button onClick={_ => loginState.login()}>
+                        this.isValid ?
+                            <button onClick={_ => this.user.login( this.onSave )}>
                                 Login
                             </button> :
                             null

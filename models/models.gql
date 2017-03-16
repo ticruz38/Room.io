@@ -49,8 +49,8 @@ mutation Signup($user: UserSignup!) {
     }
 }
 
-query Login($user: UserLogin!) {
-    login(user: $user) {
+query Login($login: UserLogin!) {
+    login(login: $login) {
         _id
         name
     }

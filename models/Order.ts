@@ -3,27 +3,21 @@ import * as mobx from 'mobx';
 import * as C from 'components/form/Constraint';
 
 import { Field } from 'models';
+import Editable from "models/Editable";
 
-export class EditableOrder {
+export class EditableOrder extends Editable {
     _id: string;
     clientId: string;
     roomId: string;
-    @mobx.observable stuffIds: string[]
+    @mobx.observable stuffIds: string[];
     message: Field< string >;
     @mobx.observable payed: boolean;
     @mobx.observable amount: Field< number >;
-    toOrderInput(): OrderInput {
-        return {
-            _id: this._id,
-            clientId: this.clientId,
-            roomId: this.roomId,
-            stuffIds: this.stuffIds,
-            message: this.message.value,
-            payed: this.payed,
-            amount: this.amount.value
-        }
-    };
+    save = (cb?: Function) => this.execute( 'SaveOrder', { order: this.toInput() } )
+    delete = (cb?: Function) => this.execute( 'DeleteOrder', { id: this._id } )
     constructor(order?: Order, clientId?: string, roomId?: string) {
+        super();
+        if ( !order && ( !clientId || !roomId ) ) throw 'please pass required argument for EditableOrder';
         this._id = !!order ? order._id : guid.v1();
         this.clientId = !!order && order.client ? order.client._id : clientId;
         this.roomId = !!order && order.room ? order.room._id : roomId;
@@ -35,7 +29,7 @@ export class EditableOrder {
 }
 export class OrderInput implements OrderInput {
     _id: string;
-    constructor( 
+    constructor(
         public roomId: string, 
         public clientId: string, 
         public stuffIds: string[],

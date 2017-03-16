@@ -4,10 +4,11 @@ import * as C from 'components/form/Constraint';
 
 import { Field, EditableRoom } from 'models';
 import Loader from "graph/Loader";
+import Editable from "models/Editable";
 
 const Document = require('./models.gql');
 
-export class EditableUser {
+export class EditableUser extends Editable {
     _id: string;
     @mobx.observable name: Field<string>
     email: Field<string>
@@ -16,6 +17,7 @@ export class EditableUser {
     picture: Field<string>
     @mobx.observable room?: EditableRoom
     constructor( user: User ) {
+        super();
         this._id = user._id || guid.v1();
         this.name = new Field( user.name ||  "", [C.nonEmpty(), C.atLeast( 4 )] );
         this.email = new Field( user.email ||  "", [C.nonEmpty(), C.email()] );
@@ -23,17 +25,6 @@ export class EditableUser {
         this.password = new Field( user.password ||  "", [C.nonEmpty(), C.password()] );
         this.confirmPassword = new Field( "", [C.nonEmpty(), C.password(), C.sameAs( this.password )] );
         this.room = user.room ? new EditableRoom( user.room ) : null;
-    }
-    @mobx.computed get hasChanged(): boolean {
-        return this.name.hasChanged ||
-        this.email.hasChanged
-    }
-    @mobx.computed get isValid(): boolean {
-        return (
-            this.name.isValid ||
-            this.email.isValid ||
-            this.password.isValid
-        )
     }
     toSignup(): Signup {
         return {
@@ -49,28 +40,10 @@ export class EditableUser {
             password: this.password.value
         };
     }
-    toUserInput(): UserInput {
-        return new UserInput(
-            this.name.value,
-            this.email.value,
-            this.room ? this.room._id : undefined
-        )
-    }
-    save(cb?: Function): void {
-        Loader.execute( Document, 'SaveUser', { user: this.toUserInput } )
-            .then( room => cb(room), error => console.log( error ) );
-    }
-    login(cb?: Function): void {
-        Loader.execute( Document, 'Login', { user: this.toLogin } )
-            .then( user => cb(user), error => console.log(error ) );
-    }
-    signup(cb?: Function): void {
-        Loader.execute( Document, 'Signup')
-    }
-    delete(cb?: Function): void {
-        Loader.execute( Document, 'DeleteUser', {id: this._id } )
-            .then( room => cb(room), error => console.log( error ) );
-    }
+    save = (cb?: Function) => this.execute( 'SaveUser', { user: this.toInput() }, cb )
+    login = (cb?: Function) => this.execute( 'Login', { login: this.toLogin() }, cb )
+    signup = (cb?: Function ) => this.execute( 'Signup', { user: this.toSignup() }, cb )
+    delete = (cb?: Function ) => this.execute( 'DeleteUser', { id: this._id }, cb )
 }
 
 export class UserInput implements UserInput {

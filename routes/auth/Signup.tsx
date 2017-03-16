@@ -13,47 +13,43 @@ import Loader from 'graph/Loader';
 
 import { EditableUser } from "models";
 
-const Document = require( './Signup.gql' );
-
-
-
-class SignupState {
-    user: EditableUser = new EditableUser( {} )
-    signup() {
-        Loader.execute( Document, 'Signup', this.user.toUserInput() ).then( result => {
-            sessionStorage.setItem( 'user', JSON.stringify( result.data['signup'] ) )
-            layoutState.isLogged = true;
-        } );
-    }
-}
-export const signupState = new SignupState();
-
-
-
 @observer
-export default class Signup extends React.Component<any, SignupState> {
+export default class Signup extends React.Component<any, any> {
+    user: EditableUser = new EditableUser( {} )
+
+    onSave = (result) => {
+        sessionStorage.setItem( 'user', JSON.stringify( result.data.signup ) )
+        layoutState.isLogged = true
+    } 
+    @computed get isValid(): boolean {
+        return (
+            this.user.name.isValid &&
+            this.user.email.isValid &&
+            this.user.password.isValid &&
+            this.user.confirmPassword.isValid
+        );
+    }
     render() {
-        const { user } = signupState;
         return (
             <div className='signup'>
                 <Input
                     label='Name/Pseudo'
-                    field={user.name}
+                    field={this.user.name}
                     type='text'
                 />
                 <Input
                     label="Email"
-                    field={user.email}
+                    field={this.user.email}
                     type="email"
                 />
                 <Input
                     label='Password'
-                    field={user.password}
+                    field={this.user.password}
                     type='password'
                 />
                 <Input
                     label='Confirm Password'
-                    field={user.confirmPassword}
+                    field={this.user.confirmPassword}
                     type='password'
                 />
                 <div className="question">
@@ -61,10 +57,10 @@ export default class Signup extends React.Component<any, SignupState> {
                 </div>
                 <div className="action-button">
                     {
-                        user.isValid ?
-                            <button onClick={_ => signupState.signup()}>
+                        this.isValid ?
+                            <button onClick={_ => this.user.signup()}>
                                 Signup
-                        </button> :
+                            </button> :
                             null
                     }
                 </div>
