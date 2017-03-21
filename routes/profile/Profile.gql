@@ -8,6 +8,9 @@ query ProfileQuery($id: String!) {
       name
       description
       email
+      owner {
+        _id
+      }
       stuffs {
         _id
         name
@@ -17,44 +20,4 @@ query ProfileQuery($id: String!) {
       }
     }
   }
-}
-
-mutation CreateRoom($room: RoomInput!) {
-    addRoom(room: $room) {
-        _id
-    }
-}
-
-mutation DeleteRoom($id: String!) {
-    deleteRoom(id: $id) {
-        _id
-    }
-}
-
-mutation SaveStuff($stuff: StuffInput!) {
-  addStuff(stuff: $stuff) {
-    _id
-    name
-    category
-    description
-    picture
-    price
-  }
-} 
-
-mutation UpdateStuff($stuff: StuffInput!) {
-  updateStuff(stuff: $stuff) {
-    _id
-    name
-    category
-    description
-    picture
-    price
-  }
-}
-
-mutation DeleteStuff($id: String!) {
-    deleteStuff(id: $id) {
-        _id
-    }
 }

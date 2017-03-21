@@ -11,16 +11,16 @@ const Document = require('./models.gql');
 export class EditableUser extends Editable {
     _id: string;
     @mobx.observable name: Field<string>
-    email: Field<string>
-    password: Field<string>
-    confirmPassword: Field<string>
-    picture: Field<string>
+    @mobx.observable email: Field<string>
+    @mobx.observable password: Field<string>
+    @mobx.observable confirmPassword: Field<string>
+    @mobx.observable picture: Field<string>
     @mobx.observable room?: EditableRoom
     constructor( user: User ) {
         super();
         this._id = user._id || guid.v1();
         this.name = new Field( user.name ||  "", [C.nonEmpty(), C.atLeast( 4 )] );
-        this.email = new Field( user.email ||  "", [C.nonEmpty(), C.email()] );
+        this.email = new Field( user.email ||  "", [ C.email()] );
         this.picture = new Field( user.picture || "" );
         this.password = new Field( user.password ||  "", [C.nonEmpty(), C.password()] );
         this.confirmPassword = new Field( "", [C.nonEmpty(), C.password(), C.sameAs( this.password )] );

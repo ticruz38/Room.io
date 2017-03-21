@@ -3,6 +3,7 @@ export default `
         _id: String
         name: String!
         email: String!
+        picture: String
         password: String!
         roomId: String
     }

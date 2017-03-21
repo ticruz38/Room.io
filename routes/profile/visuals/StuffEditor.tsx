@@ -18,7 +18,7 @@ interface StuffProps {
 @observer
 export default class StuffEditor extends React.Component<StuffProps, any> {
 
-    stuff: EditableStuff = new EditableStuff(null, this.props.roomId )
+    @mobx.observable stuff: EditableStuff = new EditableStuff(null, this.props.roomId )
 
     onSave = ( result ) => {
         profileState.room.stuffs.push( this.stuff )
@@ -26,6 +26,7 @@ export default class StuffEditor extends React.Component<StuffProps, any> {
     }
 
     render(): React.ReactElement< any > {
+        console.log(this.stuff);
         const { name, description, picture, price, category } = this.stuff;
         return (
             <div className="stuff">

@@ -46,9 +46,8 @@ export default {
             } ) )
     },
     updateRoom(root, {room}, context ) {
-        logger.info('updating room', room._id);
         return db.room.then( dbroom => dbroom.put( room ).then( hash => {
-            logger.info('successfully updated room', hash);
+            //logger.info('successfully updated room', hash);
             //logger.info('try to get room by id', db.room.get(hash))
             return room
         }));

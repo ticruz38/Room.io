@@ -9,9 +9,15 @@ export default class Editable {
 
     toInput = (): any => {
         const input: any = {}
+        console.log(this);
         Object.keys(this)
-            .filter( key => ( typeof this[key] !== 'function' && this[key].length === undefined ) ) //filter array and function entry
+            .filter( key => ( //filter editable entry to generate an input
+                typeof this[key] !== 'function' &&
+                !(typeof this[key] !== 'string' && this[key].length !== undefined ) &&
+                key !== 'confirmPassword' &&
+                !(this[key] instanceof Editable) ) )
             .map( key => this[key].value !== undefined ? input[key] = this[key].value : input[key] = this[key] )
+        console.log(input);
         return input;
     }
 
@@ -22,11 +28,17 @@ export default class Editable {
                 this.resetChange();
                 cb ? cb(result) : result 
             }, error => { throw error } )
-
     @mobx.computed get hasChanged() {
-        return Object.keys(this).some( key => !!(this[key] && this[key].hasChanged) )
+        console.log('hasChanged');
+        return Object.keys(this).filter( key => ( !( this[key] instanceof Editable ) ) ).some( key => !!(this[key] && this[key].hasChanged) )
     }
     @mobx.computed get isValid() {
-        return !Object.keys(this).some( key => !this[key].isValid )
+        console.log('isValid', Object.keys(this).map( key => ( this[key].isValid ) ) );
+        return !Object.keys(this).some( key => ( 
+            this[key] &&
+            this[key].isValid !== undefined &&
+            !(this[key] instanceof Editable) &&
+            !this[key].isValid 
+        ) )
     }
 }

@@ -11,11 +11,11 @@ const Document = require('./models.gql');
 export class EditableStuff extends Editable {
     _id: string;
     roomId: string;
-    name: Field< string >;
-    category: Field< string >;
-    description: Field< string >;
-    picture: Field< string >;
-    price: Field< number >;
+    @mobx.observable name: Field< string >;
+    @mobx.observable category: Field< string >;
+    @mobx.observable description: Field< string >;
+    @mobx.observable picture: Field< string >;
+    @mobx.observable price: Field< number >;
 
     save = ( cb?: Function ) => this.execute( 'SaveStuff', { stuff: this.toInput() }, cb )
     

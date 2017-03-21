@@ -11,7 +11,7 @@ const Document = require('./models.gql');
 export class EditableRoom extends Editable {
     _id: string;
     userId: string;
-    @mobx.observable name: Field< string >;
+    name: Field< string >;
     description: Field< string >;
     email: Field< string >;
     phoneNumber: Field< string >;
@@ -25,16 +25,17 @@ export class EditableRoom extends Editable {
     // observe graphql subscription
     constructor(room?: Room, userId?: string ) {
         super();
-        if( !room && !userId ) throw 'please pass either a room or an userId as arguments in EditableRoom constructor';
-        this._id = room ? room._id : guid.v1();
-        this.userId = room && room.owner ? room.owner._id : userId;
-        this.name = new Field( room ? room.name  : "" ); 
-        this.description = new Field( room ? room.description  : "" ); 
-        this.email = new Field( room ? room.email  : "" ); 
-        this.phoneNumber = new Field( room ? room.phoneNumber  : "" );
-        this.picture = new Field(room ? room.picture : null );
-        this.stuffs = !!room && !!room.stuffs ? room.stuffs.map( s => new EditableStuff(s) ) : [];
-        this.orders = !!room && !!room.orders ? room.orders.map( o => new EditableOrder(o) ) : [];
+        if( !room.owner._id && !userId ) throw 'please pass either a room with an userID or an userId as arguments in EditableRoom constructor';
+        if( !room ) room = { _id: guid.v1() };
+        this._id = room._id;
+        this.userId = room.owner ? room.owner._id : userId;
+        this.name = new Field( room.name ? room.name  : "", [ C.nonEmpty() ] ); 
+        this.description = new Field( room.description ? room.description  : "" ); 
+        this.email = new Field( room.email ? room.email  : "" );
+        this.phoneNumber = new Field( room.phoneNumber ? room.phoneNumber  : "" );
+        this.picture = new Field(room.picture ? room.picture : null );
+        this.stuffs = !!room.stuffs ? room.stuffs.map( s => new EditableStuff(s) ) : [];
+        this.orders = !!room.orders ? room.orders.map( o => new EditableOrder(o) ) : [];
     }
 }
 export class RoomInput implements RoomInput {

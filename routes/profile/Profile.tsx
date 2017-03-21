@@ -44,7 +44,7 @@ class ProfileState extends Loader {
     @mobx.computed get toolbar() {
         const SaveButton = 
             this.user && this.user.hasChanged ||
-            this.room && this.room.hasChanged ||
+            this.room && this.room.hasChanged && this.room.isValid ||
             this.room && this.room.stuffs && this.room.stuffs.some(s => !!s.hasChanged) ? 
             <button onClick={ _ => this.saveChanges() }>Save Changes</button> : 
             null;

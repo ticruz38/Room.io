@@ -50,7 +50,7 @@ export default class Input extends React.Component< InputProps, any > {
                     type={ this.props.type }
                     value={ field.value }
                     onChange={ e => {
-                        field.isValid = !field.constraints.find(constraint => !constraint(e.currentTarget.value).isValid )
+                        field.isValid = !field.constraints.some(constraint => !constraint(e.currentTarget.value).isValid )
                         field.hasChanged = e.currentTarget.value !== this.initialValue;
                         field.value = e.currentTarget.value
                     } }
