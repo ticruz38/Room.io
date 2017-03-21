@@ -12,7 +12,6 @@ export class EditableOrder extends Editable {
     @mobx.observable stuffIds: string[];
     message: Field< string >;
     @mobx.observable payed: boolean;
-    @mobx.observable amount: Field< number >;
     save = (cb?: Function) => this.execute( 'SaveOrder', { order: this.toInput() } )
     delete = (cb?: Function) => this.execute( 'DeleteOrder', { id: this._id } )
     constructor(order?: Order, clientId?: string, roomId?: string) {
@@ -24,7 +23,6 @@ export class EditableOrder extends Editable {
         this.stuffIds = !!order && order.stuffs ? order.stuffs.map( _ => _._id ) : [];
         this.message = new Field( order ? order.message : "" );
         this.payed = order ? order.payed : false;
-        this.amount = new Field( order ? order.amount : 0 );
     }
 }
 export class OrderInput implements OrderInput {

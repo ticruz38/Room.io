@@ -1,4 +1,4 @@
-query OnlyRoomStuffs($id: String ) {
+query RoomQuery($id: String ) {
     room(id: $id) {
         _id
         name

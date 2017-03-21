@@ -26,7 +26,7 @@ export class Order extends React.Component<props, any> {
                         </tr>
                     </thead>
                     <tbody>
-                        {roomState.caddy.map( s =>
+                        {roomState.stuffs.map( s =>
                             <tr>
                                 <td>{s.category}</td>
                                 <td>{s.name}</td>
@@ -39,10 +39,10 @@ export class Order extends React.Component<props, any> {
                 <Input
                     type="text"
                     placeholder="Leave a comment"
-                    field={newField( roomState.message, [], true )}
+                    field={ roomState.order.message }
                 />
                 <div className="buttons">
-                    <Link to={"/" + this.props.params.roomId} className="btn">Cancel</Link>
+                    <Link to={ "/" + this.props.params.roomId } className="btn">Cancel</Link>
                     <button className="btn">Order</button>
                 </div>
             </div>
