@@ -1,7 +1,10 @@
 import db from 'graph/IpfsApiStore';
 import * as graphql from 'graphql';
+import * as moment from 'moment';
 
-const logger = require('logplease');
+const Logger = require('logplease');
+Logger.setLogLevel('INFO');
+const logger = Logger.create('mutation');
 
 export default {
     addOrder( root, {order}, context ) {
@@ -22,6 +25,8 @@ export default {
     },
     updateOrder(root, {order}, context ) {
         logger.info('updating order', order._id);
+        order.created = moment().unix;
+        console.log(order);
         return db.order.then( dborder => dborder.put( order ).then( hash => {
             logger.info('successfully updated order', hash);
             //logger.info('try to get order by id', db.order.get(hash))

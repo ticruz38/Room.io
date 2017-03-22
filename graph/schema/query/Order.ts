@@ -10,8 +10,8 @@ const Order = `
         client: User
         message: String # Additional message the customer has put on its order
         payed: Boolean
-        treated: Boolean
-        created: Float
+        treated: Float # Date in unix
+        created: Float # Date in unix
         amount: Float
     }
 `

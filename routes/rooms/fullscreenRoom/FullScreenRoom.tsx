@@ -27,7 +27,7 @@ export class RoomState extends Loader {
     @observable room: Room;
     @observable order: EditableOrder;
     @computed get amount(): number {
-        return this.stuffs.reduce( ( prev, cur ) => prev + cur.price || 0, 0 )
+        return this.stuffs.reduce( ( prev, cur ) => prev + cur[1].price || 0, 0 )
     }
 
     @computed get stuffs(): any[][] { // [number, Stuff][]

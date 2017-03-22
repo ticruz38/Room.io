@@ -40,7 +40,6 @@ export default class RoomFeed extends React.Component< RoomFeedProps, RoomFeedSt
   }
 
   componentWillReceiveProps() {
-    console.log(this.props.children);
     layoutState.modal = this.props.children
   }
 

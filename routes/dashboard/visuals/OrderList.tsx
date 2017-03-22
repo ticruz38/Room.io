@@ -56,7 +56,7 @@ interface OrderProps {
   order: Order
 }
 
-class OrderComponent extends React.Component< OrderProps, any> {
+class OrderComponent extends React.Component<OrderProps, any> {
 
   @mobx.observable roomState = {
     expand: false
@@ -83,19 +83,19 @@ class OrderComponent extends React.Component< OrderProps, any> {
       );
     };
     return (
-      <div ref='order' 
-        className={classnames( 'order', { hidden: this.props.hidden, expand: this.roomState.expand } ) } 
-        onClick={() => this.roomState.expand = !this.roomState.expand }
-        onWheel={ e => { if (this.roomState.expand === true) e.stopPropagation(); }}>
-        <h1>{order.client.name}<span className='price'>{order.price + ' mB'}</span></h1>
+      <div ref='order'
+        className={classnames('order', { hidden: this.props.hidden, expand: this.roomState.expand })}
+        onClick={() => this.roomState.expand = !this.roomState.expand}
+        onWheel={e => { if (this.roomState.expand === true) e.stopPropagation(); }}>
+        <h1>{order.client.name}<span className='price'>{order.amount + ' mB'}</span></h1>
         <div className={classnames('items', { hidden: !this.roomState.expand })}>
           {order.stuffs.map(createItem)}
         </div>
         <span className='cursor-payed'>
-          Payed <input type="checkbox" checked={order.payed} onChange={ _ => order.payed = !order.payed } />
+          Payed <input type="checkbox" checked={order.payed} onChange={_ => order.payed = !order.payed} />
         </span>
         <span className='cursor-treated'>
-          Treated <input type="checkbox" checked={order.treated} onChange={ _ => order.treated = !order.treated } />
+          Treated <input type="checkbox" checked={order.treated} onChange={_ => order.treated = !order.treated} />
         </span>
       </div>
     );

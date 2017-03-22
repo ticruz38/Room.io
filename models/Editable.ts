@@ -13,7 +13,7 @@ export default class Editable {
         Object.keys(this)
             .filter( key => ( //filter editable entry to generate an input
                 typeof this[key] !== 'function' &&
-                !(typeof this[key] !== 'string' && this[key].length !== undefined ) &&
+                !(typeof this[key] !== 'string' && this[key].length !== undefined && typeof this[key][0] !== 'string' ) &&
                 key !== 'confirmPassword' &&
                 !(this[key] instanceof Editable) ) )
             .map( key => this[key].value !== undefined ? input[key] = this[key].value : input[key] = this[key] )

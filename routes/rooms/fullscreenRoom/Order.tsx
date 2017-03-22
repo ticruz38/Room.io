@@ -19,6 +19,7 @@ export class Order extends React.Component<props, any> {
                 <table>
                     <thead>
                         <tr>
+                            <td>times</td>
                             <td>category</td>
                             <td>name</td>
                             <td>description</td>
@@ -28,6 +29,7 @@ export class Order extends React.Component<props, any> {
                     <tbody>
                         {roomState.stuffs.map( s =>
                             <tr>
+                                <td>{s[0]}</td>
                                 <td>{s[1].category}</td>
                                 <td>{s[1].name}</td>
                                 <td>{s[1].description}</td>
@@ -43,7 +45,7 @@ export class Order extends React.Component<props, any> {
                 />
                 <div className="buttons">
                     <Link to={ "/rooms/" + this.props.params.roomId } className="btn">Cancel</Link>
-                    <button className="btn">Order</button>
+                    <button className="btn" onClick={ _ => roomState.order.save() }>Order</button>
                 </div>
             </div>
         );

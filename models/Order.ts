@@ -12,6 +12,7 @@ export class EditableOrder extends Editable {
     @mobx.observable stuffIds: string[];
     message: Field< string >;
     @mobx.observable payed: boolean;
+    @mobx.observable treated?: number; // date in unix
 
     removeStuff(id: string) {
         const index = this.stuffIds.findIndex( sId => sId === id );
