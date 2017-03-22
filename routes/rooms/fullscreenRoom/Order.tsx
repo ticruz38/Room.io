@@ -28,10 +28,10 @@ export class Order extends React.Component<props, any> {
                     <tbody>
                         {roomState.stuffs.map( s =>
                             <tr>
-                                <td>{s.category}</td>
-                                <td>{s.name}</td>
-                                <td>{s.description}</td>
-                                <td>{s.price || 'free'}</td>
+                                <td>{s[1].category}</td>
+                                <td>{s[1].name}</td>
+                                <td>{s[1].description}</td>
+                                <td>{s[1].price || 'free'}</td>
                             </tr>
                         )}
                     </tbody>
@@ -42,7 +42,7 @@ export class Order extends React.Component<props, any> {
                     field={ roomState.order.message }
                 />
                 <div className="buttons">
-                    <Link to={ "/" + this.props.params.roomId } className="btn">Cancel</Link>
+                    <Link to={ "/rooms/" + this.props.params.roomId } className="btn">Cancel</Link>
                     <button className="btn">Order</button>
                 </div>
             </div>

@@ -30,13 +30,21 @@ export class RoomState extends Loader {
         return this.stuffs.reduce( ( prev, cur ) => prev + cur.price || 0, 0 )
     }
 
-    @computed get stuffs(): Stuff[] {
-        return this.order.stuffIds.map( id => this.room.stuffs.find( s => s._id === id ) )
+    @computed get stuffs(): any[][] { // [number, Stuff][]
+        const map = {};
+        this.order.stuffIds.forEach( id => map[id] ? map[id]++ : map[id] = 1 );
+        return Object.keys(map).map( key => ( [ map[key], this.room.stuffs.find( s => s._id === key ) ] ) )
     }
     // stuff listed by categories
     @computed get categories(): { string?: Stuff[] } {
         const categories: { string?: Stuff[] } = {};
-        this.room.stuffs.map( s => categories[s.category] ? categories[s.category].push( s ) : categories[s.category] = [s] )
+        ( this.stuffs || [] ).map( s => categories[s[1].category] ? categories[s[1].category].push( s ) : categories[s[1].category] = [s] )
+        return categories;
+    }
+
+    @computed get roomCategories(): { string?: Stuff[] } {
+        const categories: { string?: Stuff[] } = {};
+        ( this.room.stuffs || [] ).map( s => categories[s.category] ? categories[s.category].push( s ) : categories[s.category] = [s] )
         return categories;
     }
 

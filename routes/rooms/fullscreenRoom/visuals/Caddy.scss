@@ -1,49 +1,46 @@
+.caddy-container {
+    width: 20%;
+}
 .caddy {
-  width: calc(100% - 10px);
-  max-height: 9em;
-  overflow-y: scroll;
   border-top: 1px solid black;
-  .caddy-line {
-  }
-  .caddy-flex {
-    padding: 0 5px;
     .caddy-category {
-      overflow: scroll;
       h4 {
         margin: 5px 0 0;
       }
     }
-    .caddy-stuffs {
-      display: flex;
-      overflow-x: scroll;
-      padding: 12px 0 0;
-      .caddy-stuff {
-        h3 {
-          margin: 0 0 5px;
-        }
+    .caddy-stuff {
         display: table;
         position: relative;
         padding: 10px;
-        margin: 3px;
+        margin-top: 12px;
         border: 1px solid gold;
         cursor: default;
+        .close, .times {
+            position: absolute;
+            border: 1px solid gold;
+            border-radius: 12px;
+            background: white;
+            z-index: 10;
+            top: -12px;
+        }
         .close {
-          position: absolute;
-          right: -12px;
-          border: 1px solid gold;
-          border-radius: 12px;
-          background: white;
-          z-index: 10;
-          cursor: pointer;
-          top: -12px;
-          visibility: hidden;
+            cursor: pointer;
+            right: -12px;
+            visibility: hidden;
+        }
+        .times {
+            display: flex;
+            font-weight: bold;
+            height: 24px;
+            width: 24px;
+            align-items: center;
+            justify-content: center;
+            left: -12px;
         }
         &:hover {
-          .close {
+            .close {
             visibility: visible;
-          }
+            }
         }
-      }
     }
-  }
 }

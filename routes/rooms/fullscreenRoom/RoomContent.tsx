@@ -13,11 +13,11 @@ export class RoomContent extends React.Component<props, any> {
         return (
             <div className="room-content-wrapper">
                 <div className="room-content">
-                    {Object.keys( roomState.categories ).map( key => (
+                    {Object.keys( roomState.roomCategories ).map( key => (
                         <div key={key} className="category">
                             <h4>{key}</h4>
                             <div key={key} className='stuffs'>
-                                {roomState.categories[key].map( s =>
+                                { roomState.roomCategories[key].map( s =>
                                     <div key={s._id} className="stuff" onClick={_ => roomState.order.stuffIds.push( s._id )}>
                                         <h4>
                                             <span>{s.name}</span>
@@ -29,7 +29,7 @@ export class RoomContent extends React.Component<props, any> {
                         </div>
                     ) )}
                 </div>
-                {roomState.stuffs.length ? <Caddy roomState={roomState} /> : <span />}
+                { roomState.stuffs.length ? <Caddy roomState={roomState} /> : <span /> }
             </div>
         );
     }
@@ -40,3 +40,5 @@ export default {
     path: '',
     component: RoomContent
 }
+
+import './RoomContent.scss';

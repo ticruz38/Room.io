@@ -12,6 +12,11 @@ export class EditableOrder extends Editable {
     @mobx.observable stuffIds: string[];
     message: Field< string >;
     @mobx.observable payed: boolean;
+
+    removeStuff(id: string) {
+        const index = this.stuffIds.findIndex( sId => sId === id );
+        this.stuffIds.splice(index, 1);
+    }
     save = (cb?: Function) => this.execute( 'SaveOrder', { order: this.toInput() } )
     delete = (cb?: Function) => this.execute( 'DeleteOrder', { id: this._id } )
     constructor(order?: Order, clientId?: string, roomId?: string) {
