@@ -113,4 +113,4 @@ class OrderComponent extends React.Component<OrderProps, any> {
     }
 }
 
-// import 'component.scss'
+import './OrderList.scss';

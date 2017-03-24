@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router';
 import * as mobx from 'mobx';
 import * as moment from 'moment';
 import { observer } from 'mobx-react';
@@ -59,6 +60,7 @@ export default class Dashboard extends React.Component< any, any > {
 
   componentWillMount() {
     layoutState.reset();
+    layoutState.toolBar = <Link to="/profile" className="btn">Profile</Link>
     layoutState.title = 'Dashboard';
   }
 
