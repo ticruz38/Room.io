@@ -58,7 +58,8 @@ export const dashboardState = new DashboardState();
 export default class Dashboard extends React.Component< any, any > {
 
   componentWillMount() {
-
+    layoutState.reset();
+    layoutState.title = 'Dashboard';
   }
 
   render() {

@@ -8,98 +8,109 @@ import { dashboardState } from '../Dashboard';
 
 
 class OrderState {
-  orders: Order[] = [];
+    orders: Order[] = [];
 }
 
 @observer
 export default class OrderList extends React.Component<any, any> {
-  render() {
-    return (
-      <div />
-    );
-  }
+
+    get emptyList() {
+        return (
+            <div className="empty-list">
+                <i className="material-icons">hot_tub</i>
+                <p>You ain't got no order yet</p>
+            </div>
+        );
+    }
+    render() {
+        return (
+            <div>
+                { this.emptyList }
+            </div>
+        );
+    }
 }
 
 class Dashboard extends React.Component<any, any> {
 
-  constructor(props, context) {
-    super(props, context);
-  }
+    constructor( props, context ) {
+        super( props, context );
+    }
 
-  @mobx.computed get prevItems() {
-    return dashboardState.orders.filter((o: Order) => o.created < dashboardState.currentTime).slice(-10).map((o: Order, i) =>
-      <OrderComponent hidden={i < 5} order={o} />
-    );
-  }
+    @mobx.computed get prevItems() {
+        return dashboardState.orders.filter(( o: Order ) => o.created < dashboardState.currentTime ).slice( -10 ).map(( o: Order, i ) =>
+            <OrderComponent hidden={i < 5} order={o} />
+        );
+    }
 
-  @mobx.computed get nextItems() {
-    return dashboardState.orders.filter((o: Order) => o.created > dashboardState.currentTime).slice(0, 10).map((o: Order, i) =>
-      <OrderComponent hidden={i > 5} order={o} />
-    )
-  }
+    @mobx.computed get nextItems() {
+        return dashboardState.orders.filter(( o: Order ) => o.created > dashboardState.currentTime ).slice( 0, 10 ).map(( o: Order, i ) =>
+            <OrderComponent hidden={i > 5} order={o} />
+        )
+    }
 
-  render() {
-    return (
-      <div className="dashboard">
-        <div id='dashboard' className='container' onWheel={dashboardState.onWheel}>
-          {this.prevItems}
-          {this.nextItems}
-        </div>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="dashboard">
+                <div id='dashboard' className='container' onWheel={dashboardState.onWheel}>
+                    {this.prevItems}
+                    {this.nextItems}
+                </div>
+            </div>
+        );
+    }
 }
 
 
 interface OrderProps {
-  hidden: boolean,
-  order: Order
+    hidden: boolean,
+    order: Order
 }
 
 class OrderComponent extends React.Component<OrderProps, any> {
 
-  @mobx.observable roomState = {
-    expand: false
-  }
+    @mobx.observable roomState = {
+        expand: false
+    }
 
-  constructor(props, context) {
-    super(props, context);
-    this.roomState = { expand: false };
-  }
+    constructor( props, context ) {
+        super( props, context );
+        this.roomState = { expand: false };
+    }
 
-  componentWillUnmount = () => {
-    const Order: any = this.refs['order']
-    Order.className = 'leave';
-  };
-
-  render() {
-    const order: Order = this.props.order;
-    const createItem = (item: Stuff) => {
-      return (
-        <div className='item'>
-          {item.category}<br />
-          {item.name}
-        </div>
-      );
+    componentWillUnmount = () => {
+        const Order: any = this.refs['order']
+        Order.className = 'leave';
     };
-    return (
-      <div ref='order'
-        className={classnames('order', { hidden: this.props.hidden, expand: this.roomState.expand })}
-        onClick={() => this.roomState.expand = !this.roomState.expand}
-        onWheel={e => { if (this.roomState.expand === true) e.stopPropagation(); }}>
-        <h1>{order.client.name}<span className='price'>{order.amount + ' mB'}</span></h1>
-        <div className={classnames('items', { hidden: !this.roomState.expand })}>
-          {order.stuffs.map(createItem)}
-        </div>
-        <span className='cursor-payed'>
-          Payed <input type="checkbox" checked={order.payed} onChange={_ => order.payed = !order.payed} />
-        </span>
-        <span className='cursor-treated'>
-          Treated <input type="checkbox" checked={order.treated} onChange={_ => order.treated = !order.treated} />
-        </span>
-      </div>
-    );
-  }
+
+    render() {
+        const order: Order = this.props.order;
+        const createItem = ( item: Stuff ) => {
+            return (
+                <div className='item'>
+                    {item.category}<br />
+                    {item.name}
+                </div>
+            );
+        };
+        return (
+            <div ref='order'
+                className={classnames( 'order', { hidden: this.props.hidden, expand: this.roomState.expand } )}
+                onClick={() => this.roomState.expand = !this.roomState.expand}
+                onWheel={e => { if ( this.roomState.expand === true ) e.stopPropagation(); }}>
+                <h1>{order.client.name}<span className='price'>{order.amount + ' mB'}</span></h1>
+                <div className={classnames( 'items', { hidden: !this.roomState.expand } )}>
+                    {order.stuffs.map( createItem )}
+                </div>
+                <span className='cursor-payed'>
+                    Payed <input type="checkbox" checked={order.payed} onChange={_ => order.payed = !order.payed} />
+                </span>
+                <span className='cursor-treated'>
+                    Treated <input type="checkbox" checked={order.treated} onChange={_ => order.treated = !order.treated} />
+                </span>
+            </div>
+        );
+    }
 }
 
 // import 'component.scss'

@@ -25,8 +25,8 @@ export class EditableRoom extends Editable {
     // observe graphql subscription
     constructor(room?: Room, userId?: string ) {
         super();
-        if( !room.owner._id && !userId ) throw 'please pass either a room with an userID or an userId as arguments in EditableRoom constructor';
         if( !room ) room = { _id: guid.v1() };
+        if( !room.owner && !userId ) throw 'please pass either a room with an userID or an userId as arguments in EditableRoom constructor';
         this._id = room._id;
         this.userId = room.owner ? room.owner._id : userId;
         this.name = new Field( room.name ? room.name  : "", [ C.nonEmpty() ] ); 

@@ -42,6 +42,7 @@ class ProfileState extends Loader {
     };
 
     @mobx.computed get toolbar() {
+        const DashBoard = <Link className="btn" to="/dashboard">Dashboard</Link>;
         const SaveButton = 
             this.user && this.user.hasChanged ||
             this.room && this.room.hasChanged && this.room.isValid ||
@@ -51,12 +52,11 @@ class ProfileState extends Loader {
         const CreateRoom = this.user && this.user.room ?
             null :
             <button onClick={_ => this.createRoom()}>Add a room</button>;
-        return (
-            <div>
-                {SaveButton}
-                {CreateRoom}
-            </div>
-        );
+        return [
+                DashBoard,
+                SaveButton,
+                CreateRoom
+        ];
     }
     loadProfile() {
         this.execute('ProfileQuery', {
@@ -129,25 +129,27 @@ export default class Profile extends React.Component<any, any> {
         if (!user) return <span />;
         return (
             <div className="profile">
-                <div className="profile-header">
-                    <img src={user.picture.value ? 'https://ipfs.io/ipfs/' + user.picture : 'https://www.jimfitzpatrick.com/wp-content/uploads/2012/10/Che-detail-1.jpg'} />
-                    <div className="user-information card">
-                        <h2>Profile Information</h2>
-                        <Input
-                            field={user.name}
-                            type="text"
-                            placeholder="name"
-                        />
-                        <Input
-                            field={user.email}
-                            type="email"
-                            placeholder="email"
-                        />
+                <div className="profile">
+                    <div className="profile-header">
+                        <img src={user.picture.value ? 'https://ipfs.io/ipfs/' + user.picture : 'https://www.jimfitzpatrick.com/wp-content/uploads/2012/10/Che-detail-1.jpg'} />
+                        <div className="user-information card">
+                            <h2>Profile Information</h2>
+                            <Input
+                                field={user.name}
+                                type="text"
+                                placeholder="name"
+                            />
+                            <Input
+                                field={user.email}
+                                type="email"
+                                placeholder="email"
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className='profile-room'>
-                    {user.room ? <RoomEditor { ...user } /> : null}
-                    { this.categoriesElement }
+                    <div className='profile-room'>
+                        {user.room ? <RoomEditor { ...user } /> : null}
+                        { this.categoriesElement }
+                    </div>
                 </div>
             </div>
         )

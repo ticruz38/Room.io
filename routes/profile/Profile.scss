@@ -3,6 +3,12 @@
     background: white !important;
   }
 }
+.toolBar {
+    display: flex;
+    >* {
+        margin: 0 3px 0 0;
+    }
+}
 .profile {
   margin: 4vh 4vw;
   input {

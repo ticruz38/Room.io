@@ -50,7 +50,7 @@ export class RoomState extends Loader {
 
     constructor( roomId ) {
         super(Document);
-        this.order = new EditableOrder(null, layoutState.user._id, roomId );
+        this.order = layoutState.isLogged ? new EditableOrder(null, layoutState.user._id, roomId ) : null;
         this.loadRoom( roomId );
     }
 
@@ -77,20 +77,30 @@ export default class FullscreenRoom extends React.Component<props, RoomState> {
         this.roomState.room = this.props.room;
     }
 
+    @computed get logNeeded() {
+        return layoutState.isLogged ? 
+            null :
+            <p className="warning">You need to be logged in to pass an order</p>
+    }
+
     render() {
-        const { room, order, amount } = this.roomState;
+        const { room, order } = this.roomState;
         if ( !room ) return <SpinnerIcon size="5em" />;
         return (
             <div className='full-screen' onClick={e => e.stopPropagation()}>
                 <div className='room-bar'>
                     <h1>{room.name}</h1>
                     <div className='right-buttons'>
-                        <div>{amount} <EthereumIcon /> </div>
+                        { order ? <div>{ this.roomState.amount} <EthereumIcon /> </div> : null }
                         <div className="chat"><i className="material-icons">chat</i></div>
-                        { order.stuffIds.length ? <Link to={'rooms/' + this.props.params.roomId + '/order'} className="btn">Order</Link> : null}
+                        { order && order.stuffIds.length ?
+                            <Link to={'rooms/' + this.props.params.roomId + '/order'} className="btn">Order</Link> : 
+                            null
+                        }
                     </div>
                 </div>
                 <p className="room-description">{ room.description }</p>
+                { this.logNeeded }
                 { React.cloneElement( this.props.children, { roomState: this.roomState } )}
             </div>
         );

@@ -1,16 +1,26 @@
 import * as React from "react";
 import { Link } from 'react-router';
 
+import { EditableOrder } from "models";
 import { Input } from 'components/form';
+import { layoutState } from "routes/layout/Layout";
 
 import { RoomState } from './FullscreenRoom';
 
 type props = {
-    roomState: RoomState
+    roomState: RoomState,
+    router: any,
     params: any
 }
 
 export class Order extends React.Component<props, any> {
+
+    onSave() {
+        const { roomState } = this.props;
+        roomState.order.save()
+        roomState.order = new EditableOrder( null, layoutState.user._id, this.props.params.roomId);
+        this.props.router.push( { pathname: '/rooms/' + this.props.params.roomId } )
+    }
     render() {
         const { roomState } = this.props;
         return (
@@ -45,7 +55,7 @@ export class Order extends React.Component<props, any> {
                 />
                 <div className="buttons">
                     <Link to={ "/rooms/" + this.props.params.roomId } className="btn">Cancel</Link>
-                    <button className="btn" onClick={ _ => roomState.order.save() }>Order</button>
+                    <button className="btn" onClick={ _ => this.onSave() }>Order</button>
                 </div>
             </div>
         );

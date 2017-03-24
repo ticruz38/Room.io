@@ -47,7 +47,6 @@ class Table extends React.Component< any, any > {
 
   triggerRequest() {
     const request = JSON.parse(this.request);
-    console.log(request);
   }
 
   displayResults(result: Object) {
