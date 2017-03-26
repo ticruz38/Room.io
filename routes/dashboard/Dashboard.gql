@@ -1,24 +1,26 @@
-query RoomWithOrders( $roomID: String ) {
-    room(id: $roomId) {
-        _id
-        name
-        orders {
+query RoomWithOrders( $userId: String ) {
+    user( id: $userId ) {
+        room {
             _id
-            created
-            stuffs {
+            name
+            orders {
                 _id
-                name
-                category
-                price
+                created
+                stuffs {
+                    _id
+                    name
+                    category
+                    price
+                }
+                client {
+                    _id
+                    name
+                }
+                payed
+                treated
+                created
+                amount
             }
-            client {
-                _id
-                name
-            }
-            payed
-            treated
-            created
-            amount
         }
     }
 }

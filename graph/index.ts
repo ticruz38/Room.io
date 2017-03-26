@@ -13,6 +13,7 @@ export default makeExecutableSchema({
         Mutation: resolver.Mutation,
         Room: resolver.Room,
         User: resolver.User,
-        Stuff: resolver.Stuff
+        Stuff: resolver.Stuff,
+        Order: resolver.Order
     }
 });

@@ -9,6 +9,7 @@ export default {
         return db.stuff.then( dbStuff => dbStuff.query( s => s.roomId === root._id ) || [] )
     },
     orders: function ( root, params, context ) {
+        console.log('orders reolver', root);
         return db.order.then( dbOrder => dbOrder.query( o => o.roomId === root._id ) || [] )
     }
 };

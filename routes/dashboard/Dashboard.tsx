@@ -5,15 +5,12 @@ import * as moment from 'moment';
 import { observer } from 'mobx-react';
 import Loader from "graph/Loader";
 
-//layout
+// roomio
 import { layoutState } from 'routes/layout/Layout';
-
-//models
 import { EditableRoom } from "models";
-
-// Dashboard
 import Timeline from './visuals/Timeline';
 import OrderList from './visuals/OrderList';
+import { SpinnerIcon } from 'components/icons';
 
 const Document = require('./Dashboard.gql');
 
@@ -56,11 +53,12 @@ class DashboardState extends Loader {
     }
     loadRoom() {
         this.execute('RoomWithOrders', {
-            variables: { id: layoutState.user["_id"] },
+            variables: { userId: layoutState.user["_id"] },
             cb: (data: any) => {
-                const { room } = data;
+                console.log(data);
+                const { room } = data.user;
                 if(!room) throw 'oop, room hasnt been fetched';
-                this.room = new EditableRoom(room)
+                this.room = new EditableRoom( room, layoutState.user["_id"] )
             }
         } )
     }
@@ -82,11 +80,12 @@ export default class Dashboard extends React.Component<any, any> {
     }
 
     render() {
-        const { orders, name } = dashboardState.room;
+        const { room } = dashboardState;
+        if( !room ) return <SpinnerIcon />
         return (
             <div>
-                <Timeline />
-                <OrderList />
+                <Timeline {...room} />
+                <OrderList { ...room } />
             </div>
         );
     }
