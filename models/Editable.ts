@@ -29,11 +29,9 @@ export default class Editable {
                 cb ? cb(result) : result 
             }, error => { throw error } )
     @mobx.computed get hasChanged() {
-        console.log('hasChanged');
         return Object.keys(this).filter( key => ( !( this[key] instanceof Editable ) ) ).some( key => !!(this[key] && this[key].hasChanged) )
     }
     @mobx.computed get isValid() {
-        console.log('isValid', Object.keys(this).map( key => ( this[key].isValid ) ) );
         return !Object.keys(this).some( key => ( 
             this[key] &&
             this[key].isValid !== undefined &&

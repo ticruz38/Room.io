@@ -1,4 +1,4 @@
-query FetchOrders( $roomID: String ) {
+query RoomWithOrders( $roomID: String ) {
     room(id: $roomId) {
         _id
         name
