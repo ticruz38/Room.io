@@ -1,5 +1,6 @@
 import * as guid from 'node-uuid';
 import * as mobx from 'mobx';
+import * as moment from 'moment';
 import * as C from 'components/form/Constraint';
 
 import { Field } from 'models';
@@ -9,6 +10,7 @@ export class EditableOrder extends Editable {
     _id: string;
     clientId: string;
     roomId: string;
+    created: number;
     @mobx.observable stuffIds: string[];
     message: Field< string >;
     @mobx.observable payed: boolean;
@@ -24,6 +26,7 @@ export class EditableOrder extends Editable {
         super();
         if ( !order && ( !clientId || !roomId ) ) throw 'please pass required argument for EditableOrder';
         this._id = !!order ? order._id : guid.v1();
+        this.created = !!order ? order.created : moment().unix();
         this.clientId = !!order && order.client ? order.client._id : clientId;
         this.roomId = !!order && order.room ? order.room._id : roomId;
         this.stuffIds = !!order && order.stuffs ? order.stuffs.map( _ => _._id ) : [];

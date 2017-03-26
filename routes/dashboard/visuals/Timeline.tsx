@@ -14,13 +14,14 @@ moment.locale('fr');
 const secondPerDay = 24 * 60 * 60;
 
 const Order = (order: Order) => {
-    const price = order.amount * 10; // * 10 to get higher height
+    //console.log(order, order.created - state.today, (moment().unix() - state.today) / 10);
+    const price = 200; // * 10 to get higher height
     return (
         <rect
-            x={(order.created - secondPerDay) / 10000}
-            y={order.payed ? 400 - price : 400}
-            height={price} width={20}
-            fill={order.payed ? 'green' : 'gainsboro'}
+            x={ ( order.created - state.today ) / 10 }
+            y={ order.payed ? 400 - price : 400 }
+            height={ price } width={20}
+            fill={ order.payed ? 'green' : 'gainsboro' }
         />
     );
 }
@@ -45,7 +46,7 @@ export default class Timeline extends React.Component<any, any> {
                     <rect x={time} y='0' width={8640 - time < 0 ? 0 : 8640 - time} height='800' fill='rgba(255, 255, 255, 0.8)' />
                     <path d='M0,400 H8640' stroke='black' strokeWidth='1' />
                     <rect className='cursor' x={state.x} y='0' width='20' height='800' fill='yellow' />
-                    {state.orders.map(Order)}
+                    {state.room.orders.map(Order)}
                     <text
                         textAnchor='middle'
                         x='4320'
@@ -75,7 +76,7 @@ export default class Timeline extends React.Component<any, any> {
                                 className={classnames('cursor-wrapper', { red: !state.filterBy.payed, green: state.filterBy.payed })}
                                 onClick={_ => state.filterBy.payed = !state.filterBy.payed}
                             >payed
-                <input type="checkbox" checked={state.filterBy.payed} />
+                                <input type="checkbox" checked={state.filterBy.payed} />
                             </span>
                         </li>
                         <li>
@@ -83,7 +84,7 @@ export default class Timeline extends React.Component<any, any> {
                                 className={classnames('cursor-wrapper', { red: !state.filterBy.treated, green: state.filterBy.treated })}
                                 onClick={_ => state.filterBy.treated = !state.filterBy.treated}
                             >treated
-                <input type="checkbox" checked={state.filterBy.treated} />
+                                <input type="checkbox" checked={state.filterBy.treated} />
                             </span>
                         </li>
                     </ul>

@@ -94,7 +94,7 @@ declare interface Order {
 
 declare interface OrderInput {
     _id: string
-    clientID: string
+    clientId: string
     roomId: string
     stuffIds: string[]
     message: string

@@ -25,7 +25,7 @@ class DashboardState extends Loader {
         payed: false,
         treated: false
     }
-    @mobx.observable room: EditableRoom;
+    @mobx.observable room: Room;
     // the current time the timeline points to
     @mobx.observable currentTime: number = moment().unix();
     // the day the timeline is focused on
@@ -58,7 +58,7 @@ class DashboardState extends Loader {
                 console.log(data);
                 const { room } = data.user;
                 if(!room) throw 'oop, room hasnt been fetched';
-                this.room = new EditableRoom( room, layoutState.user["_id"] )
+                this.room = room
             }
         } )
     }
@@ -84,8 +84,8 @@ export default class Dashboard extends React.Component<any, any> {
         if( !room ) return <SpinnerIcon />
         return (
             <div>
-                <Timeline {...room} />
-                <OrderList { ...room } />
+                <Timeline />
+                <OrderList />
             </div>
         );
     }

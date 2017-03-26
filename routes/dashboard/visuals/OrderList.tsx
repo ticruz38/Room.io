@@ -7,9 +7,6 @@ import { dashboardState } from '../Dashboard';
 
 
 
-class OrderState {
-    orders: Order[] = [];
-}
 
 @observer
 export default class OrderList extends React.Component<any, any> {
@@ -22,34 +19,23 @@ export default class OrderList extends React.Component<any, any> {
             </div>
         );
     }
-    render() {
-        return (
-            <div>
-                { this.emptyList }
-            </div>
-        );
-    }
-}
-
-class Dashboard extends React.Component<any, any> {
-
-    constructor( props, context ) {
-        super( props, context );
-    }
 
     @mobx.computed get prevItems() {
-        return dashboardState.orders.filter(( o: Order ) => o.created < dashboardState.currentTime ).slice( -10 ).map(( o: Order, i ) =>
+        const { room, currentTime } = dashboardState;
+        return room.orders.filter( ( o: Order ) => o.created < dashboardState.currentTime ).slice( -10 ).map(( o: Order, i ) =>
             <OrderComponent hidden={i < 5} order={o} />
         );
     }
 
     @mobx.computed get nextItems() {
-        return dashboardState.orders.filter(( o: Order ) => o.created > dashboardState.currentTime ).slice( 0, 10 ).map(( o: Order, i ) =>
+        const { room } = dashboardState;
+        return room.orders.filter(( o: Order ) => o.created > dashboardState.currentTime ).slice( 0, 10 ).map(( o: Order, i ) =>
             <OrderComponent hidden={i > 5} order={o} />
         )
     }
 
     render() {
+        if( !this.prevItems && !this.nextItems) return this.emptyList;
         return (
             <div className="dashboard">
                 <div id='dashboard' className='container' onWheel={dashboardState.onWheel}>
