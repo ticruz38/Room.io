@@ -42,12 +42,12 @@ class ProfileState extends Loader {
     };
 
     @mobx.computed get toolbar() {
-        const DashBoard = <Link className="btn" to="/dashboard">Dashboard</Link>;
+        const DashBoard = this.room ? <Link className="btn" to="/dashboard">Dashboard</Link> : null;
         const SaveButton = 
             this.user && this.user.hasChanged ||
             this.room && this.room.hasChanged && this.room.isValid ||
             this.room && this.room.stuffs && this.room.stuffs.some(s => !!s.hasChanged) ? 
-            <button onClick={ _ => this.saveChanges() }>Save Changes</button> : 
+            <button onClick={ _ => this.saveChanges() }>Save Change</button> : 
             null;
         const CreateRoom = this.user && this.user.room ?
             null :

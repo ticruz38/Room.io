@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import * as mobx from 'mobx';
 import * as moment from 'moment';
 import { observer } from 'mobx-react';
+import Loader from "graph/Loader";
 
 //layout
 import { layoutState } from 'routes/layout/Layout';
@@ -11,12 +12,14 @@ import { layoutState } from 'routes/layout/Layout';
 import Timeline from './visuals/Timeline';
 import OrderList from './visuals/OrderList';
 
+const document = require('./Dashboard.gql');
+
 const secondPerDay = 24 * 60 * 60;
 
 
 
 
-class DashboardState {
+class DashboardState extends Loader {
   // filter order by...
   @mobx.observable filterBy: { payed: boolean, treated: boolean } = {
     payed: false,
@@ -28,25 +31,28 @@ class DashboardState {
   // the day the timeline is focused on
   @mobx.observable today: number = moment().startOf('day').unix();
   // timeline cursor position on x axis
-  @mobx.observable x : number = (this.currentTime - this.today) / 10;
+  @mobx.observable x: number = (this.currentTime - this.today) / 10;
   // handle the onWheel event
   onWheel = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      // we scrolled back to the previous day
-      if (this.x <= 0 && (event.deltaX < 0 || event.deltaY < 0)) {
-        //this.currentTime -= secondPerDay;
-        this.today -= secondPerDay;
-        this.x = 8640;
-      }
-      // we scrolled forth to the next day
-      if (this.x >= 8640 && (event.deltaX > 0 || event.deltaY > 0)) {
-        //this.currentTime += secondPerDay;
-        this.today += secondPerDay;
-        this.x = 0;
-      }
-      this.x += event.currentTarget.id === 'timeline' ? event.deltaX : event.deltaY;
-      this.currentTime = this.today + (this.x * 10);
+    event.preventDefault();
+    event.stopPropagation();
+    // we scrolled back to the previous day
+    if (this.x <= 0 && (event.deltaX < 0 || event.deltaY < 0)) {
+      //this.currentTime -= secondPerDay;
+      this.today -= secondPerDay;
+      this.x = 8640;
+    }
+    // we scrolled forth to the next day
+    if (this.x >= 8640 && (event.deltaX > 0 || event.deltaY > 0)) {
+      //this.currentTime += secondPerDay;
+      this.today += secondPerDay;
+      this.x = 0;
+    }
+    this.x += event.currentTarget.id === 'timeline' ? event.deltaX : event.deltaY;
+    this.currentTime = this.today + (this.x * 10);
+  }
+  loadOrders() {
+
   }
 }
 
@@ -56,7 +62,7 @@ export const dashboardState = new DashboardState();
 
 
 @observer
-export default class Dashboard extends React.Component< any, any > {
+export default class Dashboard extends React.Component<any, any> {
 
   componentWillMount() {
     layoutState.reset();
@@ -67,8 +73,8 @@ export default class Dashboard extends React.Component< any, any > {
   render() {
     return (
       <div>
-        <Timeline/>
-        <OrderList/>
+        <Timeline />
+        <OrderList />
       </div>
     );
   }
