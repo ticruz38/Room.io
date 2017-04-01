@@ -9,7 +9,6 @@ export default class Editable {
 
     toInput = (): any => {
         const input: any = {}
-        console.log(this);
         Object.keys(this)
             .filter( key => ( //filter editable entry to generate an input
                 typeof this[key] !== 'function' &&
@@ -17,7 +16,6 @@ export default class Editable {
                 key !== 'confirmPassword' &&
                 !(this[key] instanceof Editable) ) )
             .map( key => this[key].value !== undefined ? input[key] = this[key].value : input[key] = this[key] )
-        console.log(input);
         return input;
     }
 

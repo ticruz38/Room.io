@@ -6,6 +6,7 @@ export default `
         roomId: String!
         message: String
         payed: Boolean!
+        created: Int
         treated: Boolean
         amount: Float
     }

@@ -51,7 +51,7 @@ class Table extends React.Component< any, any > {
 
   displayResults(result: Object) {
     return (
-      <tr>
+      <tr onClick={ _ => this.props.table.del(result['_id']) }>
         { Object.keys(result).map( k => <td>{ result[k] }</td> ) }
       </tr>
     );
@@ -70,7 +70,6 @@ class Table extends React.Component< any, any > {
             { this.results.map( result => this.displayResults(result) ) }
           </tbody>
         </table>
-
     )
   }
 

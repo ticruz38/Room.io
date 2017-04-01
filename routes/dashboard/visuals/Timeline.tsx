@@ -18,6 +18,7 @@ const Order = (order: Order) => {
     const price = 200; // * 10 to get higher height
     return (
         <rect
+            key={order._id}
             x={ ( order.created - state.today ) / 10 }
             y={ order.payed ? 400 - price : 400 }
             height={ price } width={20}

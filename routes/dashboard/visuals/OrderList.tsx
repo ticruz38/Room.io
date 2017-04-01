@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
+import * as moment from 'moment';
 import * as mobx from 'mobx';
 import { observer } from 'mobx-react';
 
@@ -23,19 +24,20 @@ export default class OrderList extends React.Component<any, any> {
     @mobx.computed get prevItems() {
         const { room, currentTime } = dashboardState;
         return room.orders.filter( ( o: Order ) => o.created < dashboardState.currentTime ).slice( -10 ).map(( o: Order, i ) =>
-            <OrderComponent hidden={i < 5} order={o} />
+            <OrderComponent key={o._id} hidden={i > 5} order={o} />
         );
     }
 
     @mobx.computed get nextItems() {
         const { room } = dashboardState;
-        return room.orders.filter(( o: Order ) => o.created > dashboardState.currentTime ).slice( 0, 10 ).map(( o: Order, i ) =>
-            <OrderComponent hidden={i > 5} order={o} />
+        return room.orders.filter(( o: Order ) => o.created > dashboardState.currentTime ).slice(0, 10).map(( o: Order, i ) =>
+            <OrderComponent key={o._id} hidden={i > 5} order={o} />
         )
     }
 
     render() {
-        if( !this.prevItems && !this.nextItems) return this.emptyList;
+        console.log(dashboardState.room.orders);
+        if( !this.prevItems.length && !this.nextItems.length) return this.emptyList;
         return (
             <div className="dashboard">
                 <div id='dashboard' className='container' onWheel={dashboardState.onWheel}>
@@ -54,14 +56,11 @@ interface OrderProps {
 }
 
 class OrderComponent extends React.Component<OrderProps, any> {
-
-    @mobx.observable roomState = {
-        expand: false
-    }
-
-    constructor( props, context ) {
-        super( props, context );
-        this.roomState = { expand: false };
+    get stuffs(): any[][] { // [number, Stuff][]
+        const map = {};
+        console.log(mobx.toJS(this.props.order));
+        this.props.order.stuffs.forEach( s => map[s._id] ? map[s._id]++ : map[s._id] = 1 );
+        return Object.keys(map).map( key => ( [ map[key], this.props.order.stuffs.find( s => s._id === key ) ] ) )
     }
 
     componentWillUnmount = () => {
@@ -71,22 +70,24 @@ class OrderComponent extends React.Component<OrderProps, any> {
 
     render() {
         const order: Order = this.props.order;
-        const createItem = ( item: Stuff ) => {
+        const createItem = ( s: Stuff ) => {
+            console.log(s)
             return (
-                <div className='item'>
-                    {item.category}<br />
-                    {item.name}
+                <div key={s[1]._id} className="order-stuff">
+                    { s[0] > 1 ? <i className="times">{s[0]}</i> : null }
+                    <strong>{s[1].name}</strong>
                 </div>
             );
         };
         return (
             <div ref='order'
-                className={classnames( 'order', { hidden: this.props.hidden, expand: this.roomState.expand } )}
-                onClick={() => this.roomState.expand = !this.roomState.expand}
-                onWheel={e => { if ( this.roomState.expand === true ) e.stopPropagation(); }}>
+                className={classnames( 'order-component', { hidden: this.props.hidden } )} 
+            >
+                <small className="order-number">{order._id}</small>
+                <small className="order-created">{ moment.unix(order.created).fromNow() }</small>
                 <h1>{order.client.name}<span className='price'>{order.amount + ' mB'}</span></h1>
-                <div className={classnames( 'items', { hidden: !this.roomState.expand } )}>
-                    {order.stuffs.map( createItem )}
+                <div className="items">
+                    {this.stuffs.map( createItem )}
                 </div>
                 <span className='cursor-payed'>
                     Payed <input type="checkbox" checked={order.payed} onChange={_ => order.payed = !order.payed} />

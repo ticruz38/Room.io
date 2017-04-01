@@ -26,7 +26,6 @@ export default {
     updateOrder(root, {order}, context ) {
         logger.info('updating order', order._id);
         order.created = moment().unix();
-        console.log(order);
         return db.order.then( dborder => dborder.put( order ).then( hash => {
             logger.info('successfully updated order', hash);
             //logger.info('try to get order by id', db.order.get(hash))

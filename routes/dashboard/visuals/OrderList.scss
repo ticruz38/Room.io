@@ -5,3 +5,43 @@
         color: gold
     }
 }
+
+// Order component 
+.order-component {
+    box-shadow: 0 0 1px black;
+    width: 90%;
+    padding: 0 10px;
+    margin: 15px auto;
+    .order-created {
+        float: right;
+    }
+    .order-stuff {
+        display: table;
+        position: relative;
+        padding: 10px;
+        margin-top: 12px;
+        border: 1px solid gold;
+        cursor: default;
+        .times {
+            display: flex;
+            font-weight: bold;
+            height: 24px;
+            width: 24px;
+            align-items: center;
+            justify-content: center;
+            left: -12px;
+            position: absolute;
+            border: 1px solid gold;
+            border-radius: 12px;
+            background: white;
+            z-index: 10;
+            top: -12px;
+        }
+    }
+    h1{
+        margin: 0;
+    }
+    .price {
+        float: right;
+    }
+}
