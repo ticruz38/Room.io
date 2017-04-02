@@ -1,5 +1,11 @@
-mutation SaveOrder($order: OrderInput!) {
+mutation UpdateOrder($order: OrderInput!) {
     updateOrder(order: $order) {
+        _id
+    }
+}
+
+mutation CreateOrder( $order: OrderInput!) {
+    addOrder(order: $order) {
         _id
     }
 }

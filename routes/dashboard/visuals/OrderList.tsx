@@ -5,12 +5,13 @@ import * as mobx from 'mobx';
 import { observer } from 'mobx-react';
 
 import { dashboardState } from '../Dashboard';
+import { EditableOrder } from "models";
 
 
 
 
 @observer
-export default class OrderList extends React.Component<any, any> {
+export default class OrderList extends React.Component<OrderProps, any> {
 
     get emptyList() {
         return (
@@ -21,27 +22,31 @@ export default class OrderList extends React.Component<any, any> {
         );
     }
 
+    get sortedOrders() {
+        return dashboardState.room.orders.sort( (a, b) => a.created > b.created ? 0 : 1 );
+    }
+
     @mobx.computed get prevItems() {
-        const { room, currentTime } = dashboardState;
-        return room.orders.filter( ( o: Order ) => o.created < dashboardState.currentTime ).slice( -10 ).map(( o: Order, i ) =>
-            <OrderComponent key={o._id} hidden={i > 5} order={o} />
+        const { room, currentTime, filterOrders } = dashboardState;
+        return filterOrders.filter( ( o: Order ) => o.created < currentTime ).slice( -10 ).reverse().map(( o: Order, i ) =>
+            <OrderComponent key={o._id} hidden={i > 5} order={o} roomId={room._id} />
         );
     }
 
     @mobx.computed get nextItems() {
-        const { room } = dashboardState;
-        return room.orders.filter(( o: Order ) => o.created > dashboardState.currentTime ).slice(0, 10).map(( o: Order, i ) =>
-            <OrderComponent key={o._id} hidden={i > 5} order={o} />
+        const { room, currentTime, filterOrders } = dashboardState;
+        return filterOrders.filter( ( o: Order ) => o.created > currentTime ).slice(0, 10).map(( o: Order, i ) =>
+            <OrderComponent key={o._id} hidden={i > 5} order={o} roomId={room._id} />
         )
     }
 
     render() {
-        console.log(dashboardState.room.orders);
         if( !this.prevItems.length && !this.nextItems.length) return this.emptyList;
         return (
             <div className="dashboard">
                 <div id='dashboard' className='container' onWheel={dashboardState.onWheel}>
                     {this.prevItems}
+                    <div className="line"/>
                     {this.nextItems}
                 </div>
             </div>
@@ -52,15 +57,26 @@ export default class OrderList extends React.Component<any, any> {
 
 interface OrderProps {
     hidden: boolean,
-    order: Order
+    order: Order,
+    roomId: string
 }
 
+@observer
 class OrderComponent extends React.Component<OrderProps, any> {
     get stuffs(): any[][] { // [number, Stuff][]
         const map = {};
-        console.log(mobx.toJS(this.props.order));
         this.props.order.stuffs.forEach( s => map[s._id] ? map[s._id]++ : map[s._id] = 1 );
         return Object.keys(map).map( key => ( [ map[key], this.props.order.stuffs.find( s => s._id === key ) ] ) )
+    }
+
+    get amount(): number {
+        return this.props.order.stuffs.reduce( (acc, cur) => acc += cur.price, 0 )
+    }
+
+    editableOrder = new EditableOrder(this.props.order, null, this.props.roomId)
+
+    save() {
+        this.editableOrder.update();
     }
 
     componentWillUnmount = () => {
@@ -71,7 +87,6 @@ class OrderComponent extends React.Component<OrderProps, any> {
     render() {
         const order: Order = this.props.order;
         const createItem = ( s: Stuff ) => {
-            console.log(s)
             return (
                 <div key={s[1]._id} className="order-stuff">
                     { s[0] > 1 ? <i className="times">{s[0]}</i> : null }
@@ -85,16 +100,23 @@ class OrderComponent extends React.Component<OrderProps, any> {
             >
                 <small className="order-number">{order._id}</small>
                 <small className="order-created">{ moment.unix(order.created).fromNow() }</small>
-                <h1>{order.client.name}<span className='price'>{order.amount + ' mB'}</span></h1>
+                <h3>{order.client.name}<span className='price'>{this.amount ? this.amount + 'Rc': 'Free'}</span></h3>
                 <div className="items">
                     {this.stuffs.map( createItem )}
                 </div>
-                <span className='cursor-payed'>
-                    Payed <input type="checkbox" checked={order.payed} onChange={_ => order.payed = !order.payed} />
-                </span>
-                <span className='cursor-treated'>
-                    Treated <input type="checkbox" checked={order.treated} onChange={_ => order.treated = !order.treated} />
-                </span>
+                <div className="foot-bar">
+                    <span>Payed</span> {
+                        this.editableOrder.payed ?
+                        <i className="material-icons" onClick={ _ => { this.editableOrder.payed = false; this.save() } }>check_box</i> :
+                        <i className="material-icons" onClick={ _ => { this.editableOrder.payed = true; this.save() } } >check_box_outline_blank</i>
+                    }
+                    <span>Treated</span> {
+                        this.editableOrder.treated ?
+                        <i className="material-icons" onClick={ _ => { this.editableOrder.treated = 0; this.save() } }>check_box</i> :
+                        <i className="material-icons" onClick={ _ => { this.editableOrder.treated = moment().unix(); this.save() } }>check_box_outline_blank</i>
+                    }
+                    <i className="material-icons">open_with</i>
+                </div>
             </div>
         );
     }

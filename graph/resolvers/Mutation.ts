@@ -9,6 +9,7 @@ const logger = Logger.create('mutation');
 export default {
     addOrder( root, {order}, context ) {
         logger.info("adding order");
+        order.created = moment().unix();
         db.order.then(dborder => dborder.put( order ).then( hash => {
             logger.info('successfully added order', hash);
             return order
@@ -25,7 +26,6 @@ export default {
     },
     updateOrder(root, {order}, context ) {
         logger.info('updating order', order._id);
-        order.created = moment().unix();
         return db.order.then( dborder => dborder.put( order ).then( hash => {
             logger.info('successfully updated order', hash);
             //logger.info('try to get order by id', db.order.get(hash))

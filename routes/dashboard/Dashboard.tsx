@@ -11,6 +11,7 @@ import { EditableRoom } from "models";
 import Timeline from './visuals/Timeline';
 import OrderList from './visuals/OrderList';
 import { SpinnerIcon } from 'components/icons';
+import Select from 'components/Select';
 
 const Document = require('./Dashboard.gql');
 
@@ -19,19 +20,50 @@ const secondPerDay = 24 * 60 * 60;
 
 
 
+
 class DashboardState extends Loader {
     // filter order by...
-    @mobx.observable filterBy: { payed: boolean, treated: boolean } = {
-        payed: false,
-        treated: false
-    }
+    @mobx.observable filters: any = [];
+
     @mobx.observable room: Room;
+
+    @mobx.observable orders: Order[] = [];
+
+    @mobx.computed get filterOrders() {
+        if( !this.filters.length ) return this.orders;
+        return this.orders.filter( o => {
+            return this.filters.some( option => {
+                const value = JSON.parse(option.value);
+                return Object.keys(value).some( key => !!o[key] === !!value[key] )
+            } )
+        } ).sort( (a, b) => a.created > b.created ? 0 : 1 )
+    }
     // the current time the timeline points to
     @mobx.observable currentTime: number = moment().unix();
     // the day the timeline is focused on
     @mobx.observable today: number = moment().startOf('day').unix();
     // timeline cursor position on x axis
     @mobx.observable x: number = (this.currentTime - this.today) / 10;
+
+    @mobx.computed get options() {
+        return [
+            { label: 'payed', value: '{ "payed": true }' },
+            { label: 'treated', value: '{ "treated": true }' },
+            { label: 'unpayed', value: '{ "payed": false }' },
+            { label: 'untreated', value: '{ "treated": false }' },
+            { label: 'price > 5', value: '{ "price": >5 }' },
+            ...this.orders.map( o => ( { label: 'N°:'+o._id, value: '{ "_id": o._id }' } ) ),
+            ...this.orders.map( o => ( { label: 'client:'+ o.client.name, value: '{ "client": {"name": o.client.name } }' } ) )
+        ]
+    }
+
+    get select() {
+        return (
+            <Select
+                store={this}
+            />
+        );
+    }
     // handle the onWheel event
     onWheel = (event) => {
         event.preventDefault();
@@ -55,10 +87,10 @@ class DashboardState extends Loader {
         this.execute('RoomWithOrders', {
             variables: { userId: layoutState.user["_id"] },
             cb: (data: any) => {
-                console.log(data);
                 const { room } = data.user;
                 if(!room) throw 'oop, room hasnt been fetched';
-                this.room = room
+                this.room = room;
+                this.orders = room.orders;
             }
         } )
     }
@@ -71,10 +103,12 @@ export const dashboardState = new DashboardState(Document);
 
 @observer
 export default class Dashboard extends React.Component<any, any> {
-
     componentWillMount() {
         layoutState.reset();
-        layoutState.toolBar = <Link to="/profile" className="btn">Profile</Link>
+        layoutState.toolBar = [
+            <Link to="/profile" className="btn">Profile</Link>,
+            dashboardState.select
+        ]
         layoutState.title = 'Dashboard';
         dashboardState.loadRoom()
     }

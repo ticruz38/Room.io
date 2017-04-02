@@ -46,3 +46,18 @@ a {
     color: gold;
   }
 }
+
+// react-select
+.Select-control {
+    height: 32px;
+    min-width: 6em;
+    border: none;
+    border-radius: 3px;
+    background-color: lightyellow;
+    .Select-input {
+        height: 32px;
+    }
+    .Select-value {
+        margin-top: 3px;
+    }
+}

@@ -47,7 +47,7 @@ export default class Timeline extends React.Component<any, any> {
                     <rect x={time} y='0' width={8640 - time < 0 ? 0 : 8640 - time} height='800' fill='rgba(255, 255, 255, 0.8)' />
                     <path d='M0,400 H8640' stroke='black' strokeWidth='1' />
                     <rect className='cursor' x={state.x} y='0' width='20' height='800' fill='yellow' />
-                    {state.room.orders.map(Order)}
+                    {state.filterOrders.map(Order)}
                     <text
                         textAnchor='middle'
                         x='4320'
@@ -70,26 +70,6 @@ export default class Timeline extends React.Component<any, any> {
                         {moment.unix(state.currentTime).format('LT')}
                     </text>
                 </svg>
-                <nav className='nav-list'>
-                    <ul className='cursor-container'>
-                        <li>
-                            <span id='payed'
-                                className={classnames('cursor-wrapper', { red: !state.filterBy.payed, green: state.filterBy.payed })}
-                                onClick={_ => state.filterBy.payed = !state.filterBy.payed}
-                            >payed
-                                <input type="checkbox" checked={state.filterBy.payed} />
-                            </span>
-                        </li>
-                        <li>
-                            <span id='treated'
-                                className={classnames('cursor-wrapper', { red: !state.filterBy.treated, green: state.filterBy.treated })}
-                                onClick={_ => state.filterBy.treated = !state.filterBy.treated}
-                            >treated
-                                <input type="checkbox" checked={state.filterBy.treated} />
-                            </span>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         );
     }

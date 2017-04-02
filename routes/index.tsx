@@ -39,5 +39,6 @@ export default {
 }
 
 
-import './index.scss';
+import 'react-select/dist/react-select.css';
 import '../node_modules/graphiql/graphiql.css'
+import './index.scss';

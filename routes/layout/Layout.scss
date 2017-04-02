@@ -40,6 +40,14 @@
       margin: 0 1em;
     }
 
+    .toolbar {
+        > * {
+            margin-right: 5px
+        }
+        display: flex;
+        align-items: center;
+    }
+
     >div {
       display: inline-flex;
     }

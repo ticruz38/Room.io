@@ -20,7 +20,8 @@ export class EditableOrder extends Editable {
         const index = this.stuffIds.findIndex( sId => sId === id );
         this.stuffIds.splice(index, 1);
     }
-    save = (cb?: Function) => this.execute( 'SaveOrder', { order: this.toInput() } )
+    update = (cb?: Function) => this.execute( 'UpdateOrder', { order: this.toInput() } )
+    create = (cb?: Function) => this.execute( 'CreateOrder', { order: this.toInput() } )
     delete = (cb?: Function) => this.execute( 'DeleteOrder', { id: this._id } )
     constructor(order?: Order, clientId?: string, roomId?: string) {
         super();

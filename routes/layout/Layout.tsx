@@ -107,7 +107,7 @@ export default class Layout extends React.Component<any, any> {
                                 {layoutState.title}
                             </div>
                             {this.backButton}
-                            <div className="toolBar">
+                            <div className="toolbar">
                                 {layoutState.toolBar}
                             </div>
                         </div>

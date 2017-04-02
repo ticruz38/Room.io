@@ -12,6 +12,22 @@
     width: 90%;
     padding: 0 10px;
     margin: 15px auto;
+    h3{
+        margin-top: 0;
+    }
+    .price {
+        float: right;
+    }
+    .foot-bar {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 0 -5px;
+        >i {
+            margin-right: 5px;
+            cursor: pointer;
+        }
+    }
     .order-created {
         float: right;
     }
@@ -37,11 +53,5 @@
             z-index: 10;
             top: -12px;
         }
-    }
-    h1{
-        margin: 0;
-    }
-    .price {
-        float: right;
     }
 }
