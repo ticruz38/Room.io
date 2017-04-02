@@ -1,5 +1,4 @@
 import db from 'graph/IpfsApiStore';
-import * as graphql from 'graphql';
 import * as moment from 'moment';
 
 const Logger = require('logplease');
