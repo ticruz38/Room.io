@@ -17,7 +17,7 @@ export class Order extends React.Component<props, any> {
 
     onSave() {
         const { roomState } = this.props;
-        roomState.order.save()
+        roomState.order.create()
         roomState.order = new EditableOrder( null, layoutState.user._id, this.props.params.roomId);
         this.props.router.push( { pathname: '/rooms/' + this.props.params.roomId } )
     }

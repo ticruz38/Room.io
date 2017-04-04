@@ -1,114 +1,141 @@
 .stuff {
-  input {
-    background: white !important;
-  }
+    input {
+        background: white !important;
+    }
 }
+
 .toolBar {
     display: flex;
     >* {
         margin: 0 3px 0 0;
     }
 }
+
 .profile {
-  margin: 4vh 4vw;
-  input {
-    background: white !important;
-  }
-  .profile-header {
-    display: flex;
-    align-items: flex-start;
-    img {
-        border-radius: 10em;
-        flex-grow: 1;
-        margin: 1em;
-        min-width: 8em;
-        width: 10%;
-        max-width: 15em;
-        max-height: 15em;
+    margin: 4vh 4vw;
+    input {
+        background: white !important;
     }
-    .user-information {
-      flex-grow: 2;
-      margin-left: 1em;
-    }
-  }
-  .card {
-      position: relative;
-      margin: 1em;
-      border-radius: 10px;
-      background: whitesmoke;
-      h1, h2, h3 {
-        padding: 5px 1em;
-        margin: 0;
-      }
-      .close {
-          opacity: 0;
-          cursor: pointer;
-          position: absolute;
-          border-radius: 20px;
-          background: gold;
-          top: -10px;
-          right: -10px;
-          transition: opacity 0.2s linear
-      }
-  }
-  .profile-room {
-    margin: 1em 0;
-    border-radius: 10px;
-    overflow: hidden;
-    .action-button {
-      padding: 5px;
-      background: gold;
-      button.btn {
-        margin: 0 1em;
-        border: 1px solid;
-      }
-    }
-    .room {
-      &:hover {
-          .close {
-              opacity: 1;
-          }
-      }
-    }
-    .category {
-      table.profile-stuffs {
-        width: 100%;
-        >* {
-          padding: 0 0 0 5px;
-        }
-        .name {
-          width: 12em;
-        }
-        .stuff {
-          .close {
-            position: static;
-          }
-          &:hover {
-              .close {
-                  opacity: 1;
-              }
-          }
-          >:first-child {
+    .profile-header {
+        display: flex;
+        align-items: flex-start;
+        .user-picture {
+            cursor: pointer;
             position: relative;
             text-align: center;
-            width: 2em;
-          }
-          padding: 0 0 0 5px;
-          .description {
-            align-items: center;
-            justify-content: space-between;
-            display: flex;
-            position: relative;
-          }
+            .picture {
+                border-radius: 10em;
+                flex-grow: 1;
+                margin: 1em;
+                height: 10em;
+            }
+            .layer {
+                transition: all 0.15s linear;
+                opacity: 0;
+                position: absolute;
+                bottom: 0;
+                left: 11px;
+                color: gold;
+            }
+            &:hover {
+                .layer {
+                    opacity: 1;
+                }
+                .picture-blur {
+                    transition: all 0.15s linear;
+                    filter: grayscale(100%);
+                }
+            }
+            input {
+                position: absolute;
+                opacity: 0;
+            }
         }
-      }
+        .user-information {
+            flex-grow: 2;
+            margin-left: 1em;
+        }
     }
-  }
+    .card {
+        position: relative;
+        margin: 1em;
+        border-radius: 10px;
+        background: whitesmoke;
+        h1, h2, h3 {
+            padding: 5px 1em;
+            margin: 0 0 1em;
+        }
+        .close {
+            opacity: 0;
+            cursor: pointer;
+            position: absolute;
+            border-radius: 20px;
+            background: gold;
+            top: -10px;
+            right: -10px;
+            transition: opacity 0.2s linear
+        }
+    }
+    .profile-room {
+        margin: 1em 0;
+        border-radius: 10px;
+        overflow: hidden;
+        .action-button {
+            padding: 5px;
+            background: gold;
+            button.btn {
+                margin: 0 1em;
+                border: 1px solid;
+            }
+        }
+        .room {
+            &:hover {
+                .close {
+                    opacity: 1;
+                }
+            }
+        }
+        .category {
+            table.profile-stuffs {
+                width: 100%;
+                padding: 0 0 0 5px;
+                >* {
+                    padding: 0 0 0 5px;
+                }
+                .stuff {
+                    .close {
+                        top: 13px;
+                        left: -19px;
+                        right: auto;
+                    }
+                    &:hover {
+                        .close {
+                            opacity: 1;
+                        }
+                    }
+                    >:first-child {
+                        position: relative;
+                        text-align: center;
+                        width: 1%;
+                    }
+                    .name {
+                        width: 30%;
+                    }
+                    .description {
+                        width: 55%;
+                    }
+                    .price {
+                        width: 10%;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .profile-buttons {
-  display: flex;
-  >* {
-    margin: 0 2px;
-  }
+    display: flex;
+    >* {
+        margin: 0 2px;
+    }
 }

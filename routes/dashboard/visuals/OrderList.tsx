@@ -11,7 +11,7 @@ import { EditableOrder } from "models";
 
 
 @observer
-export default class OrderList extends React.Component<OrderProps, any> {
+export default class OrderList extends React.Component<{}, any> {
 
     get emptyList() {
         return (
@@ -55,14 +55,8 @@ export default class OrderList extends React.Component<OrderProps, any> {
 }
 
 
-interface OrderProps {
-    hidden: boolean,
-    order: Order,
-    roomId: string
-}
-
 @observer
-class OrderComponent extends React.Component<OrderProps, any> {
+class OrderComponent extends React.Component<{order: Order, roomId: string, hidden: boolean}, any> {
     get stuffs(): any[][] { // [number, Stuff][]
         const map = {};
         this.props.order.stuffs.forEach( s => map[s._id] ? map[s._id]++ : map[s._id] = 1 );

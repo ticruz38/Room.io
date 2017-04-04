@@ -7,6 +7,7 @@ import { Input } from 'components/form';
 import { nonEmpty, email, hasChanged } from 'components/form/Constraint';
 import { layoutState } from 'routes/layout/Layout';
 import Loader from 'graph/Loader';
+import db from 'graph/IpfsApiStore';
 
 //Profile 
 import RoomEditor from './visuals/RoomEditor';
@@ -83,6 +84,11 @@ export default class Profile extends React.Component<any, any> {
         layoutState.title = "Profile";
         layoutState.backgroundImage = "https://vanessaberryworld.files.wordpress.com/2013/10/teen-room-desk.jpg";
         mobx.autorun(_ => layoutState.toolBar = profileState.toolbar);
+        db.ipfs.files.get( 'QmaaJHBVhTEjpxSeEHEw2ywFrE6Vagoe58znWE87UVR3gw', (err, stream) => {
+            console.log(err, stream);
+            const read = new ReadableStream();
+            stream.pipe( (read, enc, next) => console.log(read, enc, next) );
+        })
     }
 
     @mobx.computed get categories() {
@@ -108,12 +114,13 @@ export default class Profile extends React.Component<any, any> {
                                         <i className="material-icons close" onClick={ e => s.delete( _ => onClose(s) ) }>close</i>
                                     </td>
                                     <td className="name">
-                                        <Input type="text" field={s.name} />
+                                        <Input type="text" field={s.name} placeholder="name" />
                                     </td>
-                                    <td>
-                                        <div className="description">
-                                            <Input type="text" field={s.description} />
-                                        </div>
+                                    <td className="description">
+                                        <Input type="text" field={s.description} placeholder="description" />
+                                    </td>
+                                    <td className="price">
+                                        <Input type="number" field={s.price} placeholder="price" min={0} />
                                     </td>
                                 </tr>
                             ))}
@@ -124,6 +131,30 @@ export default class Profile extends React.Component<any, any> {
             null
     }
 
+    get userPicture() {
+        const { user } = profileState;
+        // QmaaJHBVhTEjpxSeEHEw2ywFrE6Vagoe58znWE87UVR3gw
+        const processFiles = (event) => {
+            const reader = new FileReader();
+            reader.readAsArrayBuffer( this.refs.fileinput.files[0] );
+            reader.onloadend = (e) => {
+                console.log(reader.result);
+                db.uploadFile( new Buffer(reader.result) );
+            }
+        }
+        return (
+            <div className="user-picture" onClick={ _ => this.refs.fileinput.click() }>
+                <input type='file' ref="fileinput" onChange={ processFiles } />
+                <div className="layer">
+                    Click to upload a picture
+                </div>
+                <div className="picture-blur">
+                    <img className='picture' src={user.picture.value ? 'https://ipfs.io/ipfs/' + user.picture : 'https://www.jimfitzpatrick.com/wp-content/uploads/2012/10/Che-detail-1.jpg'} />
+                </div>
+            </div>
+        );
+    }
+
     render() {
         const { user } = profileState;
         if (!user) return <span />;
@@ -131,7 +162,7 @@ export default class Profile extends React.Component<any, any> {
             <div className="profile">
                 <div className="profile">
                     <div className="profile-header">
-                        <img src={user.picture.value ? 'https://ipfs.io/ipfs/' + user.picture : 'https://www.jimfitzpatrick.com/wp-content/uploads/2012/10/Che-detail-1.jpg'} />
+                        { this.userPicture }
                         <div className="user-information card">
                             <h2>Profile Information</h2>
                             <Input

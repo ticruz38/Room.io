@@ -1,4 +1,5 @@
 import { observable } from 'mobx';
+import { EventEmitter } from 'events';
 
 const Logger = require('logplease');
 const Orbitdb = require('orbit-db');
@@ -10,12 +11,13 @@ console.log(logger);
 class IpfsStore {
     nodeID: string;
     orbitdb: any;
-    node: any;
+    ipfs: any;
     room: Promise< any >;
     stuff: Promise< any >;
     user: Promise< any >;
     order: Promise< any >;
     chat: any;
+    pubsub = new EventEmitter();
 
     constructor() {
         this.startOrbitDb();
@@ -31,6 +33,12 @@ class IpfsStore {
     // stuffLoaded number between 0 and 1
     stuffLoading: number = 0;
 
+    uploadFile(file) {
+        this.ipfs.files.add( file, (err, res) => {
+            console.log(err, res);
+        } );
+    }
+
     createDb(dbName: string, indexBy?: string ) {
         this[dbName] = new Promise( (resolve, reject) => {
             const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
@@ -44,11 +52,11 @@ class IpfsStore {
 
     startOrbitDb() {
         // IpfsApi is a bridge to the local ipfs client node
-        this.node = new IpfsApi();
+        this.ipfs = new IpfsApi();
         // nodeId is the ipfs node identifier
-        this.nodeID = this.node.id().then( (config: any) => this.nodeID = config.id );
+        this.nodeID = this.ipfs.id().then( (config: any) => this.nodeID = config.id );
          // We instantiate Orbit-db with our ipfs client node
-        this.orbitdb = new Orbitdb( this.node );
+        this.orbitdb = new Orbitdb( this.ipfs );
     }
 }
 

@@ -6,13 +6,29 @@ label {
     margin-left: 2em;
 }
 .input, .textarea {
+    position: relative;
+    .placeholder {
+        transition: all 0.2s ease-out;
+        position: absolute;
+        left: 1.5em;
+        top: 0.5em;
+        color: #ccc;
+        &.label {
+            top: -1.2em;
+            left: 1.5em;
+            color: #999
+        }
+    }
+    .errors {
+        text-align: right;
+    }
     input, textarea {
         display: flex;
         outline: none;
         border: none;
         padding: 0.5em;
         margin: 0.5em 1em 0;
-        max-width: 20em;
+        // max-width: 20em;
         width: calc(100% - 2.5em);
         font-size: 1em;
         background: rgba(255, 255, 255, 0.5);
@@ -21,6 +37,14 @@ label {
         }
     }
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
 .errors {
     color: red;
     text-align: left;

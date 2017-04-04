@@ -24,3 +24,24 @@ query RoomWithOrders( $userId: String ) {
         }
     }
 }
+
+subscription WatchOrders( $roomId: String! ) {
+    orders: watchOrders( id: $roomId ) {
+        _id
+        created
+        payed
+        treated
+        created
+        amount
+        stuffs {
+            _id
+            name
+            category
+            price
+        }
+        client {
+            _id
+            name
+        }
+    }
+}

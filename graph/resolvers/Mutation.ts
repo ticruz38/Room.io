@@ -11,6 +11,7 @@ export default {
         order.created = moment().unix();
         db.order.then(dborder => dborder.put( order ).then( hash => {
             logger.info('successfully added order', hash);
+            dborder.events.emit( 'addOrder', { order: order } );
             return order
         } ) );
         return order;
@@ -27,6 +28,8 @@ export default {
         logger.info('updating order', order._id);
         return db.order.then( dborder => dborder.put( order ).then( hash => {
             logger.info('successfully updated order', hash);
+            dborder.events.emit( 'updateOrder', { order: order } );
+            logger.info('Emitting updateOrder');
             //logger.info('try to get order by id', db.order.get(hash))
             return order
         }));

@@ -40,11 +40,19 @@ export default class Input extends React.Component< InputProps, any > {
         );
     }
 
+    get placeholder(): React.ReactElement< any > {
+        const classname = !!this.props.field.value || this.props.type === "number" ? 'label' : '';
+        return (
+            <div className={ "placeholder " + classname }>{this.props.placeholder}</div>
+        );
+    }
+
     render() {
         let { field } = this.props;
         return (
             <div className='input'>
-                { this.props.label ? <label>{this.props.label}</label> : null}
+                {/*{ this.props.label ? <label>{this.props.label}</label> : null}*/}
+                { this.placeholder }
                 <input
                     className={classnames({error: !this.isValid})}
                     type={ this.props.type }
@@ -56,7 +64,6 @@ export default class Input extends React.Component< InputProps, any > {
                     } }
                     min={ this.props.min }
                     max={ this.props.max }
-                    placeholder={this.props.placeholder}
                 />
                 { this.errors }
             </div>

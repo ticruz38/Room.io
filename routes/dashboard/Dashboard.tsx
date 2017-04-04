@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import * as mobx from 'mobx';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { observer } from 'mobx-react';
 import Loader from "graph/Loader";
 
@@ -12,6 +13,9 @@ import Timeline from './visuals/Timeline';
 import OrderList from './visuals/OrderList';
 import { SpinnerIcon } from 'components/icons';
 import Select from 'components/Select';
+
+const Logger = require('logplease');
+const logger = Logger.create('Dashboard');
 
 const Document = require('./Dashboard.gql');
 
@@ -31,10 +35,20 @@ class DashboardState extends Loader {
 
     @mobx.computed get filterOrders() {
         if( !this.filters.length ) return this.orders;
-        return this.orders.filter( o => {
+        return this.orders.filter( order => {
             return !this.filters.some( option => {
                 const value = JSON.parse(option.value);
-                return !Object.keys(value).some( key => !!o[key] === !!value[key] )
+                return !Object.keys(value).some( key => {
+                    switch (key) {
+                        case 'price':
+                            return order[key] >= value[key];
+                        case '_id':
+                            return order[key] === value[key];
+                        case 'client':
+                            return order[key].name === value[key].name;
+                        default:
+                            return !!order[key] === !!value[key];
+                    } } )
             } )
         } ).sort( (a, b) => a.created > b.created ? 0 : 1 )
     }
@@ -46,14 +60,19 @@ class DashboardState extends Loader {
     @mobx.observable x: number = (this.currentTime - this.today) / 10;
 
     @mobx.computed get options() {
+        const clients = {};
         return [
             { label: 'payed', value: '{ "payed": true }' },
             { label: 'treated', value: '{ "treated": true }' },
             { label: 'unpayed', value: '{ "payed": false }' },
             { label: 'untreated', value: '{ "treated": false }' },
-            { label: 'price > 5', value: '{ "price": >5 }' },
-            ...this.orders.map( o => ( { label: 'N°:'+o._id, value: '{ "_id": o._id }' } ) ),
-            ...this.orders.map( o => ( { label: 'client:'+ o.client.name, value: '{ "client": {"name": o.client.name } }' } ) )
+            { label: 'price > 5', value: `{ "price": 5 }` },
+            ...this.orders.map( o => ( { label: 'N°:'+o._id, value: `{ "_id": "${o._id}" }` } ) ),
+            ...this.orders.filter( o => {
+                if( clients[o.client.name] ) return false;
+                clients[o.client.name] = 1;
+                return true;
+            } ).map( o => ( { label: 'client:'+ o.client.name, value: `{ "client": {"name": "${o.client.name}" } }` } ) )
         ]
     }
 
@@ -83,6 +102,17 @@ class DashboardState extends Loader {
         this.x += event.currentTarget.id === 'timeline' ? event.deltaX : event.deltaY;
         this.currentTime = this.today + (this.x * 10);
     }
+    //to be called once room is loaded
+    watchOrders() {
+        this.subscribe('WatchOrders', {
+            variables: { roomId: this.room._id },
+            contextValue: this,
+            cb: (data: any) => {
+                // logger.info('Subscribing order change')
+                console.log(data);
+            }
+        }, 'addOrder', (payload) => payload.order.roomId === this.room._id );
+    }
     loadRoom() {
         this.execute('RoomWithOrders', {
             variables: { userId: layoutState.user["_id"] },
@@ -91,6 +121,7 @@ class DashboardState extends Loader {
                 if(!room) throw 'oop, room hasnt been fetched';
                 this.room = room;
                 this.orders = room.orders;
+                this.watchOrders();
             }
         } )
     }

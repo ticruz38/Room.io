@@ -22,9 +22,10 @@ export default class RoomEditor extends React.Component< EditableUser, any > {
             <div className="room card">
                 <h2>Room</h2>
                 <i className="material-icons close" onClick={ e => room.delete( _ => profileState.user.room = null ) }>close</i>
-                <Input field={room.name} type="text" placeholder="room name" />
-                <Input field={room.description} type="text" placeholder="room description" />
-                <Input field={room.email} type="text" placeholder="room email" />
+                <Input field={room.name} type="text" placeholder="name" />
+                <Input field={room.description} type="text" placeholder="description" />
+                <Input field={room.email} type="text" placeholder="email" />
+                <Input field={room.phoneNumber} type="text" placeholder="phone-number" />
                 <div className="action-button">
                     <button
                         className="btn"
