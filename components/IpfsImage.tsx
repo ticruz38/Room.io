@@ -23,11 +23,11 @@ export default class ImageComponent extends React.PureComponent< ImageProps, any
     componentWillReceiveProps(nextProps) {
         if( this.props.picture.value ) db.getImage( nextProps.picture.value ).then( res => this.base64Image = res )
     }
-    uploadFile = () => db.uploadFile( this.refs.fileinput.files[0], this.props.onUpload )
+    uploadFile = () => db.uploadFile( this.refs.fileinput['files'][0], this.props.onUpload )
 
     render() {
         return (
-            <div className={this.props.className} onClick={_ => this.refs.fileinput.click()}>
+            <div className={this.props.className} onClick={ _ => this.refs.fileinput['click']() }>
                 <input type='file' ref="fileinput" onChange={ this.uploadFile } />
                 <div className="layer">
                     Click to upload a picture

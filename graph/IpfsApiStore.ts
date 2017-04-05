@@ -7,7 +7,8 @@ import * as concat from 'concat-stream';
 
 const Logger = require('logplease');
 const Orbitdb = require('orbit-db');
-const IpfsApi = require('@haad/ipfs-api');
+// const IpfsApi = require('@haad/ipfs-api');
+const IPFS = require('ipfs-daemon/src/ipfs-browser-daemon')
 
 const logger = Logger.create('Ipfs-server');
 console.log(logger);
@@ -24,11 +25,12 @@ class IpfsStore {
     pubsub = new EventEmitter();
 
     constructor() {
-        this.startOrbitDb();
-        this.createDb('room');
-        this.createDb('stuff');
-        this.createDb('user', 'email');
-        this.createDb('order');
+        this.startOrbitDb().then( orbidb => {
+            this.createDb('room');
+            this.createDb('stuff');
+            this.createDb('user', 'email');
+            this.createDb('order');
+        } );
     }
 
     // roomLoaded number between 0 and 1
@@ -50,15 +52,73 @@ class IpfsStore {
 
     getImage( hash: string ): Promise< string > {
         return new Promise( (resolve, reject) => {
-            this.ipfs.files.get( 'QmaaJHBVhTEjpxSeEHEw2ywFrE6Vagoe58znWE87UVR3gw', (err, stream) => {
-                stream.pipe( through.obj( (file, enc, next) =>
+            this.ipfs.files.get( hash, (err, stream) => {
+                let files = [];
+                stream.pipe( through.obj( (file, enc, next) => {
                     file.content.pipe( concat( (content) => {
-                        resolve( btoa( String.fromCharCode.apply(null, content) ) );
+                        // resolve( btoa( String.fromCharCode.apply(null, content) ) );
+                        files.push( {
+                            path: file.path,
+                            content: content
+                        } )
+                        next();
                     } ) )
-                ) )
+                }, () => {
+                    // the blob is invalid maybe because it is encoded as json...
+                    const file = new Blob( files[0].content, {type: 'image/jpg'} );
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    // reader.onloadend = ( e ) => resolve(reader.result)
+                    // console.log(file);
+                    // let chunks = ''
+                    // console.log(files[0].content);
+                    // for (let i = 0; i < files[0].content.length; i+=10000) {
+                    //     const list = files[0].content.slice(i, i+10000);
+                    //     chunks = chunks + btoa( String.fromCharCode.apply(null, list) );
+                    // }
+                    // console.log(chunks);
+                    // resolve(chunks);
+                    // console.log( files[0].content )
+                    // resolve(files[0].content.map( s => btoa( String.fromCharCode.apply(null, [s]) ) ) );
+                    resolve( btoa( String.fromCharCode.apply(null, files[0].content) ) );
+                    // console.log(files);
+                } ) )
             } );
         } );
     }
+
+    // ipfs.files.get(mhBuf, (err, stream) => {
+    //       expect(err).to.not.exist()
+
+    //       let files = []
+    //       stream.pipe(through.obj((file, enc, next) => {
+    //         file.content.pipe(concat((content) => {
+    //           files.push({
+    //             path: file.path,
+    //             content: content
+    //           })
+    //           next()
+    //         }))
+    //       }, () => {
+    //         expect(files).to.be.length(1)
+    //         expect(files[0].path).to.be.eql(hash)
+    //         expect(files[0].content.toString()).to.contain('Plz add me!')
+    //         done()
+    //       }))
+    //     })
+
+    // getImage( hash: string ): Promise< string > {
+    //     return new Promise( (resolve, reject) => {
+    //         this.ipfs.files.get( hash, (err, stream) => {
+    //             stream.pipe( through.obj( (file, enc, next) =>
+    //                 file.content.pipe( concat( (content) => {
+    //                     resolve( btoa( String.fromCharCode.apply(null, content) ) );
+    //                     next();
+    //                 } ) )
+    //             ) )
+    //         } );
+    //     } );
+    // }
 
     createDb(dbName: string, indexBy?: string ) {
         this[dbName] = new Promise( (resolve, reject) => {
@@ -73,11 +133,21 @@ class IpfsStore {
 
     startOrbitDb() {
         // IpfsApi is a bridge to the local ipfs client node
-        this.ipfs = new IpfsApi();
+        const ipfs = new IPFS({
+            IpfsDataDir: '/datadir',
+            SignalServer: 'star-signal.cloud.ipfs.team'
+        });
         // nodeId is the ipfs node identifier
-        this.nodeID = this.ipfs.id().then( (config: any) => this.nodeID = config.id );
+        // this.nodeID = this.ipfs.id().then( (config: any) => this.nodeID = config.id );
          // We instantiate Orbit-db with our ipfs client node
-        this.orbitdb = new Orbitdb( this.ipfs );
+        const orbitdb = new Orbitdb( ipfs );
+        return new Promise( (resolve, reject) => {
+            ipfs.on('ready', () => {
+                this.ipfs = ipfs;
+                this.orbitdb = orbitdb;
+                resolve(orbitdb)
+            } );
+        } );
     }
 }
 

@@ -28,7 +28,7 @@ export class RoomFeedState extends Loader {
   }
 }
 
-export const roomFeedState = new RoomFeedState( RoomDocument, 'RoomsQuery' );
+export const roomFeedState = new RoomFeedState( RoomDocument );
 
 @observer
 export default class RoomFeed extends React.Component< RoomFeedProps, RoomFeedState > {
