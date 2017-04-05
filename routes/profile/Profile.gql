@@ -3,6 +3,7 @@ query ProfileQuery($id: String!) {
     _id
     name
     email
+    picture
     room {
       _id
       name

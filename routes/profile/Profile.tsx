@@ -4,6 +4,7 @@ import * as guid from 'node-uuid';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router';
 import { Input } from 'components/form';
+import { IpfsImage } from 'components';
 import { nonEmpty, email, hasChanged } from 'components/form/Constraint';
 import { layoutState } from 'routes/layout/Layout';
 import Loader from 'graph/Loader';
@@ -16,8 +17,9 @@ import EditButtons from './visuals/EditButtons';
 
 //models 
 import { EditableRoom, EditableUser } from "models";
-
-const Document = require('./Profile.gql');
+// stream
+import bl = require( 'bl' );
+const Document = require( './Profile.gql' );
 
 
 
@@ -25,18 +27,18 @@ class ProfileState extends Loader {
     @mobx.observable user: EditableUser;
 
     get room(): EditableRoom {
-        if( this.user ) return this.user.room;
+        if ( this.user ) return this.user.room;
         return null;
     }
     createRoom() {
-        this.user.room = new EditableRoom(null, this.user._id);
+        this.user.room = new EditableRoom( null, this.user._id );
     }
     // save potential changes in the profile
     saveChanges: Function = () => {
-        if( this.user.hasChanged ) {
+        if ( this.user.hasChanged ) {
             this.user.save();
         }
-        if( this.room.hasChanged ) {
+        if ( this.room.hasChanged ) {
             this.room.save();
         }
         this.room.stuffs.forEach( s => s.hasChanged ? s.save() : '' );
@@ -44,34 +46,34 @@ class ProfileState extends Loader {
 
     @mobx.computed get toolbar() {
         const DashBoard = this.room ? <Link className="btn" to="/dashboard">Dashboard</Link> : null;
-        const SaveButton = 
+        const SaveButton =
             this.user && this.user.hasChanged ||
-            this.room && this.room.hasChanged && this.room.isValid ||
-            this.room && this.room.stuffs && this.room.stuffs.some(s => !!s.hasChanged) ? 
-            <button onClick={ _ => this.saveChanges() }>Save Change</button> : 
-            null;
+                this.room && this.room.hasChanged && this.room.isValid ||
+                this.room && this.room.stuffs && this.room.stuffs.some( s => !!s.hasChanged ) ?
+                <button onClick={_ => this.saveChanges()}>Save</button> :
+                null;
         const CreateRoom = this.user && this.user.room ?
             null :
             <button onClick={_ => this.createRoom()}>Add a room</button>;
         return [
-                DashBoard,
-                SaveButton,
-                CreateRoom
+            DashBoard,
+            SaveButton,
+            CreateRoom
         ];
     }
     loadProfile() {
-        this.execute('ProfileQuery', {
+        this.execute( 'ProfileQuery', {
             variables: { id: layoutState.user["_id"] },
-            cb: (data: any) => {
+            cb: ( data: any ) => {
                 const { profile } = data;
-                if (!profile) throw 'oops, profile hasnt been fetched';
-                this.user = new EditableUser(profile);
+                if ( !profile ) throw 'oops, profile hasnt been fetched';
+                this.user = new EditableUser( profile );
             }
-        });
+        } );
     }
 }
 // TODO see if the execute should not only happen in the willMount cb of the component
-export const profileState = new ProfileState(Document);
+export const profileState = new ProfileState( Document );
 
 
 
@@ -83,35 +85,30 @@ export default class Profile extends React.Component<any, any> {
         layoutState.reset();
         layoutState.title = "Profile";
         layoutState.backgroundImage = "https://vanessaberryworld.files.wordpress.com/2013/10/teen-room-desk.jpg";
-        mobx.autorun(_ => layoutState.toolBar = profileState.toolbar);
-        db.ipfs.files.get( 'QmaaJHBVhTEjpxSeEHEw2ywFrE6Vagoe58znWE87UVR3gw', (err, stream) => {
-            console.log(err, stream);
-            const read = new ReadableStream();
-            stream.pipe( (read, enc, next) => console.log(read, enc, next) );
-        })
+        mobx.autorun( _ => layoutState.toolBar = profileState.toolbar );
     }
 
     @mobx.computed get categories() {
         const categories = {};
-        (profileState.room.stuffs || []).map(s => categories[s.category.value] ? categories[s.category.value].push(s) : categories[s.category.value] = [s])
+        ( profileState.room.stuffs || [] ).map( s => categories[s.category.value] ? categories[s.category.value].push( s ) : categories[s.category.value] = [s] )
         return categories;
     }
 
     get categoriesElement() {
-        const onClose = (stuff) => {
-            const index = profileState.room.stuffs.findIndex(s => stuff._id === s._id);
-            profileState.room.stuffs.splice(index, 1);
+        const onClose = ( stuff ) => {
+            const index = profileState.room.stuffs.findIndex( s => stuff._id === s._id );
+            profileState.room.stuffs.splice( index, 1 );
         };
         return profileState.room ?
-            Object.keys(this.categories).sort( (a, b) => a > b ? 1 : 0 ).map(key => (
+            Object.keys( this.categories ).sort(( a, b ) => a > b ? 1 : 0 ).map( key => (
                 <div key={key} className="category card">
                     <h2>{key}</h2>
                     <table className='profile-stuffs'>
                         <tbody>
-                            {this.categories[key].map(s => (
+                            { this.categories[key].map( s => (
                                 <tr key={s._id} className="stuff">
                                     <td>
-                                        <i className="material-icons close" onClick={ e => s.delete( _ => onClose(s) ) }>close</i>
+                                        <i className="material-icons close" onClick={e => s.delete( _ => onClose( s ) )}>close</i>
                                     </td>
                                     <td className="name">
                                         <Input type="text" field={s.name} placeholder="name" />
@@ -123,7 +120,7 @@ export default class Profile extends React.Component<any, any> {
                                         <Input type="number" field={s.price} placeholder="price" min={0} />
                                     </td>
                                 </tr>
-                            ))}
+                            ) ) }
                         </tbody>
                     </table>
                 </div>
@@ -131,38 +128,21 @@ export default class Profile extends React.Component<any, any> {
             null
     }
 
-    get userPicture() {
-        const { user } = profileState;
-        // QmaaJHBVhTEjpxSeEHEw2ywFrE6Vagoe58znWE87UVR3gw
-        const processFiles = (event) => {
-            const reader = new FileReader();
-            reader.readAsArrayBuffer( this.refs.fileinput.files[0] );
-            reader.onloadend = (e) => {
-                console.log(reader.result);
-                db.uploadFile( new Buffer(reader.result) );
-            }
-        }
-        return (
-            <div className="user-picture" onClick={ _ => this.refs.fileinput.click() }>
-                <input type='file' ref="fileinput" onChange={ processFiles } />
-                <div className="layer">
-                    Click to upload a picture
-                </div>
-                <div className="picture-blur">
-                    <img className='picture' src={user.picture.value ? 'https://ipfs.io/ipfs/' + user.picture : 'https://www.jimfitzpatrick.com/wp-content/uploads/2012/10/Che-detail-1.jpg'} />
-                </div>
-            </div>
-        );
-    }
-
     render() {
         const { user } = profileState;
-        if (!user) return <span />;
+        if ( !user ) return <span />;
         return (
             <div className="profile">
                 <div className="profile">
                     <div className="profile-header">
-                        { this.userPicture }
+                        <IpfsImage
+                            onUpload={ (err, res) => {
+                                user.picture.value = res[0].hash;
+                                user.picture.hasChanged = true;
+                            } }
+                            picture={ user.picture }
+                            className="user-picture"
+                        />
                         <div className="user-information card">
                             <h2>Profile Information</h2>
                             <Input
@@ -179,7 +159,7 @@ export default class Profile extends React.Component<any, any> {
                     </div>
                     <div className='profile-room'>
                         {user.room ? <RoomEditor { ...user } /> : null}
-                        { this.categoriesElement }
+                        {this.categoriesElement}
                     </div>
                 </div>
             </div>
