@@ -5,13 +5,11 @@ import { EventEmitter } from 'events';
 import * as through from 'through2';
 import * as concat from 'concat-stream';
 
-const Logger = require('logplease');
+const IpfsDaemon = require('./IpfsDaemon');
 const Orbitdb = require('orbit-db');
-// const IpfsApi = require('@haad/ipfs-api');
-const IPFS = require('ipfs-daemon/src/ipfs-browser-daemon')
+const Logger = require('logplease');
 
 const logger = Logger.create('Ipfs-server');
-console.log(logger);
 
 class IpfsStore {
     nodeID: string;
@@ -25,7 +23,7 @@ class IpfsStore {
     pubsub = new EventEmitter();
 
     constructor() {
-        this.startOrbitDb().then( orbidb => {
+        this.startOrbitDb().then( _ => {
             this.createDb('room');
             this.createDb('stuff');
             this.createDb('user', 'email');
@@ -121,6 +119,7 @@ class IpfsStore {
     // }
 
     createDb(dbName: string, indexBy?: string ) {
+        // console.log('createdb', this.orbitdb);
         this[dbName] = new Promise( (resolve, reject) => {
             const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
             db.events.on('ready', _ => {
@@ -133,19 +132,18 @@ class IpfsStore {
 
     startOrbitDb() {
         // IpfsApi is a bridge to the local ipfs client node
-        const ipfs = new IPFS({
+        const ipfs = new IpfsDaemon({
             IpfsDataDir: '/datadir',
             SignalServer: 'star-signal.cloud.ipfs.team'
         });
         // nodeId is the ipfs node identifier
         // this.nodeID = this.ipfs.id().then( (config: any) => this.nodeID = config.id );
-         // We instantiate Orbit-db with our ipfs client node
-        const orbitdb = new Orbitdb( ipfs );
         return new Promise( (resolve, reject) => {
             ipfs.on('ready', () => {
+                console.log('ready', ipfs);
                 this.ipfs = ipfs;
-                this.orbitdb = orbitdb;
-                resolve(orbitdb)
+                this.orbitdb = new Orbitdb( ipfs );
+                resolve();
             } );
         } );
     }

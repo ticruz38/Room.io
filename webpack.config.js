@@ -4,62 +4,62 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        app: ["./index.tsx"]
+        app: ["./index.tsx"],
     },
     output: {
         path: path.resolve(__dirname, "dist"),
         publicPath: "/",
         filename: "bundle.js"
     },
-    
-    //allow cross origin request
-    headers: {
-        "Access-Control-Allow-Origin": "*"
-    },
 
     // Enable sourcemaps for debugging webpack's output.
-    devtool: "source-map",
+    devtool: "eval",
 
     resolve: {
-        root: [
-          path.resolve('.')
-        ],
         alias: {
+          zlib: 'browserify-zlib-next', // for js-ipfs to integrate with the right deps in browser mode
           routes: path.resolve('./routes'),
           graph: path.resolve('./graph'),
           contract: path.resolve('./contract'),
           public: path.resolve('./public'),
           components: path.resolve('./components'),
-          models: path.resolve('./models')
+          models: path.resolve('./models'),
         },
+        modules: [
+            path.resolve('.'),
+            "node_modules"
+        ],
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".json"]
+        extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".json"]
     },
 
     module: {
-        loaders: [
+        rules: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
             {
                 test: /\.tsx?|ts$/,
                 exclude: /node_modules/,
                 loader: "ts-loader"
             }, {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader'
+            }, {
                 test: /\.scss|sass|css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+                loader: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: ["css-loader", "sass-loader"] 
+                } )
             }, {
                 test: /\.(jpe?g|png|gif|svg|eot|woff|ttf)$/i,
                 exclude: /node_modules/,
-                loader: 'file'
+                loader: 'file-loader'
             }, {
                 test: /\.(graphql|gql)$/,
                 exclude: /node_modules/,
                 loader: 'graphql-tag/loader'
-            }
-        ],
-
-        preLoaders: [
+            },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            { test: /\.json$/, loader: 'json'},
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -70,11 +70,5 @@ module.exports = {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new ExtractTextPlugin("stylesheets/[name].css")
-    ],
-
-    sassLoader: {
-        includePaths: [
-            path.resolve(__dirname, 'node_modules') + 'graphiql'
-        ]
-    }
+    ]
 };
