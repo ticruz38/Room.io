@@ -5,16 +5,16 @@ const Logger = require('logplease')
 const logger = Logger.create('ipfs-daemon', { useColors: false })
 Logger.setLogLevel('ERROR')
 
-class IpfsDaemon extends events.EventEmitter {
-    static Name: string;
+class Daemon extends events.EventEmitter {
+    static Name: string = 'ipfs-daemon';
 
     types = { Buffer: Buffer };
     _daemon = null;
     _peerId = null;
-    _options: ObjectLitteral;
-    gatewayHost: any;
-    getwayPort: string;
-    apiHost: any;
+    _options: any;
+    gatewayHost: string;
+    gatewayPort: string;
+    apiHost: string;
     apiPort: string;
 
     constructor(options) {
@@ -62,7 +62,5 @@ class IpfsDaemon extends events.EventEmitter {
         logger.debug('IPFS daemon finished')
     }
 }
-
-IpfsDaemon.Name = 'ipfs-daemon'
 
 export default Daemon;

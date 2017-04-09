@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as guid from 'node-uuid';
+import * as guid from 'uuid';
 import { computed, observable, toJS, autorun } from 'mobx';
 import { observer } from 'mobx-react';
 

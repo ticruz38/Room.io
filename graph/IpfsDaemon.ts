@@ -1,5 +1,5 @@
-const Daemon = require("./Daemon.js");
 import Daemon from './Daemon';
+import * as IPFS from 'Ipfs';
 const Logger = require("logplease");
 const logger = Logger.create("ipfs-daemon", {
     useColors: false,
@@ -8,6 +8,8 @@ const logger = Logger.create("ipfs-daemon", {
 Logger.setLogLevel("ERROR");
 
 class IpfsDaemon extends Daemon {
+    static Name = "js-ipfs-browser"; 
+
     constructor(options) {
         // Initialize and start the daemon
         super(options);
@@ -19,11 +21,11 @@ class IpfsDaemon extends Daemon {
             .then( () => this._daemon.on( 'ready', _ => this.emit('ready') ) )
             .catch(e => this.emit("error", e));
     }
-
+    // override Daemon
     get GatewayAddress() {
         return "0.0.0.0:8080/ipfs/"; //this._daemon.gatewayAddr ? this._daemon.gatewayAddr + '/ipfs/' : null
     }
-
+    // override Daemon
     get APIAddress() {
         return this._options.Addresses.Swarm; //(this.apiHost && this.apiPort) ? this.apiHost + ':' + this.apiPort : null
     }
@@ -37,7 +39,7 @@ class IpfsDaemon extends Daemon {
                 }
             };
 
-            this._daemon = new Ipfs(ipfsOptions);
+            this._daemon = new IPFS(ipfsOptions);
             console.log(this._daemon, this._daemon.isOnline());
             this._daemon.init({ emptyRepo: true, bits: 2048 }, err => {
                 if (err && err.message !== "repo already exists")
@@ -86,5 +88,4 @@ class IpfsDaemon extends Daemon {
     }
 }
 
-IpfsDaemon.Name = "js-ipfs-browser";
-module.exports = IpfsDaemon;
+export default IpfsDaemon;
