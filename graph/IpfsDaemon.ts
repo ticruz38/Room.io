@@ -1,5 +1,5 @@
 const Daemon = require("./Daemon.js");
-
+import Daemon from './Daemon';
 const Logger = require("logplease");
 const logger = Logger.create("ipfs-daemon", {
     useColors: false,

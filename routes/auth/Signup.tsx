@@ -18,9 +18,11 @@ export default class Signup extends React.Component<any, any> {
     user: EditableUser = new EditableUser( {} )
 
     onSave = (result) => {
+        if( result.data.signup)
         sessionStorage.setItem( 'user', JSON.stringify( result.data.signup ) )
         layoutState.isLogged = true
-    } 
+    }
+
     @computed get isValid(): boolean {
         return (
             this.user.name.isValid &&
@@ -33,22 +35,22 @@ export default class Signup extends React.Component<any, any> {
         return (
             <div className='signup'>
                 <Input
-                    label='Name/Pseudo'
+                    placeholder='Name/Pseudo'
                     field={this.user.name}
                     type='text'
                 />
                 <Input
-                    label="Email"
+                    placeholder="Email"
                     field={this.user.email}
                     type="email"
                 />
                 <Input
-                    label='Password'
+                    placeholder='Password'
                     field={this.user.password}
                     type='password'
                 />
                 <Input
-                    label='Confirm Password'
+                    placeholder='Confirm Password'
                     field={this.user.confirmPassword}
                     type='password'
                 />
@@ -58,7 +60,7 @@ export default class Signup extends React.Component<any, any> {
                 <div className="action-button">
                     {
                         this.isValid ?
-                            <button onClick={_ => this.user.signup()}>
+                            <button onClick={_ => this.user.signup( this.onSave )}>
                                 Signup
                             </button> :
                             null

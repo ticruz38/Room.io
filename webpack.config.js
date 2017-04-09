@@ -41,10 +41,6 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: "ts-loader"
             }, {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader'
-            }, {
                 test: /\.scss|sass|css$/,
                 loader: ExtractTextPlugin.extract({
                     fallback: "style-loader",
@@ -58,9 +54,7 @@ module.exports = {
                 test: /\.(graphql|gql)$/,
                 exclude: /node_modules/,
                 loader: 'graphql-tag/loader'
-            },
-            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            {
+            }, { // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: "source-map-loader"

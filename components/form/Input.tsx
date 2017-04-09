@@ -43,7 +43,7 @@ export default class Input extends React.Component< InputProps, any > {
     get placeholder(): React.ReactElement< any > {
         const classname = !!this.props.field.value || this.props.type === "number" ? 'label' : '';
         return (
-            <div className={ "placeholder " + classname }>{this.props.placeholder}</div>
+            <div className={ "placeholder " + classname } onClick={ _ => this.refs['input']['focus']()}>{this.props.placeholder}</div>
         );
     }
 
@@ -54,6 +54,7 @@ export default class Input extends React.Component< InputProps, any > {
                 {/*{ this.props.label ? <label>{this.props.label}</label> : null}*/}
                 { this.placeholder }
                 <input
+                    ref="input"
                     className={classnames({error: !this.isValid})}
                     type={ this.props.type }
                     value={ field.value }

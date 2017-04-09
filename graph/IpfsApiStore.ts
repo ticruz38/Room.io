@@ -119,14 +119,15 @@ class IpfsStore {
     // }
 
     createDb(dbName: string, indexBy?: string ) {
-        // console.log('createdb', this.orbitdb);
         this[dbName] = new Promise( (resolve, reject) => {
             const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
-            db.events.on('ready', _ => {
-              resolve(db);
-              logger.info('db ' + dbName + ' ready')
-            } );
-            db.events.on('load', _ => logger.info('db ' + dbName + ' syncing with ipfs' ) );
+            console.log(db);
+            resolve(db);
+            // db.events.on('ready', _ => {
+            //   resolve(db);
+            //   logger.info('db ' + dbName + ' ready')
+            // } );
+            // db.events.on('sync', _ => logger.info('db ' + dbName + ' syncing with ipfs' ) );
         } );
     }
 

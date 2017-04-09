@@ -36,12 +36,12 @@ export default class Login extends React.Component<any, any> {
         return (
             <div className='login'>
                 <Input
-                    label='Email'
+                    placeholder='Email'
                     field={this.user.email}
                     type='text'
                 />
                 <Input
-                    label='Password'
+                    placeholder='Password'
                     field={this.user.password}
                     type='text'
                 />

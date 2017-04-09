@@ -8,6 +8,7 @@ label {
 .input, .textarea {
     position: relative;
     .placeholder {
+        cursor: text;
         font-family: 'Times New Roman', Times, serif;
         transition: all 0.2s ease-out;
         position: absolute;
