@@ -5,7 +5,9 @@ import { EventEmitter } from 'events';
 import * as through from 'through2';
 import * as concat from 'concat-stream';
 
-import IpfsDaemon from './IpfsDaemon';
+const IpfsApi = require('@haad/ipfs-api')
+
+// import IpfsDaemon from './IpfsDaemon';
 
 const Orbitdb = require('orbit-db');
 const Logger = require('logplease');
@@ -24,12 +26,11 @@ class IpfsStore {
     pubsub = new EventEmitter();
 
     constructor() {
-        this.startOrbitDb().then( _ => {
-            this.createDb('room');
-            this.createDb('stuff');
-            this.createDb('user', 'email');
-            this.createDb('order');
-        } );
+        this.startOrbitDb();
+        this.createDb('room');
+        this.createDb('stuff');
+        this.createDb('user', 'email');
+        this.createDb('order');
     }
 
     // roomLoaded number between 0 and 1
@@ -68,36 +69,31 @@ class IpfsStore {
                     const reader = new FileReader();
                     reader.readAsDataURL(file);
                     resolve( btoa( String.fromCharCode.apply(null, files[0].content) ) );
-
                 } ) )
             } );
         } );
     }
+
     createDb(dbName: string, indexBy?: string ) {
         this[dbName] = new Promise( (resolve, reject) => {
             const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
-            window[dbName] = db;
-            resolve(db);
+            console.log('docstore')
+            db.events.on('ready', _ => {
+              resolve(db);
+              logger.info('db ' + dbName + ' ready')
+            } );
+            db.events.on('sync', _ => logger.info('db ' + dbName + ' syncing with ipfs' ) );
         } );
     }
 
     startOrbitDb() {
         // IpfsApi is a bridge to the local ipfs client node
-        const ipfsDaemon = new IpfsDaemon({
-            IpfsDataDir: '/datadir',
-            SignalServer: 'star-signal.cloud.ipfs.team'
-        });
+        this.ipfs = new IpfsApi();
+        console.log(this.ipfs);
         // nodeId is the ipfs node identifier
-        // this.nodeID = this.ipfs.id().then( (config: any) => this.nodeID = config.id );
-        return new Promise( (resolve, reject) => {
-            ipfsDaemon.node.then( ipfs => {
-                this.ipfs = ipfs;
-                ipfs.on('ready', _ => {
-                    this.orbitdb = new Orbitdb( ipfs );
-                    resolve();
-                } );
-            } );
-        } );
+        this.nodeID = this.ipfs.id().then( (config: any) => this.nodeID = config.id );
+         // We instantiate Orbit-db with our ipfs client node
+        this.orbitdb = new Orbitdb( this.ipfs );
     }
 }
 
