@@ -1,9 +1,12 @@
-const defaultOptions = require('./DefaultOptions').default;
-const path = require('path')
-import events = require('events');
+import defaultOptions from './DefaultOptions';
+import * as path from 'path';
+import * as  events from 'events';
 const Logger = require('logplease')
 const logger = Logger.create('ipfs-daemon', { useColors: false })
 Logger.setLogLevel('ERROR')
+
+
+
 
 class Daemon extends events.EventEmitter {
     static Name: string = 'ipfs-daemon';

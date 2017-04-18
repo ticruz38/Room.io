@@ -5,7 +5,8 @@ import { EventEmitter } from 'events';
 import * as through from 'through2';
 import * as concat from 'concat-stream';
 
-const IpfsDaemon = require('./IpfsDaemon');
+import IpfsDaemon from './IpfsDaemon';
+
 const Orbitdb = require('orbit-db');
 const Logger = require('logplease');
 
@@ -66,85 +67,35 @@ class IpfsStore {
                     const file = new Blob( files[0].content, {type: 'image/jpg'} );
                     const reader = new FileReader();
                     reader.readAsDataURL(file);
-                    // reader.onloadend = ( e ) => resolve(reader.result)
-                    // console.log(file);
-                    // let chunks = ''
-                    // console.log(files[0].content);
-                    // for (let i = 0; i < files[0].content.length; i+=10000) {
-                    //     const list = files[0].content.slice(i, i+10000);
-                    //     chunks = chunks + btoa( String.fromCharCode.apply(null, list) );
-                    // }
-                    // console.log(chunks);
-                    // resolve(chunks);
-                    // console.log( files[0].content )
-                    // resolve(files[0].content.map( s => btoa( String.fromCharCode.apply(null, [s]) ) ) );
                     resolve( btoa( String.fromCharCode.apply(null, files[0].content) ) );
-                    // console.log(files);
+
                 } ) )
             } );
         } );
     }
-
-    // ipfs.files.get(mhBuf, (err, stream) => {
-    //       expect(err).to.not.exist()
-
-    //       let files = []
-    //       stream.pipe(through.obj((file, enc, next) => {
-    //         file.content.pipe(concat((content) => {
-    //           files.push({
-    //             path: file.path,
-    //             content: content
-    //           })
-    //           next()
-    //         }))
-    //       }, () => {
-    //         expect(files).to.be.length(1)
-    //         expect(files[0].path).to.be.eql(hash)
-    //         expect(files[0].content.toString()).to.contain('Plz add me!')
-    //         done()
-    //       }))
-    //     })
-
-    // getImage( hash: string ): Promise< string > {
-    //     return new Promise( (resolve, reject) => {
-    //         this.ipfs.files.get( hash, (err, stream) => {
-    //             stream.pipe( through.obj( (file, enc, next) =>
-    //                 file.content.pipe( concat( (content) => {
-    //                     resolve( btoa( String.fromCharCode.apply(null, content) ) );
-    //                     next();
-    //                 } ) )
-    //             ) )
-    //         } );
-    //     } );
-    // }
-
     createDb(dbName: string, indexBy?: string ) {
         this[dbName] = new Promise( (resolve, reject) => {
             const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
-            console.log(db);
+            window[dbName] = db;
             resolve(db);
-            // db.events.on('ready', _ => {
-            //   resolve(db);
-            //   logger.info('db ' + dbName + ' ready')
-            // } );
-            // db.events.on('sync', _ => logger.info('db ' + dbName + ' syncing with ipfs' ) );
         } );
     }
 
     startOrbitDb() {
         // IpfsApi is a bridge to the local ipfs client node
-        const ipfs = new IpfsDaemon({
+        const ipfsDaemon = new IpfsDaemon({
             IpfsDataDir: '/datadir',
             SignalServer: 'star-signal.cloud.ipfs.team'
         });
         // nodeId is the ipfs node identifier
         // this.nodeID = this.ipfs.id().then( (config: any) => this.nodeID = config.id );
         return new Promise( (resolve, reject) => {
-            ipfs.on('ready', () => {
-                console.log('ready', ipfs);
+            ipfsDaemon.node.then( ipfs => {
                 this.ipfs = ipfs;
-                this.orbitdb = new Orbitdb( ipfs );
-                resolve();
+                ipfs.on('ready', _ => {
+                    this.orbitdb = new Orbitdb( ipfs );
+                    resolve();
+                } );
             } );
         } );
     }

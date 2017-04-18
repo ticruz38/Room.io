@@ -8,18 +8,13 @@ const logger = Logger.create("ipfs-daemon", {
 Logger.setLogLevel("ERROR");
 
 class IpfsDaemon extends Daemon {
-    static Name = "js-ipfs-browser"; 
+    static Name = "js-ipfs-browser";
+    node: Promise< any >;
 
     constructor(options) {
         // Initialize and start the daemon
         super(options);
-        this._start();
-    }
-
-    _start() {
-        return this._initDaemon()
-            .then( () => this._daemon.on( 'ready', _ => this.emit('ready') ) )
-            .catch(e => this.emit("error", e));
+        this.node = this._initNode();
     }
     // override Daemon
     get GatewayAddress() {
@@ -30,7 +25,7 @@ class IpfsDaemon extends Daemon {
         return this._options.Addresses.Swarm; //(this.apiHost && this.apiPort) ? this.apiHost + ':' + this.apiPort : null
     }
 
-    _initDaemon() {
+    _initNode() {
         return new Promise((resolve, reject) => {
             const ipfsOptions = {
                 repo: this._options.IpfsDataDir,
@@ -39,13 +34,12 @@ class IpfsDaemon extends Daemon {
                 }
             };
 
-            this._daemon = new IPFS(ipfsOptions);
-            console.log(this._daemon, this._daemon.isOnline());
-            this._daemon.init({ emptyRepo: true, bits: 2048 }, err => {
+            const daemon = new IPFS(ipfsOptions);
+            daemon.init({ emptyRepo: true, bits: 2048 }, err => {
                 if (err && err.message !== "repo already exists")
                     return reject(err);
 
-                this._daemon.config.get((err, config) => {
+                daemon.config.get((err, config) => {
                     if (err) return reject(err);
 
                     if (this._options.SignalServer) {
@@ -54,24 +48,27 @@ class IpfsDaemon extends Daemon {
                         const port = address[1] || 9090;
                         const signalServer = address.length > 1
                             ? // IP:port
-                              `/libp2p-webrtc-star/ip4/${host}/tcp/${port}/ws/ipfs/${config.Identity.PeerID}`
+                            `/libp2p-webrtc-star/ip4/${host}/tcp/${port}/ws/ipfs/${config.Identity.PeerID}`
                             : // Domain
-                              `/libp2p-webrtc-star/dns4/${this._options.SignalServer}/wss/ipfs/${config.Identity.PeerID}`;
+                            `/libp2p-webrtc-star/dns4/${this._options.SignalServer}/wss/ipfs/${config.Identity.PeerID}`;
 
                         this._options.Addresses.Swarm = [signalServer];
                     }
 
-                    this._options = Object.assign(config, this._options);
+                    this._options = {...config, ...this._options};
 
-                    this._daemon.config.set("Bootstrap", this._options.Bootstrap, err => {
+                    daemon.config.set("Bootstrap", this._options.Bootstrap, err => {
                         if (err) return reject(err);
 
-                        this._daemon.config.set( "Discovery", this._options.Discovery, err => {
+                        daemon.config.set("Discovery", this._options.Discovery, err => {
                             if (err) return reject(err);
 
-                            this._daemon.config.set( "Addresses", this._options.Addresses, err => {
+                            daemon.config.set("Addresses", this._options.Addresses, err => {
                                 if (err) return reject(err);
-                                resolve();
+                                // daemon.start( err => {
+                                    // if (err) reject(err)
+                                    resolve(daemon);
+                                // })
                             });
                         });
                     });

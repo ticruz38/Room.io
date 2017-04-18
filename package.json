@@ -27,6 +27,7 @@
     "@types/react-router": "^2.0.38",
     "@types/react-select": "^1.0.45",
     "@types/through2": "^2.0.32",
+    "@types/uuid": "^2.0.29",
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
     "css-loader": "^0.24.0",
@@ -44,7 +45,6 @@
     "webpack": "^2.3.3"
   },
   "dependencies": {
-    "@types/uuid": "^2.0.29",
     "bl": "^1.2.0",
     "browserify-zlib-next": "^1.0.1",
     "classnames": "^2.2.5",
