@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as mobx from 'mobx';
-import * as guid from 'node-uuid';
+import * as guid from 'uuid';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router';
 import { Input } from 'components/form';

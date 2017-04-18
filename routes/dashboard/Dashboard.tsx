@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import * as mobx from 'mobx';
 import * as moment from 'moment';
-import * as _ from 'underscore';
 import { observer } from 'mobx-react';
 import Loader from "graph/Loader";
 

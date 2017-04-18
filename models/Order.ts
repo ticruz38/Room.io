@@ -1,4 +1,4 @@
-import * as guid from 'node-uuid';
+import * as guid from 'uuid';
 import * as mobx from 'mobx';
 import * as moment from 'moment';
 import * as C from 'components/form/Constraint';

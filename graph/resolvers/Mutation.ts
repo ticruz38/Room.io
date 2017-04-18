@@ -81,7 +81,8 @@ export default {
     },
     // User Mutation
     signup(root, { user }, context: Storage) {
-        return db.user.then(dbUser => {
+        return db.user.then( dbUser => {
+            console.log(dbUser);
             return dbUser.put( user ).then( hash => {
                 if( context ) context.setItem( 'user', JSON.stringify( user ) );
                 logger.info( 'correctly logged in as' + user.name );
