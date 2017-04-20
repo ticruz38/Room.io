@@ -56,7 +56,6 @@ export default class Loader {
         db.order.then(dborder => dborder.events.addListener(triggerName, (payload) => {
             if( !check(payload) ) return;
             logger.info( "trigger", operationName );
-            // console.log(payload);
             execute(
                 Schema,
                 this.document,

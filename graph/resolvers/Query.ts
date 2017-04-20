@@ -8,8 +8,6 @@ export default {
     rooms( root, args, context ) {
         // each docStore are a promise, resolved when data are loaded 
         return db.room.then( roomDb => roomDb.query( doc => !!doc ) );
-        //console.log('roomsQuery:Resolver', db.room);
-        //return all.map(room => room.pictures ? room.pictures : [];
     },
     user( root, args, context ) {
         return db.user.then( userDb => userDb.query( u => u._id === args.id )[0] );

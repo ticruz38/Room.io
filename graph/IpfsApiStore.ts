@@ -77,7 +77,7 @@ class IpfsStore {
     createDb(dbName: string, indexBy?: string ) {
         this[dbName] = new Promise( (resolve, reject) => {
             const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
-            console.log('docstore')
+            window[dbName] = db;
             db.events.on('ready', _ => {
               resolve(db);
               logger.info('db ' + dbName + ' ready')

@@ -9,12 +9,11 @@ export default {
     addOrder( root, {order}, context ) {
         logger.info("adding order");
         order.created = moment().unix();
-        db.order.then(dborder => dborder.put( order ).then( hash => {
+        return db.order.then(dborder => dborder.put( order ).then( hash => {
             logger.info('successfully added order', hash);
             dborder.events.emit( 'addOrder', { order: order } );
             return order
         } ) );
-        return order;
     },
     deleteOrder(root, {id}, context ) {
         logger.info('deleting order', id);
@@ -36,16 +35,15 @@ export default {
     },
     addRoom( root, {room}, context ) {
         logger.info("adding room");
-        db.room.then(dbroom => dbroom.put( room ).then( hash => {
+        return db.room.then(dbroom => dbroom.put( room ).then( hash => {
             logger.info('successfully added room', hash)
             //logger.info('try to get room by id', db.room.get('coucou'))
             return room;
         }) );
-        return room;
     },
     deleteRoom(root, {id}, context ) {
         logger.info('deleting room', id);
-        db.room.then( dbroom => dbroom.del(id)
+        return db.room.then( dbroom => dbroom.del(id)
             .then(removed => {
                 logger.info('well removed', removed)
                 return removed;
@@ -65,7 +63,7 @@ export default {
         } ) );
     },
     deleteStuff( root, {id}, context) {
-        db.stuff.then( dbStuff => dbStuff.del(id)
+        return db.stuff.then( dbStuff => dbStuff.del(id)
             .then(removed => {
                 logger.info('well removed', removed);
                 return removed;
@@ -82,7 +80,7 @@ export default {
     // User Mutation
     signup(root, { user }, context: Storage) {
         return db.user.then( dbUser => {
-            console.log(dbUser);
+            console.log(dbUser, user);
             return dbUser.put( user ).then( hash => {
                 if( context ) context.setItem( 'user', JSON.stringify( user ) );
                 logger.info( 'correctly logged in as' + user.name );
@@ -91,7 +89,7 @@ export default {
         } );
     },
     deleteUser( root, { id }, context ) {
-        db.user.then( dbUser => dbUser.del(id)
+        return db.user.then( dbUser => dbUser.del(id)
             .then(removed => {
                 logger.info('well removed', removed);
                 return removed;
@@ -100,9 +98,14 @@ export default {
     },
     // Update User
     updateUser(root, { user }, context) {
-        return db.user.then( dbUser => dbUser.put( user ).then( hash => {
-            logger.info('successfully updated user', hash);
-            return user;
-        } ) );
+        return db.user.then( dbUser => {
+            debugger;
+            const oldUser = dbUser.query( u => u._id === user._id )[0];
+            user.password = oldUser.password;
+            dbUser.put( user ).then( hash => {
+                logger.info('successfully updated user', hash);
+                return user;
+            } )
+        } );
     }
 }

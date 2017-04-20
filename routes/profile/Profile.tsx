@@ -75,9 +75,6 @@ class ProfileState extends Loader {
 // TODO see if the execute should not only happen in the willMount cb of the component
 export const profileState = new ProfileState( Document );
 
-
-
-
 @observer
 export default class Profile extends React.Component<any, any> {
     componentWillMount() {
@@ -105,7 +102,7 @@ export default class Profile extends React.Component<any, any> {
                     <h2>{key}</h2>
                     <table className='profile-stuffs'>
                         <tbody>
-                            { this.categories[key].map( s => (
+                            {this.categories[key].map( s => (
                                 <tr key={s._id} className="stuff">
                                     <td>
                                         <i className="material-icons close" onClick={e => s.delete( _ => onClose( s ) )}>close</i>
@@ -120,7 +117,7 @@ export default class Profile extends React.Component<any, any> {
                                         <Input type="number" field={s.price} placeholder="price" min={0} />
                                     </td>
                                 </tr>
-                            ) ) }
+                            ) )}
                         </tbody>
                     </table>
                 </div>
@@ -136,11 +133,11 @@ export default class Profile extends React.Component<any, any> {
                 <div className="profile">
                     <div className="profile-header">
                         <IpfsImage
-                            onUpload={ (err, res) => {
+                            onUpload={( err, res ) => {
                                 user.picture.value = res[0].hash;
                                 user.picture.hasChanged = true;
-                            } }
-                            picture={ user.picture }
+                            }}
+                            picture={user.picture}
                             className="user-picture"
                         />
                         <div className="user-information card">
