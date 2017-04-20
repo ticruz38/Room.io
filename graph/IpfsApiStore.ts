@@ -75,13 +75,15 @@ class IpfsStore {
     }
 
     createDb(dbName: string, indexBy?: string ) {
+        console.log('createDb', dbName);
         this[dbName] = new Promise( (resolve, reject) => {
             const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
-            window[dbName] = db;
             db.events.on('ready', _ => {
               resolve(db);
               logger.info('db ' + dbName + ' ready')
             } );
+            db.events.on('load.start', _ => console.log('load starting'));
+            db.events.on('load', _ => console.log('load starting'));
             db.events.on('sync', _ => logger.info('db ' + dbName + ' syncing with ipfs' ) );
         } );
     }
@@ -89,7 +91,6 @@ class IpfsStore {
     startOrbitDb() {
         // IpfsApi is a bridge to the local ipfs client node
         this.ipfs = new IpfsApi();
-        console.log(this.ipfs);
         // nodeId is the ipfs node identifier
         this.nodeID = this.ipfs.id().then( (config: any) => this.nodeID = config.id );
          // We instantiate Orbit-db with our ipfs client node
