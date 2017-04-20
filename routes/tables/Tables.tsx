@@ -22,7 +22,6 @@ export default class Tables extends React.Component<any, any> {
     }
 
     componentWillMount() {
-        console.log('tableswillmount');
         Promise.all([
             db.room.then(r => this.createTable(r, 'room')),
             db.user.then(r => this.createTable(r, 'user')),
