@@ -21,6 +21,7 @@ export default class Loader {
             operationName
         );
     }
+
     graphQlErrors: string[];
 
     constructor( public document: DocumentNode, initialOperation?: string, executeParams?: ExecuteParams ) {

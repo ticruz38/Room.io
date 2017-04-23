@@ -12,6 +12,7 @@ import Timeline from './visuals/Timeline';
 import OrderList from './visuals/OrderList';
 import { SpinnerIcon } from 'components/icons';
 import Select from 'components/Select';
+import { Option } from "@types/react-select";
 
 const Logger = require('logplease');
 const logger = Logger.create('Dashboard');
@@ -26,7 +27,7 @@ const secondPerDay = 24 * 60 * 60;
 
 class DashboardState extends Loader {
     // filter order by...
-    @mobx.observable filters: any = [];
+    @mobx.observable filters: Option[] = [];
 
     @mobx.observable room: Room;
 
@@ -36,7 +37,7 @@ class DashboardState extends Loader {
         if( !this.filters.length ) return this.orders;
         return this.orders.filter( order => {
             return !this.filters.some( option => {
-                const value = JSON.parse(option.value);
+                const value = JSON.parse(JSON.stringify( option.value ) );
                 return !Object.keys(value).some( key => {
                     switch (key) {
                         case 'price':
@@ -58,7 +59,7 @@ class DashboardState extends Loader {
     // timeline cursor position on x axis
     @mobx.observable x: number = (this.currentTime - this.today) / 10;
 
-    @mobx.computed get options() {
+    @mobx.computed get options(): Option[] {
         const clients = {};
         return [
             { label: 'payed', value: '{ "payed": true }' },
@@ -76,11 +77,7 @@ class DashboardState extends Loader {
     }
 
     get select() {
-        return (
-            <Select
-                store={this}
-            />
-        );
+        return <Select values={ this } />
     }
     // handle the onWheel event
     onWheel = (event) => {

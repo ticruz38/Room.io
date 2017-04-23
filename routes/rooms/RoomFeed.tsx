@@ -71,9 +71,11 @@ export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedSta
 const RoomComponent = ( props: Room & { onClick: Function } ) => {
     return (
         <div className='room-item'>
-            <img
-                src={props.picture ? props.picture : 'public/messy_room.jpg'}
-                onClick={_ => props.onClick( props._id )}
+            <IpfsImage
+                defaultPicture="public/messy_room.jpg"
+                urlPicture={ props.picture }
+                onClick={ e => props.onClick( props._id )}
+                readOnly
             />
             <h2>{props.name}</h2>
             <p>{props.description}</p>
@@ -82,5 +84,6 @@ const RoomComponent = ( props: Room & { onClick: Function } ) => {
 }
 
 import './RoomFeed.scss';
+import { IpfsImage } from "components";
 
 

@@ -45,5 +45,5 @@ export class StuffInput implements StuffInput {
         public category: string = '',
         public picture?: string,
         public price?: number
-        ) {}
+    ) {}
 }

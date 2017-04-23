@@ -7,27 +7,32 @@ import { toJS } from "mobx";
 
 
 type SelectProps = {
-    store: any
+    values: {
+        filters: Option[] | Option,
+        options: Option[]
+    },
+    allowCreate?: boolean
 }
 
 @observer
 export default class SelectComponent extends React.PureComponent< SelectProps, any > {
 
     render() {
-        const { filters, options } = this.props.store;
+        const { filters, options } = this.props.values;
         return (
             <Select
                 placeholder="Filter by..."
                 name="select-test"
-                value={ filters.length ? toJS(filters) : null }
+                value={ Array.isArray(filters) ? toJS(filters) : null }
                 onChange={ options => {
-                    console.log(options)
-                    this.props.store.filters = options
+                    console.log(options, this.props.values.filters)
+                    this.props.values.filters = options
                 } }
                 options={ options }
                 noResultsText=""
                 multi
                 autosize
+                { ...this.props }
             />
         );
     }

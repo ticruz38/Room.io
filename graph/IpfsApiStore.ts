@@ -39,24 +39,25 @@ class IpfsStore {
     // stuffLoaded number between 0 and 1
     stuffLoading: number = 0;
 
-    uploadFile(input, cb?: Function) {
+    uploadFile(input, cb?: (err, res: any ) => void ) {
         const reader = new FileReader();
         reader.readAsArrayBuffer( input );
         reader.onloadend = ( e ) => {
             this.ipfs.files.add( new Buffer( reader.result ), (err, res) => {
-                if(err) throw 'file couldnt be uploaded to ipfs' + input
-                cb(err, res);
+                if(err) throw 'file couldnt be upload to ipfs' + input
+                cb( err, res );
             } );
         }
     }
 
-    getImage( hash: string ): Promise< string > {
+    getImage( hash: string ): Promise< any > {
         return new Promise( (resolve, reject) => {
             this.ipfs.files.get( hash, (err, stream) => {
+                console.log(hash);
+                if( err ) throw err;
                 let files = [];
                 stream.pipe( through.obj( (file, enc, next) => {
                     file.content.pipe( concat( (content) => {
-                        // resolve( btoa( String.fromCharCode.apply(null, content) ) );
                         files.push( {
                             path: file.path,
                             content: content
@@ -66,8 +67,10 @@ class IpfsStore {
                 }, () => {
                     // the blob is invalid maybe because it is encoded as json...
                     const file = new Blob( files[0].content, {type: 'image/jpg'} );
+                    // console.log(file);
                     const reader = new FileReader();
-                    reader.readAsDataURL(file);
+                    reader.readAsDataURL(file)
+                    // reader.onloadend = e => resolve(reader.result);
                     resolve( btoa( String.fromCharCode.apply(null, files[0].content) ) );
                 } ) )
             } );
