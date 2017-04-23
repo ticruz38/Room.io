@@ -1,0 +1,33 @@
+.ipfs-picture {
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+    display: inline-block;
+    .picture {
+        border-radius: 10em;
+        flex-grow: 1;
+        margin: 1em;
+        height: 10em;
+    }
+    .layer {
+        transition: all 0.15s linear;
+        opacity: 0;
+        position: absolute;
+        bottom: 0;
+        left: 11px;
+        color: gold;
+    }
+    &:hover {
+        .layer {
+            opacity: 1;
+        }
+        .picture-blur {
+            transition: all 0.15s linear;
+            filter: grayscale(100%);
+        }
+    }
+    input {
+        position: absolute;
+        opacity: 0;
+    }
+}

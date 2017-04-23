@@ -68,6 +68,7 @@ declare interface Room {
   picture?: string
   stuffs?: Stuff[]
   orders?: Order[]
+  tags: string[]
 }
 
 declare interface RoomInput {
@@ -77,7 +78,8 @@ declare interface RoomInput {
     description?: string
     email?: string,
     phoneNumber?: string,
-    picture?: string
+    picture?: string,
+    tags?: string[]
 }
 
 declare interface Order {
