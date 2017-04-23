@@ -26,8 +26,8 @@ export default class StuffEditor extends React.Component<StuffProps, any> {
     }
 
     render(): React.ReactElement< any > {
-        console.log(this.stuff);
         const { name, description, picture, price, category } = this.stuff;
+        console.log(this.stuff);
         return (
             <div className="stuff">
                 <Input field={name} type="text" placeholder="Stuff Name" />

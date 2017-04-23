@@ -9,15 +9,20 @@ query ProfileQuery($id: String!) {
       name
       description
       email
+      picture
       owner {
         _id
       }
       stuffs {
         _id
-        name
-        description
         category
+        description
+        name
+        price
         picture
+        room {
+          _id
+        }
       }
     }
   }

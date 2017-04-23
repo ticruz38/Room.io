@@ -19,38 +19,6 @@
     .profile-header {
         display: flex;
         align-items: flex-start;
-        .user-picture {
-            cursor: pointer;
-            position: relative;
-            text-align: center;
-            .picture {
-                border-radius: 10em;
-                flex-grow: 1;
-                margin: 1em;
-                height: 10em;
-            }
-            .layer {
-                transition: all 0.15s linear;
-                opacity: 0;
-                position: absolute;
-                bottom: 0;
-                left: 11px;
-                color: gold;
-            }
-            &:hover {
-                .layer {
-                    opacity: 1;
-                }
-                .picture-blur {
-                    transition: all 0.15s linear;
-                    filter: grayscale(100%);
-                }
-            }
-            input {
-                position: absolute;
-                opacity: 0;
-            }
-        }
         .user-information {
             flex-grow: 2;
             margin-left: 1em;
@@ -88,7 +56,18 @@
                 border: 1px solid;
             }
         }
+        .ipfs-picture {
+            position: absolute;
+            right: 0;
+            top: 0;
+            .picture {
+                border-radius: 1em;
+            }
+        }
         .room {
+            >.input {
+                width: calc( 100% - 15em );
+            }
             &:hover {
                 .close {
                     opacity: 1;

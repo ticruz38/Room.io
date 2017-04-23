@@ -133,10 +133,12 @@ export default class Profile extends React.Component<any, any> {
                 <div className="profile">
                     <div className="profile-header">
                         <IpfsImage
-                            onUpload={( err, res ) => {
+                            onUpload={ ( err, res ) => {
                                 user.picture.value = res[0].hash;
+                                {/*console.log(res, user.picture.value);*/}
                                 user.picture.hasChanged = true;
-                            }}
+                            } }
+                            defaultPicture="https://www.educol.net/coloriage-che-guevara-dl24689.jpg"
                             picture={user.picture}
                             className="user-picture"
                         />
