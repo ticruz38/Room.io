@@ -4,6 +4,10 @@ declare interface Field {
   isValid: boolean;
   hasChanged: boolean;
 }
+declare module "*.json" {
+    const value: any;
+    export default value;
+}
 
 declare type ObjectLitteral = { [prop: string]: string }
 
@@ -68,7 +72,7 @@ declare interface Room {
   picture?: string
   stuffs?: Stuff[]
   orders?: Order[]
-  tags: string[]
+  tags?: string[]
 }
 
 declare interface RoomInput {

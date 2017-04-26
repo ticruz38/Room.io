@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node webpackdevserver",
-    "test": "mocha"
+    "test": "mocha",
+    "feed": "node mocks/generate"
+  },
+  "bin": {
+    "feed": "./mocks/generate.js"
   },
   "port": 8000,
   "keywords": [
@@ -46,9 +50,11 @@
   },
   "dependencies": {
     "@haad/ipfs-api": "^13.0.0-beta.7",
+    "@playlyfe/gql": "^2.2.3",
     "bl": "^1.2.0",
     "browserify-zlib-next": "^1.0.1",
     "classnames": "^2.2.5",
+    "commander": "^2.9.0",
     "concat-stream": "^1.6.0",
     "graphiql": "^0.8.1",
     "graphql-tools": "^0.8.4",
