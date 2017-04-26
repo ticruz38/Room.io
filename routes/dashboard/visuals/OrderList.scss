@@ -13,7 +13,7 @@
     padding: 0 10px;
     margin: 15px auto;
     h3{
-        margin-top: 0;
+        margin: 0;
     }
     .price {
         float: right;
@@ -30,6 +30,13 @@
     }
     .order-created {
         float: right;
+    }
+    .items {
+        display: flex;
+        flex-wrap: wrap;
+        >* {
+            margin: 0 5px;
+        }
     }
     .order-stuff {
         display: table;

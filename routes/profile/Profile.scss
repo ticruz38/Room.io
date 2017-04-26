@@ -73,6 +73,12 @@
                     opacity: 1;
                 }
             }
+            .Select {
+                margin: 0.5em 1em 1em;
+                .Select-control {
+                    background: white;
+                }
+            }
         }
         .category {
             table.profile-stuffs {

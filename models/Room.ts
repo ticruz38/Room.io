@@ -18,6 +18,8 @@ export class EditableRoom extends Editable {
     picture?: Field< string >;
     @mobx.observable stuffs: EditableStuff[];
     @mobx.observable orders: EditableOrder[];
+    @mobx.observable tags: string[];
+
     save = (cb?: Function) => this.execute( 'SaveRoom', { room: this.toInput() } )
 
     delete = (cb?: Function) => this.execute( 'DeleteRoom', { id: this._id } )
@@ -36,6 +38,7 @@ export class EditableRoom extends Editable {
         this.picture = new Field(room.picture ? room.picture : null );
         this.stuffs = !!room.stuffs ? room.stuffs.map( s => new EditableStuff(s) ) : [];
         this.orders = !!room.orders ? room.orders.map( o => new EditableOrder(o) ) : [];
+        this.tags = room.tags || [];
     }
 }
 export class RoomInput implements RoomInput {
@@ -48,8 +51,8 @@ export class RoomInput implements RoomInput {
         public email?: string,
         public phoneNumber?: string,
         public picture?: string,
-        public categories?: string[],
-        public stuffs?: StuffInput[]
+        public stuffs?: StuffInput[],
+        public tags?: string[]
     ) {
         this._id = guid.v1();
     }

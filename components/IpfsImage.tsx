@@ -35,7 +35,7 @@ export default class ImageComponent extends React.PureComponent< ImageProps, any
         return (
             <div 
                 className={ "ipfs-picture " + (this.props.className || "") }
-                onClick={ e => this.props.readOnly ? this.props.onClick(e) : this.refs.fileinput['click']() } 
+                onClick={ (e: any) => this.props.readOnly ? this.props.onClick(e) : this.refs.fileinput['click']() } 
             >
                 <input type='file' ref="fileinput" onChange={ this.uploadFile } />
                 {

@@ -8,6 +8,6 @@ export default `
         payed: Boolean!
         created: Int
         treated: Boolean
-        amount: Float
+        amount: Float # deprecated this is calculated from the stuffIds
     }
 `

@@ -38,9 +38,10 @@ export default class RoomEditor extends React.Component< EditableUser, any > {
                 <Input field={room.email} type="text" placeholder="email" />
                 <Input field={room.phoneNumber} type="text" placeholder="phone-number" />
                 <Select 
+                    placeholder="Add tags..."
                     values={ {
                         options: [],
-                        filters: []
+                        filters: room.tags
                     } }
                     allowCreate
                 />

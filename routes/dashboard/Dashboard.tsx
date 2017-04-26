@@ -37,16 +37,19 @@ class DashboardState extends Loader {
         if( !this.filters.length ) return this.orders;
         return this.orders.filter( order => {
             return !this.filters.some( option => {
-                const value = JSON.parse(JSON.stringify( option.value ) );
+                const value = JSON.parse( option.value );
                 return !Object.keys(value).some( key => {
                     switch (key) {
                         case 'price':
+                            console.log('price', order[key], value[key]);
                             return order[key] >= value[key];
                         case '_id':
                             return order[key] === value[key];
                         case 'client':
+                            console.log('client', order[key], value[key]);
                             return order[key].name === value[key].name;
                         default:
+                            // console.log(key, order[key], value[key]);
                             return !!order[key] === !!value[key];
                     } } )
             } )

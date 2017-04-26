@@ -11,7 +11,8 @@ type SelectProps = {
         filters: Option[] | Option,
         options: Option[]
     },
-    allowCreate?: boolean
+    allowCreate?: boolean,
+    placeholder?: string; 
 }
 
 @observer
@@ -21,18 +22,14 @@ export default class SelectComponent extends React.PureComponent< SelectProps, a
         const { filters, options } = this.props.values;
         return (
             <Select
-                placeholder="Filter by..."
+                placeholder={ this.props.placeholder || "Filter by..." }
                 name="select-test"
-                value={ Array.isArray(filters) ? toJS(filters) : null }
-                onChange={ options => {
-                    console.log(options, this.props.values.filters)
-                    this.props.values.filters = options
-                } }
+                value={ toJS(filters) }
+                onChange={ options => this.props.values.filters = options }
                 options={ options }
                 noResultsText=""
                 multi
                 autosize
-                { ...this.props }
             />
         );
     }
