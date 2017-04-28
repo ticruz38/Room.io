@@ -78,7 +78,7 @@ class IpfsStore {
         // nodeId is the ipfs node identifier
         this.nodeID = this.ipfs.id().then( config => this.nodeID = config.id );
          // We instantiate Orbit-db with our ipfs client node
-        this.orbitdb = new Orbitdb( this.ipfs );
+        this.orbitdb = new Orbitdb( this.ipfs, "default", { ipns: "QmRiVcrZ7Jibn5CddvwE4UCGvQkDALy3e1h8aEUxu9PbcG" } );
     }
 }
 
