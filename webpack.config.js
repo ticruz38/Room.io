@@ -4,11 +4,14 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        app: ["./index.tsx"],
+        js: ["./index.tsx"],
+        vendor: [
+            'mobx', 'mobx-react', 'react', 'react-dom', 'react-router', 'ipfs', 'moment'
+        ],
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        publicPath: "/",
+        publicPath: "/ipfs/QmUMiiRezJpYGGUWBmRSqNiHUrEEgVtx7JmAT66PYqMiSp/",
         filename: "bundle.js"
     },
 
