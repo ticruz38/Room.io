@@ -1,4 +1,3 @@
-import { observable } from 'mobx';
 import { EventEmitter } from 'events';
 
 // stream
@@ -53,7 +52,6 @@ class IpfsStore {
     getImage( hash: string ): Promise< any > {
         return new Promise( (resolve, reject) => {
             this.ipfs.files.get( hash, (err, stream) => {
-                console.log(hash);
                 if( err ) throw err;
                 let files = [];
                 stream.pipe( through.obj( (file, enc, next) => {
@@ -81,13 +79,12 @@ class IpfsStore {
         console.log('createDb', dbName);
         this[dbName] = new Promise( (resolve, reject) => {
             const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
+            window[dbName] = db;
             db.events.on('ready', _ => {
               resolve(db);
               logger.info('db ' + dbName + ' ready')
             } );
-            db.events.on('load.start', _ => console.log('load starting'));
-            db.events.on('load', _ => console.log('load starting'));
-            db.events.on('sync', _ => logger.info('db ' + dbName + ' syncing with ipfs' ) );
+            db.events.on('load.start', _ => logger.info('db ' + dbName + ' starting'));
         } );
     }
 
@@ -97,7 +94,7 @@ class IpfsStore {
         // nodeId is the ipfs node identifier
         this.nodeID = this.ipfs.id().then( (config: any) => this.nodeID = config.id );
          // We instantiate Orbit-db with our ipfs client node
-        this.orbitdb = new Orbitdb( this.ipfs );
+        this.orbitdb = new Orbitdb( this.ipfs, "default", { ipns: "QmRiVcrZ7Jibn5CddvwE4UCGvQkDALy3e1h8aEUxu9PbcG"} );
     }
 }
 

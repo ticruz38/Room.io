@@ -36,7 +36,7 @@ class DashboardState extends Loader {
     @mobx.computed get filterOrders() {
         if( !this.filters.length ) return this.orders;
         return this.orders.filter( order => {
-            return !this.filters.some( option => {
+            return !this.filters.some( (option: any) => {
                 const value = JSON.parse( option.value );
                 return !Object.keys(value).some( key => {
                     switch (key) {
