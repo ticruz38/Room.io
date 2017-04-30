@@ -4,14 +4,14 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        js: ["./index.tsx"],
+        app: ["./index.tsx"],
         vendor: [
             'mobx', 'mobx-react', 'react', 'react-dom', 'react-router', 'ipfs', 'moment'
         ],
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        publicPath: "/ipfs/QmUMiiRezJpYGGUWBmRSqNiHUrEEgVtx7JmAT66PYqMiSp/",
+        publicPath: "/",
         filename: "bundle.js"
     },
 
@@ -65,7 +65,12 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            minChunks: Infinity,
+            filename: 'vendor.js'
+        }),
         new webpack.HotModuleReplacementPlugin(),
-        new ExtractTextPlugin("stylesheets/[name].css")
+        new ExtractTextPlugin("[name].css")
     ]
 };

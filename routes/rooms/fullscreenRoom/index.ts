@@ -1,23 +1,21 @@
 module.exports = {
-  path: ':roomId',
+    path: ':roomId',
 
-  getChildRoutes(partialNextState, callback) {
-    require.ensure([], function (require: NodeRequire) {
-      callback(null, [
-        require('./Order').default
-      ])
-    })
-  },
+    getChildRoutes(partialNextState, cb) {
+        System.import('./Order').then( module =>
+            cb(null, module.default)
+        ).catch(err => console.error(err) );
+    },
 
-  getIndexRoute(nextState, cb) {
-    require.ensure([], function(require: NodeRequire) {
-      cb(null, require('./RoomContent').default)
-    })
-  },
+    getIndexRoute(nextState, cb) {
+        System.import('./RoomContent').then( module =>
+            cb(null, module.default)
+        ).catch(err => console.error(err));
+    },
 
-  getComponent(nextState, cb) {
-    require.ensure([], function(require: NodeRequire) {
-      cb(null, require('./FullscreenRoom').default)
-    })
-  }
+    getComponent(nextState, cb) {
+        System.import('./FullScreenRoom').then( module =>
+            cb(null, module.default)
+        ).catch(err => console.error(err) );
+    }
 }

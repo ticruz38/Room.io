@@ -1,8 +1,8 @@
 module.exports = {
-  path: 'dashboard',
-  getComponent(nextState, cb) {
-    require.ensure([], function(require: NodeRequire) {
-      cb(null, require('./Dashboard').default)
-    })
-  }
+    path: 'dashboard',
+    getComponent(nextState, cb) {
+        System.import('./Dashboard').then( module =>
+            cb(null, module.default)
+        ).catch(err => console.error(err));
+    }
 }

@@ -2,8 +2,9 @@ module.exports = {
   path: 'profile',
 
   getComponent(nextState, cb) {
-    require.ensure([], function(require: NodeRequire) {
-      cb(null, require('./Profile').default)
-    })
+    System.import('./Profile').then( module =>
+        cb(null, module.default)
+      ).catch(err => console.error(err) );
   }
 }
+
