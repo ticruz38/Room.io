@@ -4,6 +4,7 @@ var path = require("path");
 const Moment = require('moment');
 const program = require('commander');
 const Ipfs = require('@haad/ipfs-api')
+const ipfs = new Ipfs();
 
 const Orders = require('./Order.json');
 const Rooms = require('./Room.json');
@@ -133,16 +134,8 @@ program
                 const user = aliveUsers();
             case "init":
                 console.log('initializing database');
-                const ipfs = new Ipfs();
-                const database = {
-                    user: "QmbtUWXpAYZrejVY4YsUdtMKHeiu7UP6RS4o3xZcQiADYX", 
-                    stuff: "QmR5iePpN2VsNteqjTPzDQJ3wz92A6iMVhoVF3JuUG8UQd", 
-                    room: "QmSV967kLZ8Pnf814S128ZcSkkavTeL9ZUKf3cij5FQStC", 
-                    order: "QmVhT86gRJGUdxcgnR2CqAMcrKbUvA5twWGPjnL5KUGYuf"
-                }
-                const object = new Buffer(JSON.stringify(database));
-                ipfs.object.put(object).then( res => {
-                    console.log(res.toJSON().multihash)
+                ipfs.files.add('./Collection.json').then( res => {
+                    console.log(res);
                     ipfs.name.publish( res.toJSON().multihash )
                         .then( name => {
                             console.log("initialized at node " + name.Name + " with hash " + name.Value);
@@ -154,6 +147,8 @@ program
                         } )
                         .catch( error => console.error(error))
                 } )
+                case "dbRestore":
+                    ipfs.object.patch.setData('QmRiVcrZ7Jibn5CddvwE4UCGvQkDALy3e1h8aEUxu9PbcG')
             default:
                 break;
         }
