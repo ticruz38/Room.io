@@ -2,6 +2,7 @@ var path = require("path");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var webpack = require('webpack');
 
+
 module.exports = {
     entry: {
         app: ["./index.tsx"],
@@ -11,6 +12,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, "dist"),
+        // build publicpath "/ipns/QmRiVcrZ7Jibn5CddvwE4UCGvQkDALy3e1h8aEUxu9PbcG/"
         publicPath: "/",
         filename: "bundle.js"
     },
