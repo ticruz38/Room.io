@@ -1,0 +1,47 @@
+query RoomWithOrders( $userId: String ) {
+    user( id: $userId ) {
+        room {
+            _id
+            name
+            orders {
+                _id
+                created
+                stuffs {
+                    _id
+                    name
+                    category
+                    price
+                }
+                client {
+                    _id
+                    name
+                }
+                payed
+                treated
+                created
+                amount
+            }
+        }
+    }
+}
+
+subscription WatchOrders( $roomId: String! ) {
+    orders: watchOrders( id: $roomId ) {
+        _id
+        created
+        payed
+        treated
+        created
+        amount
+        stuffs {
+            _id
+            name
+            category
+            price
+        }
+        client {
+            _id
+            name
+        }
+    }
+}

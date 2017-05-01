@@ -1,0 +1,16 @@
+query RoomQuery($id: String ) {
+    room(id: $id) {
+        _id
+        name
+        description
+        picture
+        stuffs {
+            _id
+            category
+            name
+            description
+            picture
+            price
+        }
+    }
+}

@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway|Source+Sans+Pro');
+
+$default-font: 'Source Sans Pro', sans-serif;
+$title-font: 'Raleway', sans-serif;
+
+body {
+  margin: 0;
+  font-family: $default-font;
+}
+
+h1, h2, h3, h4, h5, .title {
+    font-family: 'Raleway', sans-serif;
+}
+
+.graphiql-container {
+  position: absolute;
+}
+
+.line {
+  border: 1px solid black;
+  width: 100%;
+  margin: 1em auto;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+a {
+  text-decoration: none;
+  color: gold;
+  cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+    >* {
+        margin: 0 5px;
+    }
+}
+
+.btn {
+  border-radius: 3px;
+  cursor: pointer;
+  background: lightyellow;
+  display: flex;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  color: black;
+  padding: 5px;
+  font-family: inherit;
+  &.disabled {
+    color: gold;
+  }
+}
+
+// react-select
+.Select-control {
+    height: 32px;
+    min-width: 6em;
+    border: none;
+    border-radius: 3px;
+    background-color: lightyellow;
+    .Select-input {
+        height: 32px;
+    }
+    .Select-value {
+        margin-top: 3px;
+    }
+}

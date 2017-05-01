@@ -1,0 +1,64 @@
+.empty-list {
+    text-align: center;
+    >i {
+        font-size: 17vw;
+        color: gold
+    }
+}
+
+// Order component 
+.order-component {
+    box-shadow: 0 0 1px black;
+    width: 90%;
+    padding: 0 10px;
+    margin: 15px auto;
+    h3{
+        margin: 0;
+    }
+    .price {
+        float: right;
+    }
+    .foot-bar {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 0 -5px;
+        >i {
+            margin-right: 5px;
+            cursor: pointer;
+        }
+    }
+    .order-created {
+        float: right;
+    }
+    .items {
+        display: flex;
+        flex-wrap: wrap;
+        >* {
+            margin: 0 5px;
+        }
+    }
+    .order-stuff {
+        display: table;
+        position: relative;
+        padding: 10px;
+        margin-top: 12px;
+        border: 1px solid gold;
+        cursor: default;
+        .times {
+            display: flex;
+            font-weight: bold;
+            height: 24px;
+            width: 24px;
+            align-items: center;
+            justify-content: center;
+            left: -12px;
+            position: absolute;
+            border: 1px solid gold;
+            border-radius: 12px;
+            background: white;
+            z-index: 10;
+            top: -12px;
+        }
+    }
+}

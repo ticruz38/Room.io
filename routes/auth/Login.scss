@@ -1,0 +1,17 @@
+.login {
+    padding: 1em;
+    border: 1px solid beige;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    .action-button {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1em;
+    }
+    .errors {
+        margin-top: 1em;
+    }
+    .question {
+        text-align: center;
+    }
+}

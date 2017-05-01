@@ -1,0 +1,27 @@
+.order {
+  text-align: center;
+  table {
+    width: 80%;
+    margin: auto;
+    thead {
+      td {
+        border-bottom: 1px solid;
+        padding: 5px;
+      }
+    }
+  }
+  input {
+    width: 50%;
+    margin-top: 5em;
+    border-bottom: 1px solid;
+  }
+  .buttons {
+    margin-top: 2em;
+    display: flex;
+    justify-content: center;
+    >* {
+      margin: 0 5px;
+      border: 1px solid;
+    }
+  }
+}
