@@ -1,9 +1,9 @@
 module.exports = {
-  path: 'welcome',
+    path: 'welcome',
 
-  getComponent(nextState, cb) {
-    require.ensure([], function(require: NodeRequire) {
-      cb(null, require('./Welcome').default)
-    })
-  }
+    getComponent(nextState, cb) {
+        System.import('./Welcome').then( module =>
+            cb(null, module.default)
+        ).catch(err => console.error(err));
+    }
 }

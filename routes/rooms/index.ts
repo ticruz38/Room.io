@@ -1,17 +1,13 @@
 module.exports = {
-  path: 'rooms',
+    path: 'rooms',
 
-  getChildRoutes(partialNextState, callback) {
-    require.ensure([], function (require) {
-      callback(null, [
-        require('./fullscreenRoom'),
-      ])
-    })
-  },
+    childRoutes: [
+        require('./fullscreenRoom')
+    ],
 
-  getComponent(nextState, cb) {
-    require.ensure([], function(require: NodeRequire) {
-      cb(null, require('./RoomFeed').default)
-    })
-  }
+    getComponent(nextState, cb) {
+        System.import('./RoomFeed').then( module =>
+            cb(null, module.default)
+        ).catch(err => console.error(err));
+    }
 }
