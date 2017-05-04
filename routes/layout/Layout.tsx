@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 
 import { Dropdown } from 'components';
 import Login from '../auth/Login';
+import db from 'graph/IpfsApiStore';
 
 interface LayoutProps {
     children: React.Component<any, any>,
@@ -23,7 +24,12 @@ export class LayoutState {
     @observable title: string;
     @observable isLogged: boolean = !!sessionStorage.getItem('user');
     @observable backgroundImage: string;
+    @observable isApplicationReady: boolean;
     onClose: Function;
+
+    constructor() {
+        db.starting.then( _ => this.isApplicationReady = true );
+    }
 
     reset() {
         this.backgroundImage = null;
