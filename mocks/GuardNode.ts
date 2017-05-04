@@ -64,6 +64,7 @@ class GuardNode {
 }
 
 // should i init the node to be able to put and pull object?
+// May I start it in another directory ?
 const ipfs = new Ipfs({ EXPERIMENTAL: { pubsub: true } });
 
 ipfs.on('ready', () => {

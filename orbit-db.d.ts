@@ -26,7 +26,7 @@ declare class OrbitDB {
     
     _createStore( Store: OrbitDB.Store, dbname: string, options: OrbitDB.Store.Options ): OrbitDB.Store;
     _onMessage(dbname: string, hash: string)
-    _onWrite(dbname: string, hash: string)
+    _onWrite(dbname: string, hash: string, entry: any, heads: Object)
     _onReady(dbname: string, items: Object)
 }
 

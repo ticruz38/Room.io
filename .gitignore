@@ -1,5 +1,6 @@
 node_modules
 dist
+roomio
 npm-debug.log
 yarn-error.log
 .vscode
