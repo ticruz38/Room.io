@@ -1444,7 +1444,7 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^3.3.0, bluebird@^3.4.6:
+bluebird@^3.3.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
@@ -4098,7 +4098,7 @@ fs-exists-sync@^0.1.0:
   dependencies:
     nan "^2.0"
 
-fs-pull-blob-store@^0.4.1:
+fs-pull-blob-store@~0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/fs-pull-blob-store/-/fs-pull-blob-store-0.4.1.tgz#099b0a0e3fc594e9da05f2f88fe5ce83b6a3345a"
   dependencies:
@@ -4913,6 +4913,10 @@ hash.js@^1.0.0, hash.js@^1.0.3:
   dependencies:
     inherits "^2.0.1"
 
+hashlru@^2.0.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/hashlru/-/hashlru-2.2.0.tgz#793a58943f902aea578177d7b0335f13f2694b71"
+
 hast-util-is-element@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/hast-util-is-element/-/hast-util-is-element-1.0.0.tgz#3f7216978b2ae14d98749878782675f33be3ce00"
@@ -5120,7 +5124,7 @@ icss-replace-symbols@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/icss-replace-symbols/-/icss-replace-symbols-1.0.2.tgz#cb0b6054eb3af6edc9ab1d62d01933e2d4c8bfa5"
 
-idb-pull-blob-store@^0.5.1:
+idb-pull-blob-store@~0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/idb-pull-blob-store/-/idb-pull-blob-store-0.5.1.tgz#9c13f9f10eb05aa3a9f20ef571513c47579f75d4"
   dependencies:
@@ -5364,15 +5368,12 @@ ipfs-block@^0.6.0, ipfs-block@~0.6.0:
   dependencies:
     cids "^0.4.2"
 
-ipfs-log@^1.6.0-beta.7:
-  version "1.6.0-beta.8"
-  resolved "https://registry.yarnpkg.com/ipfs-log/-/ipfs-log-1.6.0-beta.8.tgz#0a4407108ebf72f947f53cc97f2203656bab1ad6"
+ipfs-log@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ipfs-log/-/ipfs-log-2.0.0.tgz#bbb62dbd82907227a6e189a0a39e37f4922cdc45"
   dependencies:
-    bluebird "^3.4.6"
-    lodash.differencewith "^4.5.0"
-    lodash.flatten "^4.4.0"
-    lodash.take "^4.1.1"
-    lodash.unionwith "^4.6.0"
+    p-map "~1.0.0"
+    p-whilst "~1.0.0"
 
 ipfs-multipart@~0.1.0:
   version "0.1.0"
@@ -6447,6 +6448,18 @@ libp2p-crypto@^0.8.6, libp2p-crypto@^0.8.7, libp2p-crypto@~0.8.1, libp2p-crypto@
   optionalDependencies:
     node-webcrypto-ossl "^1.0.21"
 
+"libp2p-floodsub@github:libp2p/js-libp2p-floodsub#orbit-floodsub":
+  version "0.7.4"
+  resolved "https://codeload.github.com/libp2p/js-libp2p-floodsub/tar.gz/8d2ee5bda953fd0433798e432cb70c13741fd404"
+  dependencies:
+    debug "^2.6.0"
+    hashlru "^2.0.0"
+    length-prefixed-stream "^1.5.1"
+    libp2p-crypto "~0.8.1"
+    lodash.values "^4.3.0"
+    pull-pushable "^2.0.1"
+    time-cache "~0.3.0"
+
 libp2p-floodsub@~0.7.5:
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/libp2p-floodsub/-/libp2p-floodsub-0.7.5.tgz#dc0ab375811c8d24d488674c0741a603316e989e"
@@ -6730,7 +6743,7 @@ lock-me@^1.0.2:
   optionalDependencies:
     fs-ext "github:baudehlo/node-fs-ext#master"
 
-lock@^0.1.3:
+lock@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/lock/-/lock-0.1.3.tgz#f66c1caa0c41956e1426608039ed59b71bdf1854"
 
@@ -6874,10 +6887,6 @@ lodash.defaults@~2.4.1:
     lodash._objecttypes "~2.4.1"
     lodash.keys "~2.4.1"
 
-lodash.differencewith@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.differencewith/-/lodash.differencewith-4.5.0.tgz#bafafbc918b55154e179176a00bb0aefaac854b7"
-
 lodash.escape@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/lodash.escape/-/lodash.escape-3.2.0.tgz#995ee0dc18c1b48cc92effae71a10aab5b487698"
@@ -6899,10 +6908,6 @@ lodash.filter@^4.6.0:
 lodash.find@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.find/-/lodash.find-4.6.0.tgz#cb0704d47ab71789ffa0de8b97dd926fb88b13b1"
-
-lodash.findindex@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.findindex/-/lodash.findindex-4.6.0.tgz#a3245dee61fb9b6e0624b535125624bb69c11106"
 
 lodash.flatmap@^4.5.0:
   version "4.5.0"
@@ -7038,17 +7043,9 @@ lodash.set@^4.3.2:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
 
-lodash.slice@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/lodash.slice/-/lodash.slice-4.2.0.tgz#85fb9d49223c64d9d5890f32322777c7416cac27"
-
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
-
-lodash.take@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/lodash.take/-/lodash.take-4.1.1.tgz#0b4146dcb7a70c6153495187fc10b12b71fefadf"
 
 lodash.template@^2.4.1:
   version "2.4.1"
@@ -7106,10 +7103,6 @@ lodash.templatesettings@~2.4.1:
 lodash.throttle@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
-
-lodash.unionwith@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.unionwith/-/lodash.unionwith-4.6.0.tgz#74d140b5ca8146e6c643c3724f5152538d9ac1f0"
 
 lodash.uniq@^4.5.0:
   version "4.5.0"
@@ -8057,67 +8050,71 @@ options@>=0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/options/-/options-0.0.6.tgz#ec22d312806bb53e731773e7cdaefcf1c643128f"
 
-orbit-db-counterstore@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/orbit-db-counterstore/-/orbit-db-counterstore-0.1.8.tgz#2e308323eb4e9885308fafe61cf1200b137b1d3c"
+orbit-db-cache@^0.0.6, orbit-db-cache@~0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/orbit-db-cache/-/orbit-db-cache-0.0.6.tgz#e608bf940a2aff1e403f334f6d96bff00c263e0f"
+  dependencies:
+    fs-pull-blob-store "~0.4.1"
+    idb-pull-blob-store "~0.5.1"
+    lock "~0.1.3"
+    pull-stream "~3.5.0"
+
+orbit-db-counterstore@~0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-counterstore/-/orbit-db-counterstore-0.2.0.tgz#7afce7e38a729a186cabcb5119a6926e10ac1cc2"
   dependencies:
     crdts "0.0.1"
-    orbit-db-store "^0.1.9"
+    orbit-db-store "~0.2.0"
 
-orbit-db-docstore@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/orbit-db-docstore/-/orbit-db-docstore-0.0.9.tgz#d2a6306ecebf9a7a545cb54d6bd27c65a712f95f"
+orbit-db-docstore@~0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-docstore/-/orbit-db-docstore-0.2.0.tgz#9179d50de15b37ac815410cb1ee196eb7dffe782"
   dependencies:
-    orbit-db-store "^0.1.10"
+    orbit-db-store "~0.2.0"
 
-orbit-db-eventstore@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/orbit-db-eventstore/-/orbit-db-eventstore-0.1.9.tgz#bd106dab4283209d8b2879a922bcf1f1ac5b1ede"
+orbit-db-eventstore@~0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-eventstore/-/orbit-db-eventstore-0.2.0.tgz#be35e600a6cc7f96eb2612149f4c3f03d0f44ab1"
   dependencies:
-    lodash.findindex "^4.6.0"
-    lodash.slice "^4.2.0"
-    lodash.take "^4.1.1"
-    orbit-db-store "^0.1.10"
+    orbit-db-store "~0.2.0"
 
-orbit-db-feedstore@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/orbit-db-feedstore/-/orbit-db-feedstore-0.1.8.tgz#abab65fa19f40c6329deb052c8782b9b94d6f556"
+orbit-db-feedstore@~0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-feedstore/-/orbit-db-feedstore-0.2.0.tgz#f7bd608921214d8acf3d1c24ed207c8ecd51d113"
   dependencies:
-    orbit-db-eventstore "^0.1.9"
+    orbit-db-eventstore "~0.2.0"
 
-orbit-db-kvstore@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/orbit-db-kvstore/-/orbit-db-kvstore-0.1.7.tgz#104289a24986925534a0dd2a5accf8fa577bfccc"
+orbit-db-kvstore@~0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/orbit-db-kvstore/-/orbit-db-kvstore-0.2.0.tgz#4056f3ff1b6babd8e411651ccc2b1db6b7885a9a"
   dependencies:
-    orbit-db-store "^0.1.10"
+    orbit-db-store "~0.2.0"
 
-orbit-db-pubsub@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/orbit-db-pubsub/-/orbit-db-pubsub-0.1.6.tgz#14138081cc3767ed21ec75548f01c54487bf668b"
+orbit-db-pubsub@~0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/orbit-db-pubsub/-/orbit-db-pubsub-0.2.1.tgz#e87bf56f8f5e326b048f1899de75c83ea4ff3414"
   dependencies:
     logplease "^1.2.9"
 
-orbit-db-store@^0.1.10, orbit-db-store@^0.1.9:
-  version "0.1.16"
-  resolved "https://registry.yarnpkg.com/orbit-db-store/-/orbit-db-store-0.1.16.tgz#ca01ce65e88b91631348b020619258d150dbf3ae"
+orbit-db-store@~0.2.0:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/orbit-db-store/-/orbit-db-store-0.2.3.tgz#161917863a7820a03c921233c5a12c92d9d413d4"
   dependencies:
-    ipfs-log "^1.6.0-beta.7"
+    ipfs-log "~2.0.0"
+    orbit-db-cache "~0.0.6"
 
-orbit-db@^0.16.0-beta.1:
-  version "0.16.3"
-  resolved "https://registry.yarnpkg.com/orbit-db/-/orbit-db-0.16.3.tgz#4046763db7bbfbef7104d4d337ad718546198ae2"
+orbit-db@^0.17.3:
+  version "0.17.3"
+  resolved "https://registry.yarnpkg.com/orbit-db/-/orbit-db-0.17.3.tgz#db5a2ed9efbcf14deec685281930bff3d7a063dc"
   dependencies:
-    fs-pull-blob-store "^0.4.1"
-    idb-pull-blob-store "^0.5.1"
-    lock "^0.1.3"
+    libp2p-floodsub "github:libp2p/js-libp2p-floodsub#orbit-floodsub"
     logplease "^1.2.12"
-    orbit-db-counterstore "^0.1.8"
-    orbit-db-docstore "^0.0.9"
-    orbit-db-eventstore "^0.1.9"
-    orbit-db-feedstore "^0.1.8"
-    orbit-db-kvstore "^0.1.7"
-    orbit-db-pubsub "^0.1.6"
-    pull-stream "^3.4.5"
+    orbit-db-counterstore "~0.2.0"
+    orbit-db-docstore "~0.2.0"
+    orbit-db-eventstore "~0.2.0"
+    orbit-db-feedstore "~0.2.0"
+    orbit-db-kvstore "~0.2.0"
+    orbit-db-pubsub "~0.2.1"
 
 orchestrator@^0.3.0:
   version "0.3.8"
@@ -8178,6 +8175,14 @@ p-locate@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-2.0.0.tgz#20a0103b222a70c8fd39cc2e580680f3dde5ec43"
   dependencies:
     p-limit "^1.1.0"
+
+p-map@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/p-map/-/p-map-1.0.0.tgz#fecf578d8f46c4f4254eb3631e56d031ad30e4fd"
+
+p-whilst@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/p-whilst/-/p-whilst-1.0.0.tgz#54668ead7f934799fc00f1e5230fd6addeb8e7e6"
 
 package-json@^4.0.0:
   version "4.0.0"
@@ -8991,7 +8996,7 @@ pull-stream-to-stream@^1.3.3, pull-stream-to-stream@^1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/pull-stream-to-stream/-/pull-stream-to-stream-1.3.4.tgz#3f81d8216bd18d2bfd1a198190471180e2738399"
 
-pull-stream@^3.2.3, pull-stream@^3.3.0, pull-stream@^3.4.3, pull-stream@^3.4.5, pull-stream@^3.5.0:
+pull-stream@^3.2.3, pull-stream@^3.3.0, pull-stream@^3.4.3, pull-stream@^3.4.5, pull-stream@^3.5.0, pull-stream@~3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/pull-stream/-/pull-stream-3.5.0.tgz#1ee5b6f76fd3b3a49a5afb6ded5c0320acb3cfc7"
 
