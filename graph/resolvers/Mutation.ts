@@ -99,7 +99,6 @@ export default {
     // Update User
     updateUser(root, { user }, context) {
         return db.user.then( dbUser => {
-            debugger;
             const oldUser = dbUser.query( u => u._id === user._id )[0];
             user.password = oldUser.password;
             dbUser.put( user ).then( hash => {

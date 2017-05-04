@@ -23,7 +23,6 @@ const Graph = _ => (
     />
 )
 
-console.log(require('./rooms'))
 
 export default {
     component: Layout,
