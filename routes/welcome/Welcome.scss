@@ -1,17 +1,52 @@
-div.presentation {
-    margin: auto;
-    width: 80%;
-    h1 {
-        text-align: center;
-    }
-}
 
-div.pick {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .box {
-        height: 7em;
-        width: 7em;
+div.welcome {
+    .header {
+        margin-top: -2em;
+        height: calc( 100vh - 50px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        div {
+            text-align: center;
+            h1 {
+                color: white;
+            }
+            h3 {
+                color: gold;
+            }
+        }
+    }
+    .presentation {
+        height: 100vh;
+        margin: auto;
+        width: 80%;
+        list-style-type: none;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        li {
+            margin: 2em 0;
+        }
+    }
+
+    .pick {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 50vh;
+        a {
+            transition: all 0.2s ease-in-out;
+            text-decoration: none;
+            color: gold;
+            cursor: pointer;
+            padding: 1em;
+            border: 1px solid gold;
+            &:hover {
+                border: 1px solid darken(gold, 10%);
+                background: gold;
+                color: white;
+            }
+        }
     }
 }
