@@ -25,6 +25,11 @@ label {
         text-align: right;
     }
     input, textarea {
+        &:focus +.placeholder {
+            top: -1.2em;
+            left: 1.5em;
+            color: #999
+        }
         display: flex;
         outline: none;
         border: none;
