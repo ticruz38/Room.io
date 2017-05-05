@@ -12,7 +12,6 @@ const roomDataRequest = 'roomio:data:request';
 const roomDataUpdate = 'roomio:data:update';
 const collections = ['room', 'stuff', 'user', 'order'];
 
-console.log('guardnode');
 
 class GuardNode {
     _cache: any;
@@ -48,14 +47,13 @@ class GuardNode {
             const hash = tableHash[table];
             console.info('got new hash for table ' + table + ' with hash ' + hash );
             // we also need to keep all the fucking block....
-            this.ipfs.object.get( hash, { enc: 'base58'} )
+            this.ipfs.block.get( hash, { enc: 'base58'} )
             .then( res => {
                 console.log('resolved entries', res);
                 return JSON.parse(res.toJSON().data);
-            })
+            } )
             .then( logData => {
                 if (!logData.heads || !logData.id) throw 'this logdata is empty buddy';
-
             })
             .catch(err => console.error(err));
             this._cache.set( table, hash );
