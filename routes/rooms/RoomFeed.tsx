@@ -20,7 +20,7 @@ export class RoomFeedState extends Loader {
 
     @observable rooms: Room[] = [];
 
-    @observable columnWidth: number = 300;
+    @observable columnWidth: number = 150;
 
     @computed get numberOfColumn(): number {
         return Math.round( uiStore.windowSize[1] / roomFeedState.columnWidth );
@@ -70,15 +70,17 @@ export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedSta
 
 const RoomComponent = ( props: Room & { onClick: Function } ) => {
     return (
-        <div className='room-item'>
+        <div className='room-item' style={{maxWidth: roomFeedState.columnWidth}}>
             <IpfsImage
                 defaultPicture="public/messy_room.jpg"
                 urlPicture={ props.picture }
                 onClick={ e => props.onClick( props._id )}
                 readOnly
             />
-            <h2>{props.name}</h2>
-            <p>{props.description}</p>
+            <div>
+                <h4>{props.name}</h4>
+                <small>{props.description}</small>
+            </div>
         </div>
     );
 }
