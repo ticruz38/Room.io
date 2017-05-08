@@ -1,12 +1,10 @@
 div.rooms-grid {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     margin-top: -2em;
     .column {
-        flex-grow: 1;
         border-radius: 5px;
         text-align: center;
-        padding: 1em;
         div.room-item {
             transition: all 0.2s ease-out;
             background: #ddd;
@@ -14,19 +12,29 @@ div.rooms-grid {
             padding: 0;
             overflow: hidden;
             border-radius: 8px;
+            box-shadow: 0 0 0 1px #ccc;
             &:hover {
-                padding: 8px;
-                margin: 0;
+                box-shadow: 0 0 0 7px #ccc;                
             }
             >* {
                 background: white;
             }
             .ipfs-picture {
-                border-top-left-radius: 8px;
-                border-top-right-radius: 8px;
                 width: 100%;
+                .picture {
+                    height: auto;
+                }
+                img {
+                    margin: 0;
+                    padding: 0;
+                    cursor: zoom-in;
+                    max-width: 100%;
+                    border-top-left-radius: 8px;
+                    border-top-right-radius: 8px;
+                    border-radius: 0;
+                }
             }
-            div {
+            >div {
                 &:last-child {
                     padding: 5px;
                     border-bottom-left-radius: 8px;
@@ -35,12 +43,7 @@ div.rooms-grid {
                 h4, small {
                     text-align: left;
                     margin: 0;
-                }
-                img {
-                    margin: 0;
-                    cursor: zoom-in;
-                    max-width: 100%;
-                    border-radius: 5px;
+                    display: block;
                 }
             }
         }

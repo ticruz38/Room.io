@@ -20,8 +20,10 @@ export default {
         return new Promise(( resolve, reject ) => {
             db.user.then( userDb => {
                 const user = userDb.get( login.email )[0];
-                if ( !user ) reject( new GraphQLError( login.email + ' is not registered in the network' ) );
-                return user.password === login.password ? resolve( user ) : reject( new GraphQLError( 'The password do not match the email' ) )
+                if ( !user ) return reject( new GraphQLError( login.email + ' is not registered in the network' ) );
+                return user.password === login.password ? 
+                    resolve( user ) : 
+                    reject( new GraphQLError( 'The password do not match the email' ) )
             } );
         } );
     }

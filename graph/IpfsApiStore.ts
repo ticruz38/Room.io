@@ -74,7 +74,7 @@ class IpfsStore {
             this.bootingDb.then(_ => {
                 const db = this.web3DB.docstore(dbName, { indexBy: indexBy || '_id' });
                 console.log(db);
-                db.load(); // to fetch current ipfs repo
+                db.load(150); // to fetch current ipfs repo
                 window[dbName] = db;
                 db.events.on('ready', message => {
                     resolve(db);

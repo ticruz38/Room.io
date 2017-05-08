@@ -1,6 +1,10 @@
 node_modules
 dist
 roomio
+mocks/Room.json
+mocks/Stuff.json
+mocks/User.json
+mocks/Order.json
 npm-debug.log
 yarn-error.log
 .vscode

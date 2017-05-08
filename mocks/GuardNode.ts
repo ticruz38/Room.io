@@ -42,22 +42,23 @@ class GuardNode {
     // Listening to table update, and update the cash
     _listenToUpdate() {
         this.ipfs.pubsub.subscribe(roomDataUpdate, message => {
-            const tableHash = JSON.parse( message.data.toString() );
+            const tableHash = JSON.parse(message.data.toString());
             const table = Object.keys(tableHash)[0];
             const hash = tableHash[table];
-            console.info('got new hash for table ' + table + ' with hash ' + hash );
+            console.info('got new hash for table ' + table + ' with hash ' + hash);
+            this._cache.set(table, hash);
             // we also need to keep all the fucking block....
-            this.ipfs.block.get( hash, { enc: 'base58'} )
-            .then( res => {
-                console.log('resolved entries', res);
-                return JSON.parse(res.toJSON().data);
-            } )
-            .then( logData => {
-                if (!logData.heads || !logData.id) throw 'this logdata is empty buddy';
-            })
-            .catch(err => console.error(err));
-            this._cache.set( table, hash );
-        } )
+            this.ipfs.object.get(hash, { enc: 'base58' })
+                .then((dagNode) => JSON.parse(dagNode.toJSON().data))
+                .then((logData) => {
+                    console.log('logData', logData);
+                    logData.heads.map(hash => {
+                        this.ipfs.object.get(hash, { enc: 'base58' })
+                            .then((dagNode) => JSON.parse(dagNode.toJSON().data))
+                            .then((logData) => console.log('sub - logData', logData))
+                    })
+                })
+        })
     }
 }
 

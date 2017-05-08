@@ -3,8 +3,9 @@ import { graphql } from 'graphql';
 
 import Layout from './layout/Layout';
 import Schema from 'graph';
+import generate from 'mocks/Generate'; // just to get the window method dropDb, populateDb
 
-
+console.log(generate);
 const Graphiql = require('graphiql');
 
 const Graph = _ => (

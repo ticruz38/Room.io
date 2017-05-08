@@ -30,7 +30,7 @@ export default class Web3DB extends OrbitDB {
                     this.stores[key]._cache.set(key, cache[key]).then(_ => {
                         // reload the database with the new cache
                         console.log('reloading database?') // yes but block is unfindable since it's not stocked in any repo neither this neither guardnode
-                        this.stores[key].load();
+                        // this.stores[key].load();
                     })
                 })
             })
@@ -47,6 +47,7 @@ export default class Web3DB extends OrbitDB {
         store.events.on('synced', this._onSync.bind(this))
 
         this.stores[dbname] = store
+        // store.load(50);
 
         if (opts.replicate && this._pubsub)
             this._pubsub.subscribe(dbname, this._onMessage.bind(this))

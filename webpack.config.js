@@ -29,6 +29,7 @@ module.exports = {
           public: path.resolve('./public'),
           components: path.resolve('./components'),
           models: path.resolve('./models'),
+          mocks: path.resolve('./mocks'),
         },
         modules: [
             path.resolve('.'),

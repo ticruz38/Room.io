@@ -49,9 +49,10 @@ class Table extends React.Component<any, any> {
         const request = JSON.parse(this.request);
     }
 
-    displayResults(result: Object) {
+    displayResults(result: Object, index: number) {
         return (
             <tr onClick={_ => this.props.table.del(result['_id'])}>
+                <td>{index}</td>
                 {Object.keys(result).map(k => <td>{result[k]}</td>)}
             </tr>
         );
@@ -63,11 +64,12 @@ class Table extends React.Component<any, any> {
             <table>
                 <thead>
                     <tr>
+                        <td>Index</td>
                         {Object.keys(this.results[0]).map(result => <td>{result}</td>)}
                     </tr>
                 </thead>
                 <tbody>
-                    {this.results.map(result => this.displayResults(result))}
+                    {this.results.map( this.displayResults ) }
                 </tbody>
             </table>
         )
