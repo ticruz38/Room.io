@@ -8,7 +8,7 @@
     "build": "webpack -p",
     "guardnode": "rm -rf ~/.jsipfs/repo.lock && ts-node mocks/GuardNode",
     "test": "mocha",
-    "feed": "node mocks/generate"
+    "feed": "node mocks/generate-cli"
   },
   "bin": {
     "feed": "./mocks/generate.js"
