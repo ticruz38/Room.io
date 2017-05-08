@@ -10,7 +10,8 @@
           "graph": ["graph"],
           "components": ["components"],
           "routes": ["routes"],
-          "contract": ["contract"]
+          "contract": ["contract"],
+          "mocks": ["mocks"]
         },
         "jsx": "react"
     },
