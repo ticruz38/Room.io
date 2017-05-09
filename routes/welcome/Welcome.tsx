@@ -12,7 +12,7 @@ export default class Welcome extends React.Component< any, any > {
     render() {
         return (
             <div className="welcome">
-                <div className="header" style={ { background: 'url("public/roomio-background.jpg")' } }>
+                <div className="header" style={ { backgroundImage: 'url("public/roomio-background.jpg")' } }>
                     <div>
                         <h1>Room</h1>
                         <h3>It's all yours</h3>
