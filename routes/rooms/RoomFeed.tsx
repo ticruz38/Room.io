@@ -21,19 +21,20 @@ export class RoomFeedState extends Loader {
 
     @observable rooms: Room[] = [];
 
-    @observable columnWidth: number = 150;
+    @observable columnWidth: number = 200;
 
     @computed get numberOfColumn(): number {
         return Math.round( uiStore.windowSize[1] * 0.7 / roomFeedState.columnWidth );
     }
 }
 
-export const roomFeedState = new RoomFeedState( RoomDocument, 'RoomsQuery' );
+export const roomFeedState = new RoomFeedState( RoomDocument );
 
 @observer
 export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedState> {
 
     componentWillMount() {
+        roomFeedState.execute('RoomsSubscription', {contextValue: roomFeedState});
         layoutState.reset();
         layoutState.title = 'Pick a Room you like';
         layoutState.modal = this.props.children;
