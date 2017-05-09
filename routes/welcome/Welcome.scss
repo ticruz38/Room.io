@@ -6,6 +6,8 @@ div.welcome {
         display: flex;
         align-items: center;
         justify-content: center;
+        background-repeat: no-repeat;
+        background-size: cover;
         div {
             text-align: center;
             h1 {

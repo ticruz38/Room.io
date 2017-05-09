@@ -6,23 +6,22 @@ div.rooms-grid {
         border-radius: 5px;
         text-align: center;
         div.room-item {
-            transition: all 0.2s ease-out;
-            background: #ddd;
-            margin: 8px;
+            transition: all 0.1s ease-out;
+            background: whitesmoke;
+            margin: 1em 8px;
             padding: 0;
             overflow: hidden;
             border-radius: 8px;
-            box-shadow: 0 0 0 1px #ccc;
+            box-shadow: 0 0 0 0 #ddd;
             &:hover {
-                box-shadow: 0 0 0 7px #ccc;                
-            }
-            >* {
-                background: white;
+                box-shadow: 0 0 0 7px #eee;     
+                background: #eee;           
             }
             .ipfs-picture {
                 width: 100%;
                 .picture {
                     height: auto;
+                    border-radius: 8px;
                 }
                 img {
                     margin: 0;
