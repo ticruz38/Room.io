@@ -4,15 +4,25 @@ const Logger = require('logplease');
 const logger = Logger.create('subscription')
 
 export default {
-    watchOrders( root, {id}, store ) {
-        return db.order.then( dborder => {
+    watchOrders(root, { id }, store) {
+        return db.order.then(dborder => {
             logger.info('order:subscription');
-            return dborder.query( o => o.roomId === id ) || [];
-        } );
+            return dborder.query(o => o.roomId === id) || [];
+        });
     },
-    watchRooms( root, args, context ) {
-        db.room.then( dbroom => dbroom.events.on('write', (dbname, hash, entry) => {
-            logger('write:subscription ' + dbname, entry);
-        } ) )
+    // context here is the component state
+    watchRooms(root, args, context) {
+        db.room.then(dbroom => {
+            const query = () => dbroom.query(doc => !!doc);
+            dbroom.events.on('write', (dbname, hash, entry) => {
+                logger.info('watchRoom:subscription:write', dbname, hash, entry);
+                context.rooms = query();
+            })
+            dbroom.events.on('synced', (dbname, hash, entry) => {
+                logger.info('watchRoom:subscription:synced', dbname, hash, entry);
+                context.rooms = query();
+            })
+            context.rooms = query();
+        })
     }
 }
