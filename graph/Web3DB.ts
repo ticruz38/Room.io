@@ -29,8 +29,18 @@ export default class Web3DB extends OrbitDB {
                 Object.keys( cache ).map( key => {
                     this.stores[key]._cache.set(key, cache[key]).then(_ => {
                         // reload the database with the new cache
-                        console.log('reloading database?') // yes but block is unfindable since it's not stocked in any repo neither this neither guardnode
-                        // this.stores[key].load();
+                        this.stores[key].load(1).then( _ => {
+                            // we need to listen to events in order to refresh room count in the view
+                            let index = 0;
+                            const loadMore = () => {
+                                index++;
+                                this.stores[key].loadMore(1).then( _ => {
+                                    if(index > 50) return;
+                                    loadMore()
+                                });
+                            }
+                            loadMore();
+                        });
                     })
                 })
             })
@@ -44,10 +54,8 @@ export default class Web3DB extends OrbitDB {
         const store = new Store(this._ipfs, this.user.id, dbname, opts)
         store.events.on('write', this._onWrite.bind(this))
         store.events.on('ready', this._onReady.bind(this))
-        store.events.on('synced', this._onSync.bind(this))
 
         this.stores[dbname] = store
-        // store.load(50);
 
         if (opts.replicate && this._pubsub)
             this._pubsub.subscribe(dbname, this._onMessage.bind(this))
@@ -67,9 +75,9 @@ export default class Web3DB extends OrbitDB {
     }
 
     // Notify the guard about the new hash
-    _onSync(dbName) {
-        const dbHash = { [dbName]: this.stores[dbName]._cache[dbName] }
-        console.log('.ONSync', dbHash);
-        this._ipfs.pubsub.publish(roomDataUpdate, new Buffer(JSON.stringify(dbHash)));
-    }
+    // _onSync(dbName) {
+    //     const dbHash = this.stores[dbName]._cache._cache;
+    //     console.log('.ONSync', dbHash);
+    //     this._ipfs.pubsub.publish(roomDataUpdate, new Buffer(JSON.stringify(dbHash)));
+    // }
 }
