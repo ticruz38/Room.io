@@ -3,6 +3,11 @@
 $default-font: 'Source Sans Pro', sans-serif;
 $title-font: 'Raleway', sans-serif;
 
+$yellow: #ffc107;
+$lightyellow: lighten(#ffc107, 15%);
+$orange: rgb(245, 124, 0);
+$whitesmoke: #EFEFEF;
+$transparent-grey: rgba(0, 0, 0, 0.07);
 body {
   margin: 0;
   font-family: $default-font;

@@ -1,3 +1,5 @@
+@import 'routes/index.scss';
+
 div.rooms-grid {
     display: flex;
     justify-content: center;
@@ -6,16 +8,16 @@ div.rooms-grid {
         border-radius: 5px;
         text-align: center;
         div.room-item {
-            transition: all 0.1s ease-out;
-            background: whitesmoke;
+            transition: box-shadow 0.1s ease-out;
+            background: $whitesmoke;
             margin: 1em 8px;
             padding: 0;
             overflow: hidden;
             border-radius: 8px;
-            box-shadow: 0 0 0 0 #ddd;
+            box-shadow: 0 0 0 0 $transparent-grey;
             &:hover {
-                box-shadow: 0 0 0 7px #eee;     
-                background: #eee;           
+                box-shadow: 0 0 0 7px $transparent-grey;     
+                background: $transparent-grey;
             }
             .ipfs-picture {
                 width: 100%;
