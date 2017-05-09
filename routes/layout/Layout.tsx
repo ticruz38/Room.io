@@ -56,7 +56,7 @@ export const layoutState = new LayoutState();
 
 
 @observer
-export default class Layout extends React.Component<any, any> {
+export default class Layout extends React.PureComponent<any, any> {
 
     get backButton() {
         return (
