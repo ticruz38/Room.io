@@ -7,7 +7,6 @@ const roomDataUpdate = 'roomio:data:update';
 
 //TODO Make it listening to sinced db events and notify the guardian about the new hash
 export default class Web3DB extends OrbitDB {
-    plugging: Promise<any>
     constructor(ipfs: Ipfs) {
         super(ipfs);
         window['web3'] = ipfs;
@@ -35,7 +34,11 @@ export default class Web3DB extends OrbitDB {
                             const loadMore = () => {
                                 index++;
                                 this.stores[key].loadMore(1).then( _ => {
-                                    if(index > 50) return;
+                                    if(index > 50) {
+                                        this.stores[key].events.emit('loaded')
+                                        this.stores[key].load(); // load any other items
+                                        return;
+                                    };
                                     loadMore()
                                 });
                             }
