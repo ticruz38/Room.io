@@ -18,9 +18,13 @@ class IpfsStore {
     pubsub = new EventEmitter();
     bootingDb: Promise<any> = this.startWeb3DB();
     room: Promise<any> = this.createDb('room');
+    roomWatch: Promise<any> = this.createPartialDb('room'); // a database that continuously load items, to be used in subscription
     stuff: Promise<any> = this.createDb('stuff');
+    stuffWatch: Promise<any> = this.createPartialDb('stuff'); // a database that continuously load items, to be used in subscription
     user: Promise<any> = this.createDb('user');
+    userWatch: Promise<any> = this.createPartialDb('user'); // a database that continuously load items, to be used in subscription
     order: Promise<any> = this.createDb('order');
+    orderWatch: Promise<any> = this.createPartialDb('order'); // a database that continuously load items, to be used in subscription
 
     get starting(): Promise<any> {
         return Promise.all([
@@ -68,18 +72,27 @@ class IpfsStore {
         });
     }
 
+    createPartialDb( dbName: string, indexBy?: string ) {
+        return new Promise((resolve, reject) => {
+            this.bootingDb.then(_ => {
+                window[dbName].events.on('ready', message => { //ready is triggered asa 1st db block is loaded
+                    resolve(window[dbName]);
+                })
+            })
+        })
+    }
+
     createDb(dbName: string, indexBy?: string): Promise<any> {
-        console.log('createDb', dbName);
         return new Promise((resolve, reject) => {
             this.bootingDb.then(_ => {
                 const db = this.web3DB.docstore(dbName, { indexBy: indexBy || '_id' });
                 // db.load(150); // to fetch current ipfs repo
                 window[dbName] = db;
-                db.events.on('ready', message => {
+                
+                db.events.on('loaded', message => {
+                    // we should resolve with a partial database and a fully-loaded database
                     resolve(db);
-                    logger.info('db ' + dbName + ' ready ' + message)
-                });
-                db.events.on('sync', _ => logger.info('db ' + dbName + ' starting'));
+                })
             })
             // return db.load().then( message => logger.info( 'db ' + dbName + ' ready ' + message ));
         });
