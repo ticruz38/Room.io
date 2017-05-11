@@ -11,7 +11,7 @@ export default class Editable {
         const input: any = {}
         Object.keys(this)
             .filter( key => ( //filter editable entry to generate an input
-                this[key] !== undefined &&
+                !!this[key] &&
                 typeof this[key] !== 'function' &&
                 !(typeof this[key] !== 'string' && this[key].length !== undefined && typeof this[key][0] !== 'string' ) &&
                 key !== 'confirmPassword' &&
