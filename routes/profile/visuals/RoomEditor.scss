@@ -1,0 +1,36 @@
+.room-editor {
+    .action-button {
+        padding: 5px;
+        background: gold;
+        button.btn {
+            margin: 0 1em;
+            border: 1px solid;
+        }
+    }
+    &:hover {
+        .close {
+            opacity: 1;
+        }
+    }
+    .Select {
+        margin: 0.5em 1em 1em;
+        .Select-control {
+            background: white;
+        }
+    }
+    .flex-box {
+        display: flex;
+        justify-content: space-between;
+        .form {
+            flex-grow: 1;
+        }
+        .ipfs-picture {
+            margin-top: -4em;
+            img.picture {
+                max-width: 10em;
+                border-radius: 1em;
+                margin: 1em;
+            }
+        }
+    }
+}
