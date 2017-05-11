@@ -18,13 +18,13 @@ type ImageProps = {
 @observer
 export default class ImageComponent extends React.PureComponent< ImageProps, any > {
 
-    @observable base64Image: string
+    @observable url: string
 
     constructor(props: ImageProps) {
         super(props);
         autorun( _ => {
             if( props.picture || props.urlPicture ) {
-                db.getImage( props.picture ? props.picture.value : props.urlPicture ).then( res => this.base64Image = res ) 
+                db.getFile( props.picture && props.picture.value ? props.picture.value : props.urlPicture  ).then( res => this.url = res ) 
             }
         } );
     }
@@ -48,7 +48,7 @@ export default class ImageComponent extends React.PureComponent< ImageProps, any
                 <div className={ this.props.readOnly ? "" : "picture-blur" }>
                     <img
                         className='picture'
-                        src={ this.base64Image ? 'data:image/jpg;base64,' + this.base64Image : this.props.defaultPicture }
+                        src={ this.url ? this.url : this.props.defaultPicture }
                     />
                 </div>
             </div>
