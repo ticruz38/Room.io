@@ -36,39 +36,52 @@ class IpfsStore {
     }
 
     uploadFile(input, cb?: (err, res: any) => void) {
-        const reader = new FileReader();
-        reader.readAsArrayBuffer(input);
-        reader.onloadend = (e) => {
-            this.ipfs.files.add(new Buffer(reader.result), (err, res) => {
-                if (err) throw 'file couldnt be upload to ipfs' + input
-                cb(err, res);
-            });
+        const readFileContent = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => resolve(event['target']['result'])
+                reader.readAsArrayBuffer(input);
+            })
         }
+        readFileContent(input)
+        .then( buffer => {
+            return this.ipfs.files.add([{
+                path: input.name,
+                content: new this.ipfs.types.Buffer(buffer)
+            }])
+        })
+        .then( files => {
+            const hash = files[0].hash;
+            console.log(files);
+            cb(null, files[0].hash);
+        })
     }
 
-    getImage(hash: string): Promise<any> {
+    getFile(hash: string): Promise<any> {
+        const createFileBlob = (data, hash) => {
+            const file = new Blob(data, {type: 'application/octet-binary'});
+            const fileUrl = URL.createObjectURL(file);
+            return fileUrl;
+        }
         return new Promise((resolve, reject) => {
-            this.ipfs.files.get(hash, (err, stream) => {
-                if (err) throw err;
-                let files = [];
-                stream.pipe(through.obj((file, enc, next) => {
-                    file.content.pipe(concat((content) => {
-                        files.push({
-                            path: file.path,
-                            content: content
+            this.ipfs.files.get(hash, (err, filesStream) => {
+                if(err) console.log(err);
+                filesStream.on('data', file => {
+                    if(file.content) {
+                        const buf = []
+                        // buffer up all the data in the file
+                        file.content.on('data', (data) => buf.push(data))
+                        file.content.once('end', () => {
+                            const listItem = createFileBlob(buf, hash)
+                            console.log('listItem', listItem);
+                            resolve(listItem);
                         })
-                        next();
-                    }))
-                }, () => {
-                    // the blob is invalid maybe because it is encoded as json...
-                    const file = new Blob(files[0].content, { type: 'image/jpg' });
-                    // console.log(file);
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file)
-                    // reader.onloadend = e => resolve(reader.result);
-                    resolve(btoa(String.fromCharCode.apply(null, files[0].content)));
-                }))
-            });
+                        file.content.resume()
+                    }
+                })
+                filesStream.resume()
+                filesStream.on('end', () => console.log('Every file was fetched for ', hash));
+            })
         });
     }
 
