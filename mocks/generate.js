@@ -24,7 +24,6 @@ function getRandomData(dbName) {
 }
 
 window["dropDb"] = dbName => {
-    console.log("dropping db " + dbName);
     return new Promise((resolve, reject) => {
         Store[dbName].then(db => {
             console.log(dbName + " database ready, deleting items");

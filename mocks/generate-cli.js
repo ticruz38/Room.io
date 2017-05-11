@@ -8,6 +8,8 @@ const Orders = require("./Order.json");
 const Rooms = require("./Room.json");
 const Stuffs = require("./Stuff.json");
 const Users = require("./User.json");
+const Pictures = require('./Pictures.json');
+
 
 function uintRandom(int) {
     return Math.round(Math.random() * (int - 1));
@@ -16,7 +18,8 @@ function uintRandom(int) {
 const aliveRooms = () => {
     return Rooms.map((r, index) =>
         Object.assign(r, {
-            userId: Users[index]._id
+            userId: Users[index]._id,
+            picture: Pictures[uintRandom(11)]
         })
     );
 };
@@ -35,6 +38,27 @@ const aliveStuffs = () => {
             roomId: Rooms[index % 50]._id
         })
     );
+};
+
+const savePictures = () => {
+    let index = 0;
+    const files = {};
+    return new Promise( (resolve, reject) => {
+        const addFile = (index) => {
+            this.ipfs.files.add({
+                path: `pictures/${index}.png`,
+                content: fs.createReadStream(`./pictures/${index}.png`)
+            }).then( files => {
+                index++;
+                console.log(file);
+                files[index] = file.hash;
+                if( index = 8 ) return resolve(files);
+                console.log(addFile);
+                addFile(index);
+            } );
+        }
+        addFile(index);
+    });
 };
 
 const randomOrderStuff = () => {
@@ -110,6 +134,13 @@ program
                     if (!program.drop && !program.populate) process.exit();
                 });
                 break;
+            case "picture":
+                savePictures().then( files => {
+                    fs.writeFile(path.resolve(__dirname, "Picture.json"), JSON.stringify(files), err => {
+                        if (err) console.log("error", err);
+                        if (!program.drop && !program.populate) process.exit();
+                    });
+                })
             default:
                 break;
         }
