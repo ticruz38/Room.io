@@ -29,12 +29,12 @@ export class RoomFeedState extends Loader {
 }
 
 export const roomFeedState = new RoomFeedState( RoomDocument );
+roomFeedState.execute('RoomsSubscription', {contextValue: roomFeedState});
 
 @observer
 export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedState> {
 
     componentWillMount() {
-        roomFeedState.execute('RoomsSubscription', {contextValue: roomFeedState});
         layoutState.reset();
         layoutState.title = 'Pick a Room you like';
         layoutState.modal = this.props.children;
