@@ -3,6 +3,8 @@ import * as mobx from 'mobx';
 
 const Document = require('./models.gql');
 
+const Logger = require('logplease');
+const logger = Logger.create('Editable')
 
 export default class Editable {
     resetChange = () => Object.keys(this).map( key => this[key] && this[key].hasChanged ? this[key].hasChanged = false : '' );
@@ -23,7 +25,7 @@ export default class Editable {
     execute = ( operation: string, variables: Object, cb?: Function ) =>
         Loader.execute( Document, operation, variables )
             .then( result => {
-                console.log('result for ' + operation, result );
+                Logger.info('result for ' + operation, result );
                 this.resetChange();
                 cb ? cb(result) : result 
             }, error => { throw error } )

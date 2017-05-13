@@ -1,13 +1,7 @@
 import * as Ipfs from 'ipfs';
-import * as Orbitdb from 'orbit-db';
 
 const Cache = require('orbit-db-cache');
 
-// const Orbitdb = require('orbit-db');
-// set up a guardian node, that will listen to write event and update it's collection object in it's repo
-// and provide other node with the most up to date collections
-// 1/ Set the node up in a node cli
-// 2/ See if it catch event form newly website visitor
 const roomDataRequest = 'roomio:data:request';
 const roomDataUpdate = 'roomio:data:update';
 const collections = ['room', 'stuff', 'user', 'order'];
@@ -20,16 +14,6 @@ class GuardNode {
         this._listenToUpdate();
         this._listenToRequest();
     }
-
-    // _subscribeToDb() {
-    //     this.collections.map(c => {
-    //         this.ipfs.pubsub.subscribe(c, (message) => {
-    //             const hash = message.data.toString();
-    //             console.log('got new data for ' + c, hash);
-    //             this._cache.set(c, hash);
-    //         })
-    //     })
-    // }
 
     _listenToRequest() {
         this.ipfs.pubsub.subscribe(roomDataRequest, message => {
@@ -47,7 +31,7 @@ class GuardNode {
             const hash = tableHash[table];
             console.info('got new hash for table ' + table + ' with hash ' + hash);
             this._cache.set(table, hash);
-            // we also need to keep all the fucking block....
+            // we also need to keep all the block....
             this.ipfs.object.get(hash, { enc: 'base58' })
                 .then((dagNode) => JSON.parse(dagNode.toJSON().data))
                 .then((logData) => {

@@ -20,7 +20,6 @@ export default class Web3DB extends OrbitDB {
             this._ipfs.swarm.connect('/ip4/127.0.0.1/tcp/4003/ws/ipfs/QmXNgnNG5hdshrggnJ2GvhdE6p6LY6imhqP3vE9uDHZ21S', (err) => {
                 if (err) return console.error(err);
                 console.log('you just connected to the guardnode');
-                this._ipfs.swarm.peers((err, peerInfos) => console.log(peerInfos));
                 // for some reason we need to set a setTimeout...
                 setTimeout(_ => this._ipfs.pubsub.publish(roomDataRequest, new Buffer(peer.id)), 100);
             });
@@ -83,11 +82,4 @@ export default class Web3DB extends OrbitDB {
             this._ipfs.pubsub.publish(roomDataUpdate, new Buffer( JSON.stringify( {[dbname]: hash} ) ) );
         } )
     }
-
-    // Notify the guard about the new hash
-    // _onSync(dbName) {
-    //     const dbHash = this.stores[dbName]._cache._cache;
-    //     console.log('.ONSync', dbHash);
-    //     this._ipfs.pubsub.publish(roomDataUpdate, new Buffer(JSON.stringify(dbHash)));
-    // }
 }

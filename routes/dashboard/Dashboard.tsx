@@ -18,7 +18,6 @@ const Logger = require('logplease');
 const logger = Logger.create('Dashboard');
 
 const Document = require('./Dashboard.gql');
-console.log(Document);
 const secondPerDay = 24 * 60 * 60;
 
 
@@ -66,15 +65,12 @@ class DashboardState extends Loader {
                 return !Object.keys(value).some( key => {
                     switch (key) {
                         case 'price':
-                            console.log('price', order[key], value[key]);
                             return order[key] >= value[key];
                         case '_id':
                             return order[key] === value[key];
                         case 'client':
-                            console.log('client', order[key], value[key]);
                             return order[key].name === value[key].name;
                         default:
-                            // console.log(key, order[key], value[key]);
                             return !!order[key] === !!value[key];
                     } } )
             } )
@@ -105,14 +101,10 @@ class DashboardState extends Loader {
     }
     //to be called once room is loaded
     watchOrders() {
-        this.subscribe('WatchOrders', {
+        this.execute('WatchOrders', {
             variables: { roomId: this.room._id },
             contextValue: this,
-            cb: (data: any) => {
-                // logger.info('Subscribing order change')
-                console.log(data);
-            }
-        }, 'addOrder', (payload) => payload.order.roomId === this.room._id );
+         } );
     }
     loadRoom() {
         this.execute('RoomWithOrders', {
@@ -122,7 +114,6 @@ class DashboardState extends Loader {
                 if(!room) throw 'oop, room hasnt been fetched';
                 this.room = room;
                 this.orders = room.orders;
-                console.log('roomWithOrders', room);
                 this.watchOrders();
             }
         } )

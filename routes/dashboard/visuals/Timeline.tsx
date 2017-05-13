@@ -14,7 +14,6 @@ moment.locale('fr');
 const secondPerDay = 24 * 60 * 60;
 
 const Order = (order: Order) => {
-    //console.log(order, order.created - state.today, (moment().unix() - state.today) / 10);
     const price = 200; // * 10 to get higher height
     return (
         <rect

@@ -6,10 +6,8 @@ export default {
         return db.room.then( roomDb => roomDb.get( args.id )[0] );
     },
     rooms( root, args, context ) {
-        console.log('resolving rooms', db);
         // each docStore are a promise, resolved when data are loaded 
         return db.room.then( roomDb => {
-            console.log('db room ready');
             return roomDb.query( doc => !!doc );
         } );
     },

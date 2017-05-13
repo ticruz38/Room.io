@@ -1,7 +1,7 @@
 {
   "name": "ambrosia-ts",
   "version": "0.0.0",
-  "description": "An example of a fully decentralized application",
+  "description": "Fully decentralized application sample",
   "main": "index.js",
   "scripts": {
     "start": "node webpackdevserver",
