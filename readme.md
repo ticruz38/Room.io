@@ -55,4 +55,4 @@ start playing around
 
 
 ## Tips and tricks
-These apps has been developped using Visual Studio Code, with GraphQl for VSCode plugin. This will be easier for you to navigate through .gql files.
+These apps has been developped using Visual Studio Code, with GraphQl for VSCode plugin, using this plugin will be easier for you to navigate through .gql files.
