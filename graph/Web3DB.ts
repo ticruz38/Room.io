@@ -1,6 +1,8 @@
 import * as OrbitDB from 'orbit-db';
 import * as Ipfs from 'ipfs';
 
+const dbs = ['user', 'order', 'room', 'stuff'];
+
 const roomDataRequest = 'roomio:data:request';
 const roomDataUpdate = 'roomio:data:update';
 
@@ -24,10 +26,16 @@ export default class Web3DB extends OrbitDB {
             });
             this._ipfs.pubsub.subscribe(peer.id, message => {
                 const cache = JSON.parse(message.data.toString());
+                Object.keys(cache)
                 console.info('guardnode responded with cache', cache);
+                // if the db is not cached yet resolve immediately
+                dbs.map(db => Object.keys( cache ).find( key => key === db ) || this.stores[db].events.emit('loaded', db) );
                 Object.keys( cache ).map( key => {
                     this.stores[key]._cache.set(key, cache[key]).then(_ => {
                         // reload the database with the new cache
+                        this.stores[key].load().then( _ => {
+                            this.stores[key].events.emit('loaded', 'room');
+                        })
                         this.stores[key].load(1).then( _ => {
                             // we need to listen to events in order to refresh room count in the view
                             let index = 0;
@@ -35,7 +43,6 @@ export default class Web3DB extends OrbitDB {
                                 index++;
                                 this.stores[key].loadMore(1).then( _ => {
                                     if(index > 50) {
-                                        this.stores[key].events.emit('loaded')
                                         this.stores[key].load(); // load any other items
                                         return;
                                     };
