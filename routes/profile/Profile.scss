@@ -19,6 +19,12 @@
     .profile-header {
         display: flex;
         align-items: flex-start;
+        img.picture {
+            flex-grow: 1;
+            max-width: 10em;
+            border-radius: 2em;
+            margin: 1em 0;
+        }
         .user-information {
             flex-grow: 2;
             margin-left: 1em;
@@ -48,38 +54,6 @@
         margin: 1em 0;
         border-radius: 10px;
         overflow: hidden;
-        .action-button {
-            padding: 5px;
-            background: gold;
-            button.btn {
-                margin: 0 1em;
-                border: 1px solid;
-            }
-        }
-        .ipfs-picture {
-            position: absolute;
-            right: 0;
-            top: 0;
-            .picture {
-                border-radius: 1em;
-            }
-        }
-        .room {
-            >.input {
-                width: calc( 100% - 15em );
-            }
-            &:hover {
-                .close {
-                    opacity: 1;
-                }
-            }
-            .Select {
-                margin: 0.5em 1em 1em;
-                .Select-control {
-                    background: white;
-                }
-            }
-        }
         .category {
             table.profile-stuffs {
                 width: 100%;

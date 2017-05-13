@@ -30,7 +30,7 @@ export class EditableOrder extends Editable {
         this.created = !!order ? order.created : moment().unix();
         this.clientId = !!order && order.client ? order.client._id : clientId;
         this.roomId = !!order && order.room ? order.room._id : roomId;
-        this.stuffIds = !!order && order.stuffs ? order.stuffs.map( _ => _._id ) : [];
+        this.stuffIds = !!order && order.stuffs ? order.stuffs.filter(o => !!o).map( _ => _._id ) : [];
         this.message = new Field( order ? order.message : "" );
         this.payed = order ? order.payed : false;
     }

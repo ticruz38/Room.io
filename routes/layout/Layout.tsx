@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 
 import { Dropdown } from 'components';
 import Login from '../auth/Login';
+import db from 'graph/IpfsApiStore';
 
 interface LayoutProps {
     children: React.Component<any, any>,
@@ -23,7 +24,12 @@ export class LayoutState {
     @observable title: string;
     @observable isLogged: boolean = !!sessionStorage.getItem('user');
     @observable backgroundImage: string;
+    @observable isApplicationReady: boolean;
     onClose: Function;
+
+    constructor() {
+        db.starting.then( _ => this.isApplicationReady = true );
+    }
 
     reset() {
         this.backgroundImage = null;
@@ -50,7 +56,7 @@ export const layoutState = new LayoutState();
 
 
 @observer
-export default class Layout extends React.Component<any, any> {
+export default class Layout extends React.PureComponent<any, any> {
 
     get backButton() {
         return (
@@ -64,7 +70,7 @@ export default class Layout extends React.Component<any, any> {
     get icon() {
         return (
             <Link className='app-icon' to="/rooms">
-                <i className="material-icons">local_florist</i>
+                <i className="material-icons">weekend</i>
             </Link>
         );
     }
@@ -142,7 +148,6 @@ const Modal = (props: any) => {
     const close = (e: MouseEvent) => {
         e.preventDefault();
         const clickedElement: any = e.target;
-        console.log(clickedElement.id)
         if (clickedElement.id === "wrapper") {
             if (layoutState.onClose) layoutState.onClose();
             layoutState.modal = false;

@@ -1,0 +1,18 @@
+type Mutation {
+    addOrder(order: OrderInput!): Order
+    updateOrder(order: OrderInput!): Order
+    deleteOrder(id: String!): Order
+
+    addRoom(room: RoomInput!): Room
+    updateRoom(room: RoomInput!): Room
+    deleteRoom(id: String!): Room
+
+    addStuff(stuff: StuffInput!): Stuff
+    updateStuff(stuff: StuffInput!): Stuff
+    deleteStuff(id: String!): Stuff
+
+    signup(user: UserSignup!): User # has to be handled via ethereum for security
+    updateUser(user: UserInput!): User # has to be handled via ethereum for security
+    deleteUser(id: String!): User
+}
+

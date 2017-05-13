@@ -26,7 +26,6 @@ export default class Form extends React.Component< FormProps, any > {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log('receiveProps');
         if( this.isInvalid( newProps ) !== this.isInvalid(this.props) ) newProps.validityChange( !this.isInvalid(newProps) );
     }
 

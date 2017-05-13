@@ -1,7 +1,7 @@
 /* .gqlconfig */
  {
    "schema": {
-     "files": "graph/**/*.ts"
+     "files": "graph/schema/**/*.gql"
    },
    query: {
      files: [

@@ -52,7 +52,6 @@ export default class Input extends React.Component< InputProps, any > {
         return (
             <div className='input'>
                 {/*{ this.props.label ? <label>{this.props.label}</label> : null}*/}
-                { this.placeholder }
                 <input
                     ref="input"
                     className={classnames({error: !this.isValid})}
@@ -66,6 +65,7 @@ export default class Input extends React.Component< InputProps, any > {
                     min={ this.props.min }
                     max={ this.props.max }
                 />
+                { this.placeholder }
                 { this.errors }
             </div>
         );

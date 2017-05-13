@@ -4,13 +4,15 @@
         "outDir": "./dist/",
         "sourceMap": true,
         "module": "commonjs",
+        "moduleResolution": "node",
         "target": "es6",
         "baseUrl": ".",
         "paths": {
           "graph": ["graph"],
           "components": ["components"],
           "routes": ["routes"],
-          "contract": ["contract"]
+          "contract": ["contract"],
+          "mocks": ["mocks"]
         },
         "jsx": "react"
     },

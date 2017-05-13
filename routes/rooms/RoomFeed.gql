@@ -6,3 +6,12 @@ query RoomsQuery {
         picture
     }
 }
+
+subscription RoomsSubscription {
+    watchRooms {
+        _id
+        name
+        description
+        picture
+    }
+}

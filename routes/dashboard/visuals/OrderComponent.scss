@@ -1,0 +1,109 @@
+@import 'routes/index.scss';
+
+@keyframes appear {
+    from { 
+        background: $lightyellow;
+        height: 0;
+    }
+    to { 
+        background: $whitesmoke;
+        height: 6.25vh;
+    }
+}
+
+.empty-list {
+    text-align: center;
+    >i {
+        font-size: 17vw;
+        color: gold
+    }
+}
+
+// Order component 
+.order-component {
+    position: relative;
+    // animation: appear 0.5s ease-in-out;
+    overflow: hidden;
+    border-top: 1px solid #ccc;
+    width: 90%;
+    padding: 0 10px;
+    margin: 0.5vh auto;
+    &:first-child {
+        border: none;
+    }
+    &:last-child {
+        border-bottom: 1px solid #ccc;
+    }
+    small {
+        display: block;
+        font-size: 1vh;
+        &.order-created {
+            position: absolute;
+            right: 1vh;
+            top: 0;
+        }
+    }
+    h3{
+        margin: 0;
+        font-size: 2vh;
+        .price {
+            float: right;
+        }
+    }
+    .flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        max-height: 2.75vh;
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: 1.5vh;
+            margin: 0 -5px;
+            >i {
+                font-size: 2vh;
+                margin-right: 5px;
+                cursor: pointer;
+            }
+        }
+        .items {
+            width: calc(100% - 17vh);
+            display: flex;
+            font-size: 1.5vh;
+            overflow-x: scroll;
+            padding-top: 1em;
+            margin-top: -1em;
+            >* {
+                margin: 0 0.5vh;
+            }
+        }
+    }
+    .order-stuff {
+        display: table;
+        position: relative;
+        padding: 0.2vh 0.5vh;
+        border: 1px solid gold;
+        cursor: default;
+        strong {
+            white-space: nowrap;
+        }
+        .times {
+            display: flex;
+            font-weight: bold;
+            height: 1.5vh;
+            width: 1.5vh;
+            font-size: 1.5vh;
+            align-items: center;
+            justify-content: center;
+            left: -0.75vh;
+            font-style: normal;
+            position: absolute;
+            border: 1px solid gold;
+            border-radius: 1vh;
+            background: white;
+            z-index: 10;
+            top: -0.75vh;
+        }
+    }
+}

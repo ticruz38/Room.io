@@ -1,4 +1,4 @@
-import db from 'graph/IpfsApiStore';
+import db from '../IpfsApiStore';
 
 export default {
     stuffs: function ( root: OrderInput, params, context ) {

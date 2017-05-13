@@ -1,0 +1,4 @@
+type Subscription {
+    watchOrders(id: String!): [Order]
+    watchRooms: [Room]
+}

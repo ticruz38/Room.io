@@ -1,0 +1,23 @@
+type Order {
+    _id: String!
+    stuffs: [Stuff]! # Which stuffs does that order points to
+    room: Room!
+    client: User
+    message: String # Additional message the customer has put on its order
+    payed: Boolean
+    treated: Float # Date in unix
+    created: Float # Date in unix
+    amount: Float
+}
+
+input OrderInput {
+    _id: String!
+    stuffIds: [String]!
+    clientId: String!
+    roomId: String!
+    message: String
+    payed: Boolean!
+    created: Int
+    treated: Boolean
+    amount: Float # deprecated this is calculated from the stuffIds
+}

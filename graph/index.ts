@@ -1,15 +1,9 @@
-import * as query from './schema/query';
-import * as mutation from './schema/mutation';
-import * as subscription from './schema/subscription';
 import * as resolver from './resolvers';
 const { makeExecutableSchema } = require('graphql-tools');
+const Schema = require('./schema/Schema.json');
 
 export default makeExecutableSchema({
-    typeDefs: [ 
-        query.Query, //query.Room, query.Stuff,
-        mutation.Mutation, //mutation.RoomInput, mutation.StuffInput
-        subscription.Subscription
-    ],
+    typeDefs: Schema,
     resolvers: {
         Query: resolver.Query,
         Mutation: resolver.Mutation,

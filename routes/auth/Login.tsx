@@ -7,7 +7,6 @@ import { password, email } from 'components/form/Constraint';
 import { layoutState } from 'routes/layout/Layout';
 import Loader from 'graph/Loader';
 import Signup from './Signup';
-import loadApp from '../../';
 
 import { EditableUser } from "models";
 

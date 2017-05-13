@@ -39,7 +39,7 @@ class ProfileState extends Loader {
             this.user.save();
         }
         if ( this.room.hasChanged ) {
-            this.room.save();
+            this.room.update();
         }
         this.room.stuffs.forEach( s => s.hasChanged ? s.save() : '' );
     };
@@ -133,9 +133,8 @@ export default class Profile extends React.Component<any, any> {
                 <div className="profile">
                     <div className="profile-header">
                         <IpfsImage
-                            onUpload={ ( err, res ) => {
-                                user.picture.value = res[0].hash;
-                                {/*console.log(res, user.picture.value);*/}
+                            onUpload={ ( err, hash ) => {
+                                user.picture.value = hash;
                                 user.picture.hasChanged = true;
                             } }
                             defaultPicture="https://www.educol.net/coloriage-che-guevara-dl24689.jpg"

@@ -3,6 +3,11 @@
 $default-font: 'Source Sans Pro', sans-serif;
 $title-font: 'Raleway', sans-serif;
 
+$yellow: #ffc107;
+$lightyellow: lighten(#ffc107, 15%);
+$orange: rgb(245, 124, 0);
+$whitesmoke: #EFEFEF;
+$transparent-grey: rgba(0, 0, 0, 0.07);
 body {
   margin: 0;
   font-family: $default-font;
@@ -56,17 +61,21 @@ a {
   }
 }
 
-// react-select
-.Select-control {
-    height: 32px;
-    min-width: 6em;
-    border: none;
-    border-radius: 3px;
-    background-color: lightyellow;
-    .Select-input {
+.Select {
+    border-radius: 2px;
+    background-color: $whitesmoke;
+    border: 1px solid $whitesmoke;
+    // react-select
+    .Select-control {
+        background-color: inherit;
         height: 32px;
-    }
-    .Select-value {
-        margin-top: 3px;
+        min-width: 6em;
+        border: none;
+        .Select-input {
+            height: 32px;
+        }
+        .Select-value {
+            margin-top: 3px;
+        }
     }
 }

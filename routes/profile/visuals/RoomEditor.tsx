@@ -21,30 +21,33 @@ export default class RoomEditor extends React.Component< EditableUser, any > {
     render() {
         const { room } = this.props;
         return (
-            <div className="room card">
+            <div className="room-editor card">
                 <h2>Room</h2>
                 <i className="material-icons close" onClick={ e => room.delete( _ => profileState.user.room = null ) }>close</i>
-                <IpfsImage
-                    picture={ room.picture }
-                    onUpload={ (err, res) => {
-                        room.picture.value = res[0].hash
-                        {/*console.log(room.picture.value);*/}
-                        room.picture.hasChanged = true;
-                    } }
-                    defaultPicture="https://d30y9cdsu7xlg0.cloudfront.net/png/204988-200.png"
-                />
-                <Input field={room.name} type="text" placeholder="name" />
-                <Input field={room.description} type="text" placeholder="description" />
-                <Input field={room.email} type="text" placeholder="email" />
-                <Input field={room.phoneNumber} type="text" placeholder="phone-number" />
-                <Select 
-                    placeholder="Add tags..."
-                    values={ {
-                        options: [],
-                        filters: room.tags
-                    } }
-                    allowCreate
-                />
+                <div className="flex-box">
+                    <div className="form">
+                        <Input field={room.name} type="text" placeholder="name" />
+                        <Input field={room.description} type="text" placeholder="description" />
+                        <Input field={room.email} type="text" placeholder="email" />
+                        <Input field={room.phoneNumber} type="text" placeholder="phone-number" />
+                        <Select 
+                            placeholder="Add tags..."
+                            values={ {
+                                options: [],
+                                filters: room.tags
+                            } }
+                            allowCreate
+                        />
+                    </div>
+                    <IpfsImage
+                        picture={ room.picture }
+                        onUpload={ (err, hash) => {
+                            room.picture.value = hash
+                            room.picture.hasChanged = true;
+                        } }
+                        defaultPicture="https://d30y9cdsu7xlg0.cloudfront.net/png/204988-200.png"
+                    />
+                </div>
                 <div className="action-button">
                     <button
                         className="btn"
@@ -56,3 +59,5 @@ export default class RoomEditor extends React.Component< EditableUser, any > {
         );
     }
 }
+
+import "./RoomEditor.scss";

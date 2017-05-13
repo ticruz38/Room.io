@@ -1,3 +1,4 @@
+// import * as Orbitdb from './orbit-db';
 declare interface Field {
   value: any;
   constraints: Function[];

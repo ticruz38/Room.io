@@ -1,5 +1,5 @@
 module.exports = {
-    path: 'welcome',
+    path: '/',
 
     getComponent(nextState, cb) {
         System.import('./Welcome').then( module =>

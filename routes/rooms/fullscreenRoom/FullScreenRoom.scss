@@ -1,11 +1,19 @@
 
 .full-screen {
+  box-shadow: 0 0 20px 0px #aaa;
   background: white;
   height: 85%;
   width: 85%;
   margin: auto;
   padding: 5px;
   position: relative;
+  .warning {
+      position: absolute;
+      bottom: 0;
+      margin: 0;
+      font-size: 15px;
+      color: red;
+  }
   .category {
     padding: 0 10px;
     .stuffs {
@@ -29,7 +37,7 @@
   }
   .room-bar {
     padding: 0 1em;
-    margin-bottom: 5px;
+    margin: -5px -5px 0;
     background: gold;
     display: flex;
     align-items: center;

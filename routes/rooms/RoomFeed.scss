@@ -1,25 +1,52 @@
+@import 'routes/index.scss';
+
 div.rooms-grid {
-  display: flex;
-  justify-content: flex-start;
-  >div.column {
-    border-radius: 5px;
-    text-align: center;
-    padding: 1em;
-    div.room-item {
-      max-width: 20em;
-      &:hover {
-        box-shadow: 0 1px 1px black;
+    display: flex;
+    justify-content: center;
+    margin-top: -2em;
+    .column {
         border-radius: 5px;
-      }
-      h2, p {
-        margin: 0 0 5px;
-      }
-      img {
-        margin: 0;
-        cursor: zoom-in;
-        max-width: 100%;
-        border-radius: 5px;
-      }
+        text-align: center;
+        div.room-item {
+            transition: box-shadow 0.1s ease-out;
+            background: $whitesmoke;
+            margin: 1em 8px;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 0 0 0 $transparent-grey;
+            &:hover {
+                box-shadow: 0 0 0 7px $transparent-grey;     
+                background: $transparent-grey;
+            }
+            .ipfs-picture {
+                width: 100%;
+                .picture {
+                    height: auto;
+                    border-radius: 8px;
+                }
+                img {
+                    margin: 0;
+                    padding: 0;
+                    cursor: zoom-in;
+                    max-width: 100%;
+                    border-top-left-radius: 8px;
+                    border-top-right-radius: 8px;
+                    border-radius: 0;
+                }
+            }
+            >div {
+                &:last-child {
+                    padding: 5px;
+                    border-bottom-left-radius: 8px;
+                    border-bottom-right-radius: 8px;
+                }
+                h4, small {
+                    text-align: left;
+                    margin: 0;
+                    display: block;
+                }
+            }
+        }
     }
-  }
 }

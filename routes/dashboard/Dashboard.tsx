@@ -18,7 +18,6 @@ const Logger = require('logplease');
 const logger = Logger.create('Dashboard');
 
 const Document = require('./Dashboard.gql');
-
 const secondPerDay = 24 * 60 * 60;
 
 
@@ -33,28 +32,6 @@ class DashboardState extends Loader {
 
     @mobx.observable orders: Order[] = [];
 
-    @mobx.computed get filterOrders() {
-        if( !this.filters.length ) return this.orders;
-        return this.orders.filter( order => {
-            return !this.filters.some( (option: any) => {
-                const value = JSON.parse( option.value );
-                return !Object.keys(value).some( key => {
-                    switch (key) {
-                        case 'price':
-                            console.log('price', order[key], value[key]);
-                            return order[key] >= value[key];
-                        case '_id':
-                            return order[key] === value[key];
-                        case 'client':
-                            console.log('client', order[key], value[key]);
-                            return order[key].name === value[key].name;
-                        default:
-                            // console.log(key, order[key], value[key]);
-                            return !!order[key] === !!value[key];
-                    } } )
-            } )
-        } ).sort( (a, b) => a.created > b.created ? 0 : 1 )
-    }
     // the current time the timeline points to
     @mobx.observable currentTime: number = moment().unix();
     // the day the timeline is focused on
@@ -70,13 +47,34 @@ class DashboardState extends Loader {
             { label: 'unpayed', value: '{ "payed": false }' },
             { label: 'untreated', value: '{ "treated": false }' },
             { label: 'price > 5', value: `{ "price": 5 }` },
-            ...this.orders.map( o => ( { label: 'N°:'+o._id, value: `{ "_id": "${o._id}" }` } ) ),
+            ...this.orders.filter( o => !this.filters.find( f => !!f.label.includes('N°:') ) )
+                .map( o => ( { label: 'N°:'+o._id, value: `{ "_id": "${o._id}" }` } ) ),
             ...this.orders.filter( o => {
                 if( clients[o.client.name] ) return false;
                 clients[o.client.name] = 1;
                 return true;
             } ).map( o => ( { label: 'client:'+ o.client.name, value: `{ "client": {"name": "${o.client.name}" } }` } ) )
         ]
+    }
+
+    @mobx.computed get filterOrders(): Order[] {
+        if( !this.filters.length ) return this.orders.sort( (a, b) => a.created - b.created );
+        return this.orders.filter( order => {
+            return !this.filters.some( (option: any) => {
+                const value = JSON.parse( option.value );
+                return !Object.keys(value).some( key => {
+                    switch (key) {
+                        case 'price':
+                            return order[key] >= value[key];
+                        case '_id':
+                            return order[key] === value[key];
+                        case 'client':
+                            return order[key].name === value[key].name;
+                        default:
+                            return !!order[key] === !!value[key];
+                    } } )
+            } )
+        } ).sort( (a, b) => a.created - b.created );
     }
 
     get select() {
@@ -103,14 +101,10 @@ class DashboardState extends Loader {
     }
     //to be called once room is loaded
     watchOrders() {
-        this.subscribe('WatchOrders', {
+        this.execute('WatchOrders', {
             variables: { roomId: this.room._id },
             contextValue: this,
-            cb: (data: any) => {
-                // logger.info('Subscribing order change')
-                console.log(data);
-            }
-        }, 'addOrder', (payload) => payload.order.roomId === this.room._id );
+         } );
     }
     loadRoom() {
         this.execute('RoomWithOrders', {
@@ -147,7 +141,7 @@ export default class Dashboard extends React.Component<any, any> {
         const { room } = dashboardState;
         if( !room ) return <SpinnerIcon />
         return (
-            <div>
+            <div style={{marginTop: '-1em'}}>
                 <Timeline />
                 <OrderList />
             </div>

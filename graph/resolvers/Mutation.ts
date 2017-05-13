@@ -1,4 +1,4 @@
-import db from 'graph/IpfsApiStore';
+import db from '../IpfsApiStore';
 import * as moment from 'moment';
 
 const Logger = require('logplease');
@@ -29,7 +29,6 @@ export default {
             logger.info('successfully updated order', hash);
             dborder.events.emit( 'updateOrder', { order: order } );
             logger.info('Emitting updateOrder');
-            //logger.info('try to get order by id', db.order.get(hash))
             return order
         }));
     },
@@ -37,7 +36,6 @@ export default {
         logger.info("adding room");
         return db.room.then(dbroom => dbroom.put( room ).then( hash => {
             logger.info('successfully added room', hash)
-            //logger.info('try to get room by id', db.room.get('coucou'))
             return room;
         }) );
     },
@@ -51,7 +49,6 @@ export default {
     },
     updateRoom(root, {room}, context ) {
         return db.room.then( dbroom => dbroom.put( room ).then( hash => {
-            //logger.info('successfully updated room', hash);
             //logger.info('try to get room by id', db.room.get(hash))
             return room
         }));
@@ -80,7 +77,6 @@ export default {
     // User Mutation
     signup(root, { user }, context: Storage) {
         return db.user.then( dbUser => {
-            console.log(dbUser, user);
             return dbUser.put( user ).then( hash => {
                 if( context ) context.setItem( 'user', JSON.stringify( user ) );
                 logger.info( 'correctly logged in as' + user.name );
@@ -99,7 +95,6 @@ export default {
     // Update User
     updateUser(root, { user }, context) {
         return db.user.then( dbUser => {
-            debugger;
             const oldUser = dbUser.query( u => u._id === user._id )[0];
             user.password = oldUser.password;
             dbUser.put( user ).then( hash => {

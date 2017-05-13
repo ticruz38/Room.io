@@ -17,7 +17,7 @@ mutation DeleteOrder($id: String!) {
 }
 
 mutation SaveRoom($room: RoomInput!) {
-    updateRoom(room: $room) {
+    addRoom(room: $room) {
         _id
     }
 }
@@ -26,6 +26,12 @@ mutation DeleteRoom($id: String!) {
     deleteRoom(id: $id) {
         _id
         name
+    }
+}
+
+mutation UpdateRoom($room: RoomInput!) {
+    updateRoom(room: $room) {
+        _id
     }
 }
 

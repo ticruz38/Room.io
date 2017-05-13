@@ -3,7 +3,7 @@ import { graphql } from 'graphql';
 
 import Layout from './layout/Layout';
 import Schema from 'graph';
-
+import generate from 'mocks/Generate'; // just to get the window method dropDb, populateDb
 
 const Graphiql = require('graphiql');
 
@@ -17,13 +17,11 @@ const Graph = _ => (
                 graphqlParams.variables,
                 graphqlParams.operationName
             )
-        }
-        }
+        } }
         schema={Schema}
     />
 )
 
-console.log(require('./rooms'))
 
 export default {
     component: Layout,

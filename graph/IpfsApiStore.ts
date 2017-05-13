@@ -3,98 +3,121 @@ import { EventEmitter } from 'events';
 // stream
 import * as through from 'through2';
 import * as concat from 'concat-stream';
+import * as Ipfs from 'ipfs';
+import Web3DB from './Web3DB';
 
-const IpfsApi = require('@haad/ipfs-api')
 
 // import IpfsDaemon from './IpfsDaemon';
-
-const Orbitdb = require('orbit-db');
 const Logger = require('logplease');
 
 const logger = Logger.create('Ipfs-server');
 
 class IpfsStore {
-    nodeID: string;
-    orbitdb: any;
+    web3DB: any; // layer on top of orbitdb
     ipfs: any;
-    room: Promise< any >;
-    stuff: Promise< any >;
-    user: Promise< any >;
-    order: Promise< any >;
-    chat: any;
     pubsub = new EventEmitter();
+    bootingDb: Promise<any> = this.startWeb3DB();
+    room: Promise<any> = this.createDb('room');
+    roomWatch: Promise<any> = this.createPartialDb('room'); // a database that continuously load items, to be used in subscription
+    stuff: Promise<any> = this.createDb('stuff');
+    stuffWatch: Promise<any> = this.createPartialDb('stuff'); // a database that continuously load items, to be used in subscription
+    user: Promise<any> = this.createDb('user');
+    userWatch: Promise<any> = this.createPartialDb('user'); // a database that continuously load items, to be used in subscription
+    order: Promise<any> = this.createDb('order');
+    orderWatch: Promise<any> = this.createPartialDb('order'); // a database that continuously load items, to be used in subscription
 
-    constructor() {
-        this.startOrbitDb();
-        this.createDb('room');
-        this.createDb('stuff');
-        this.createDb('user', 'email');
-        this.createDb('order');
+    get starting(): Promise<any> {
+        return Promise.all([
+            this.room,
+            this.stuff,
+            this.user,
+            this.order
+        ])
     }
 
-    // roomLoaded number between 0 and 1
-    roomLoading: number = 0;
-
-    // stuffLoaded number between 0 and 1
-    stuffLoading: number = 0;
-
-    uploadFile(input, cb?: (err, res: any ) => void ) {
-        const reader = new FileReader();
-        reader.readAsArrayBuffer( input );
-        reader.onloadend = ( e ) => {
-            this.ipfs.files.add( new Buffer( reader.result ), (err, res) => {
-                if(err) throw 'file couldnt be upload to ipfs' + input
-                cb( err, res );
-            } );
+    uploadFile(input, cb?: (err, res: any) => void) {
+        const readFileContent = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => resolve(event['target']['result'])
+                reader.readAsArrayBuffer(input);
+            })
         }
+        readFileContent(input)
+            .then(buffer => {
+                return this.ipfs.files.add([{
+                    path: input.name,
+                    content: new this.ipfs.types.Buffer(buffer)
+                }])
+            })
+            .then(files => {
+                const hash = files[0].hash;
+                cb(null, files[0].hash);
+            })
     }
 
-    getImage( hash: string ): Promise< any > {
-        return new Promise( (resolve, reject) => {
-            this.ipfs.files.get( hash, (err, stream) => {
-                if( err ) throw err;
-                let files = [];
-                stream.pipe( through.obj( (file, enc, next) => {
-                    file.content.pipe( concat( (content) => {
-                        files.push( {
-                            path: file.path,
-                            content: content
-                        } )
-                        next();
-                    } ) )
-                }, () => {
-                    // the blob is invalid maybe because it is encoded as json...
-                    const file = new Blob( files[0].content, {type: 'image/jpg'} );
-                    // console.log(file);
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file)
-                    // reader.onloadend = e => resolve(reader.result);
-                    resolve( btoa( String.fromCharCode.apply(null, files[0].content) ) );
-                } ) )
-            } );
-        } );
+    getFile(hash: string): Promise<any> {
+        const createFileBlob = (data, hash) => {
+            const file = new Blob(data, { type: 'application/octet-binary' });
+            const fileUrl = URL.createObjectURL(file);
+            return fileUrl;
+        }
+        return new Promise((resolve, reject) => {
+            this.ipfs.files.get(hash, (err, filesStream) => {
+                if (err) console.log(err);
+                filesStream.on('data', file => {
+                    if (file.content) {
+                        const buf = []
+                        // buffer up all the data in the file
+                        file.content.on('data', (data) => buf.push(data))
+                        file.content.once('end', () => {
+                            const listItem = createFileBlob(buf, hash)
+                            resolve(listItem);
+                        })
+                        file.content.resume()
+                    }
+                })
+                filesStream.resume()
+                filesStream.on('end', () => console.log('Every file was fetched for ', hash));
+            })
+        });
     }
 
-    createDb(dbName: string, indexBy?: string ) {
-        console.log('createDb', dbName);
-        this[dbName] = new Promise( (resolve, reject) => {
-            const db = this.orbitdb.docstore(dbName, {indexBy: indexBy || '_id'});
-            window[dbName] = db;
-            db.events.on('ready', _ => {
-              resolve(db);
-              logger.info('db ' + dbName + ' ready')
-            } );
-            db.events.on('load.start', _ => logger.info('db ' + dbName + ' starting'));
-        } );
+    createPartialDb(dbName: string, indexBy?: string) {
+        return new Promise((resolve, reject) => {
+            this.bootingDb.then(_ => {
+                window[dbName].events.on('ready', message => { //ready is triggered asa 1st db block is loaded
+                    resolve(window[dbName]);
+                })
+            })
+        })
     }
 
-    startOrbitDb() {
-        // IpfsApi is a bridge to the local ipfs client node
-        this.ipfs = new IpfsApi();
-        // nodeId is the ipfs node identifier
-        this.nodeID = this.ipfs.id().then( (config: any) => this.nodeID = config.id );
-         // We instantiate Orbit-db with our ipfs client node
-        this.orbitdb = new Orbitdb( this.ipfs, "default", { ipns: "QmRiVcrZ7Jibn5CddvwE4UCGvQkDALy3e1h8aEUxu9PbcG"} );
+    createDb(dbName: string, indexBy?: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.bootingDb.then(_ => {
+                const db = this.web3DB.docstore(dbName, { indexBy: indexBy || '_id' });
+                // db.load(150); // to fetch current ipfs repo
+                window[dbName] = db;
+
+                db.events.on('loaded', message => {
+                    // we should resolve with a partial database and a fully-loaded database
+                    resolve(db);
+                })
+            })
+        });
+    }
+
+    startWeb3DB(): Promise<any> {
+        this.ipfs = new Ipfs({ EXPERIMENTAL: { pubsub: true } });
+        return new Promise((resolve, reject) => {
+            this.ipfs.on('ready', () => {
+                // We instantiate Orbit-db with our ipfs client node
+                this.web3DB = new Web3DB(this.ipfs);
+                resolve();
+            })
+            this.ipfs.on('error', (err) => reject(err))
+        })
     }
 }
 

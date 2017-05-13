@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 
 import uiStore from '../UiStore';
 import { layoutState } from '../layout/Layout';
+import { uintRandom } from 'mocks/Generate';
 import Loader from 'graph/Loader';
 
 const RoomDocument = require( './RoomFeed.gql' );
@@ -20,14 +21,15 @@ export class RoomFeedState extends Loader {
 
     @observable rooms: Room[] = [];
 
-    @observable columnWidth: number = 300;
+    @observable columnWidth: number = 200;
 
     @computed get numberOfColumn(): number {
-        return Math.round( uiStore.windowSize[1] / roomFeedState.columnWidth );
+        return Math.round( uiStore.windowSize[1] * 0.7 / roomFeedState.columnWidth );
     }
 }
 
-export const roomFeedState = new RoomFeedState( RoomDocument, 'RoomsQuery' );
+export const roomFeedState = new RoomFeedState( RoomDocument );
+roomFeedState.execute('RoomsSubscription', {contextValue: roomFeedState});
 
 @observer
 export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedState> {
@@ -50,7 +52,11 @@ export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedSta
             return (
                 <div className='column' key={index}>
                     {rooms.filter( room => !!room ).map( room =>
-                        <RoomComponent {...room} key={room._id} onClick={roomId => this.props.router.push( { pathname: '/rooms/' + roomId } )} />
+                        <RoomComponent 
+                            key={room._id} 
+                            onClick={roomId => this.props.router.push( { pathname: '/rooms/' + roomId } )} 
+                            {...room} 
+                        />
                     )}
                 </div>
             );
@@ -70,15 +76,17 @@ export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedSta
 
 const RoomComponent = ( props: Room & { onClick: Function } ) => {
     return (
-        <div className='room-item'>
+        <div className='room-item' style={{maxWidth: roomFeedState.columnWidth}}>
             <IpfsImage
-                defaultPicture="public/messy_room.jpg"
+                defaultPicture={`mocks/pictures/${uintRandom(9)}.png`}
                 urlPicture={ props.picture }
                 onClick={ e => props.onClick( props._id )}
                 readOnly
             />
-            <h2>{props.name}</h2>
-            <p>{props.description}</p>
+            <div>
+                <h4>{props.name}</h4>
+                <small>{props.description}</small>
+            </div>
         </div>
     );
 }

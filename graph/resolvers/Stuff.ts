@@ -1,4 +1,4 @@
-import db from 'graph/IpfsApiStore';
+import db from '../IpfsApiStore';
 
 const Logger = require('logplease');
 Logger.setLogLevel('INFO');
