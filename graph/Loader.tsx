@@ -66,11 +66,7 @@ export default class Loader {
                 operationName
             ).then( result => {
                 if ( result.errors ) this.graphQlErrors = result.errors.map( error => error.message );
-                if ( cb ) return cb( result.data, this );
-                for ( const key in result.data ) {
-                    // this[key] = typeof this[key] === "object" && this[key].length === 0 ? result.data[key] : mobx.extendObservable( this[key] || {}, result.data[key] );
-                    this[key] = result.data[key];
-                }
+                logger.info( "subscribe:then:result", result);
             } );
         } ) )
     }
