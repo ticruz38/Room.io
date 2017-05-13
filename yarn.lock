@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@creditkarma/graphql-loader@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@creditkarma/graphql-loader/-/graphql-loader-0.3.0.tgz#272ae43fea1beb9251c02a1cc6939d4daa745a36"
+  dependencies:
+    glob "^7.0.5"
+
 "@haad/ipfs-api@^13.0.0-beta.7":
   version "13.0.0-beta.7"
   resolved "https://registry.yarnpkg.com/@haad/ipfs-api/-/ipfs-api-13.0.0-beta.7.tgz#c87b3be0602a2a84d9258831087ce861ae2792f8"
@@ -80,7 +86,11 @@
   version "0.3.29"
   resolved "https://registry.yarnpkg.com/@types/mkdirp/-/mkdirp-0.3.29.tgz#7f2ad7ec55f914482fc9b1ec4bb1ae6028d46066"
 
-"@types/node@*", "@types/node@^6", "@types/node@^6.0.45", "@types/node@^6.0.48":
+"@types/node@*", "@types/node@^7.0.5":
+  version "7.0.18"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.18.tgz#cd67f27d3dc0cfb746f0bdd5e086c4c5d55be173"
+
+"@types/node@^6", "@types/node@^6.0.45":
   version "6.0.68"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.68.tgz#0c43b6b8b9445feb86a0fbd3457e3f4bc591e66d"
 
@@ -7745,6 +7755,10 @@ node-fetch@^1.0.1, node-fetch@^1.5.3:
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
+
+node-fs@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/node-fs/-/node-fs-0.1.7.tgz#32323cccb46c9fbf0fc11812d45021cc31d325bb"
 
 node-gyp@^3.3.1:
   version "3.6.0"

@@ -1,4 +1,4 @@
-import db from 'graph/IpfsApiStore';
+import db from '../IpfsApiStore';
 import * as moment from 'moment';
 
 const Logger = require('logplease');
