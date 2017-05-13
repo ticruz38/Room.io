@@ -61,17 +61,21 @@ a {
   }
 }
 
-// react-select
-.Select-control {
-    height: 32px;
-    min-width: 6em;
-    border: none;
-    border-radius: 3px;
-    background-color: lightyellow;
-    .Select-input {
+.Select {
+    border-radius: 2px;
+    background-color: $whitesmoke;
+    border: 1px solid $whitesmoke;
+    // react-select
+    .Select-control {
+        background-color: inherit;
         height: 32px;
-    }
-    .Select-value {
-        margin-top: 3px;
+        min-width: 6em;
+        border: none;
+        .Select-input {
+            height: 32px;
+        }
+        .Select-value {
+            margin-top: 3px;
+        }
     }
 }

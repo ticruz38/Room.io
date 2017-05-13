@@ -39,7 +39,7 @@ class ProfileState extends Loader {
             this.user.save();
         }
         if ( this.room.hasChanged ) {
-            this.room.save();
+            this.room.update();
         }
         this.room.stuffs.forEach( s => s.hasChanged ? s.save() : '' );
     };

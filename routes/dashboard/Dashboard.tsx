@@ -18,7 +18,7 @@ const Logger = require('logplease');
 const logger = Logger.create('Dashboard');
 
 const Document = require('./Dashboard.gql');
-
+console.log(Document);
 const secondPerDay = 24 * 60 * 60;
 
 
@@ -33,8 +33,33 @@ class DashboardState extends Loader {
 
     @mobx.observable orders: Order[] = [];
 
-    @mobx.computed get filterOrders() {
-        if( !this.filters.length ) return this.orders;
+    // the current time the timeline points to
+    @mobx.observable currentTime: number = moment().unix();
+    // the day the timeline is focused on
+    @mobx.observable today: number = moment().startOf('day').unix();
+    // timeline cursor position on x axis
+    @mobx.observable x: number = (this.currentTime - this.today) / 10;
+
+    @mobx.computed get options(): Option[] {
+        const clients = {};
+        return [
+            { label: 'payed', value: '{ "payed": true }' },
+            { label: 'treated', value: '{ "treated": true }' },
+            { label: 'unpayed', value: '{ "payed": false }' },
+            { label: 'untreated', value: '{ "treated": false }' },
+            { label: 'price > 5', value: `{ "price": 5 }` },
+            ...this.orders.filter( o => !this.filters.find( f => !!f.label.includes('N°:') ) )
+                .map( o => ( { label: 'N°:'+o._id, value: `{ "_id": "${o._id}" }` } ) ),
+            ...this.orders.filter( o => {
+                if( clients[o.client.name] ) return false;
+                clients[o.client.name] = 1;
+                return true;
+            } ).map( o => ( { label: 'client:'+ o.client.name, value: `{ "client": {"name": "${o.client.name}" } }` } ) )
+        ]
+    }
+
+    @mobx.computed get filterOrders(): Order[] {
+        if( !this.filters.length ) return this.orders.sort( (a, b) => a.created - b.created );
         return this.orders.filter( order => {
             return !this.filters.some( (option: any) => {
                 const value = JSON.parse( option.value );
@@ -53,30 +78,7 @@ class DashboardState extends Loader {
                             return !!order[key] === !!value[key];
                     } } )
             } )
-        } ).sort( (a, b) => a.created > b.created ? 0 : 1 )
-    }
-    // the current time the timeline points to
-    @mobx.observable currentTime: number = moment().unix();
-    // the day the timeline is focused on
-    @mobx.observable today: number = moment().startOf('day').unix();
-    // timeline cursor position on x axis
-    @mobx.observable x: number = (this.currentTime - this.today) / 10;
-
-    @mobx.computed get options(): Option[] {
-        const clients = {};
-        return [
-            { label: 'payed', value: '{ "payed": true }' },
-            { label: 'treated', value: '{ "treated": true }' },
-            { label: 'unpayed', value: '{ "payed": false }' },
-            { label: 'untreated', value: '{ "treated": false }' },
-            { label: 'price > 5', value: `{ "price": 5 }` },
-            ...this.orders.map( o => ( { label: 'N°:'+o._id, value: `{ "_id": "${o._id}" }` } ) ),
-            ...this.orders.filter( o => {
-                if( clients[o.client.name] ) return false;
-                clients[o.client.name] = 1;
-                return true;
-            } ).map( o => ( { label: 'client:'+ o.client.name, value: `{ "client": {"name": "${o.client.name}" } }` } ) )
-        ]
+        } ).sort( (a, b) => a.created - b.created );
     }
 
     get select() {
@@ -120,6 +122,7 @@ class DashboardState extends Loader {
                 if(!room) throw 'oop, room hasnt been fetched';
                 this.room = room;
                 this.orders = room.orders;
+                console.log('roomWithOrders', room);
                 this.watchOrders();
             }
         } )
@@ -147,7 +150,7 @@ export default class Dashboard extends React.Component<any, any> {
         const { room } = dashboardState;
         if( !room ) return <SpinnerIcon />
         return (
-            <div>
+            <div style={{marginTop: '-1em'}}>
                 <Timeline />
                 <OrderList />
             </div>

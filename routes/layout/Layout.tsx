@@ -70,7 +70,7 @@ export default class Layout extends React.PureComponent<any, any> {
     get icon() {
         return (
             <Link className='app-icon' to="/rooms">
-                <i className="material-icons">local_florist</i>
+                <i className="material-icons">weekend</i>
             </Link>
         );
     }

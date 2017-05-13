@@ -70,44 +70,31 @@ const randomOrderStuff = () => {
 };
 
 // order generated per room, per day
-const aliveOrders = roomName => {
-    return new Promise((resolve, reject) => {
-        const roomId = new Promise((s, f) => {
-            if (!program.roomName) return s(Rooms[0]._id);
-            Store.order.then(dbOrder => {
-                s(dbOrder.query(o => o.name === roomName)[0]._id);
-            });
-        });
-        roomId.then(id => {
-            resolve(
-                Orders.map(o =>
-                    Object.assign({}, o, {
-                        stuffIds: randomOrderStuff(),
-                        clientId: Users[uintRandom(50)]._id,
-                        roomId: id,
-                        created: Moment().startOf("days").add(uintRandom(24 * 60), "minutes").unix(),
-                        treated: this.created < Moment().unix
-                    })
-                )
-            );
-        });
-    });
+const aliveOrders = ( roomId ) => {
+    return Orders.map(o =>
+        Object.assign({}, o, {
+            stuffIds: randomOrderStuff(),
+            clientId: Users[uintRandom(50)]._id,
+            roomId: "563a6c40-3720-11e7-80eb-bb3b498293d1",
+            created: Moment().startOf("days").add(uintRandom(24 * 60), "minutes").unix(),
+            treated: this.created < Moment().unix
+        })
+    ).sort( (a, b) => a.created > b.created ? 1 : 0 )
 };
 
 program
     .arguments("<file>")
     .option("-p, --populate", "Populate ipfs right away")
     .option("-d, --drop", "Drop the database")
-    .option("-rName, --roomName <roomName>", "In case of generating orders, the room that will get those orders")
+    .option("-rId, --roomId <roomId>", "In case of generating orders, the room that will get those orders")
     .action(file => {
         switch (file) {
             case "order":
-                console.log("...generating orders", program.drop);
-                aliveOrders(program.roomName).then(orders => {
-                    fs.writeFile(path.resolve(__dirname, "Order.json"), JSON.stringify(orders), err => {
-                        if (err) console.log("error", err);
-                        if (!program.drop && !program.populate) process.exit();
-                    });
+                console.log("...generating orders");
+                const orders = aliveOrders(program.roomId)
+                fs.writeFile(path.resolve(__dirname, "Order.json"), JSON.stringify(orders), err => {
+                    if (err) console.log("error", err);
+                    if (!program.drop && !program.populate) process.exit();
                 });
                 break;
             case "user":
