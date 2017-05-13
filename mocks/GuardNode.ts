@@ -70,4 +70,4 @@ ipfs.on('ready', () => {
     new GuardNode(ipfs, collections)
 })
 
-ipfs.on('error', (err) => { console.log(err) }) // Node has hit some error while initing/starting
+ipfs.on('error', () => { console.log('error') }) // Node has hit some error while initing/starting

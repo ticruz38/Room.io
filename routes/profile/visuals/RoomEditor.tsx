@@ -43,7 +43,6 @@ export default class RoomEditor extends React.Component< EditableUser, any > {
                         picture={ room.picture }
                         onUpload={ (err, hash) => {
                             room.picture.value = hash
-                            {/*console.log(room.picture.value);*/}
                             room.picture.hasChanged = true;
                         } }
                         defaultPicture="https://d30y9cdsu7xlg0.cloudfront.net/png/204988-200.png"
