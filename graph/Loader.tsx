@@ -48,22 +48,4 @@ export default class Loader {
             }
         } );
     }
-
-    subscribe( operationName: string, { variables, contextValue, rootValue, cb }: ExecuteParams = {} ) {
-        const errors = validate( Schema, this.document );
-        if ( errors.length ) return console.error( 'that subscribe operation' + operationName + 'is invalid', errors);
-        // on event execute the query
-        logger.info( "trigger", operationName );
-        execute(
-            Schema,
-            this.document,
-            rootValue,
-            contextValue,
-            variables,
-            operationName
-        ).then( result => {
-            if ( result.errors ) this.graphQlErrors = result.errors.map( error => error.message );
-            logger.info( "subscribe:then:result", result);
-        } );
-    }
 }
