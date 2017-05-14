@@ -6,11 +6,20 @@ It uses IPFS as its DataStorage and Ethereum for everything that is related to a
 
 
 ## Install
-
 ```bash
+> npm i -g ipfs
 > npm i -g yarn
 > npm i -g typescript
 > yarn
+```
+
+## Bootstrap
+first run the guard node
+```bash
+yarn run guardnode
+```
+then in another bash window
+```bash
 > yarn start
 ```
 
@@ -25,7 +34,7 @@ populateDb('order')
 ```
 
 Login to your room with these credentials:
-- email: t.d@gmail.com
+- email: thib.duchene@gmail.com
 - password: Password69
 
 start playing around
