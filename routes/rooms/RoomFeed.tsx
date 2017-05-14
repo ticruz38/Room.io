@@ -11,6 +11,8 @@ import Loader from 'graph/Loader';
 
 const RoomDocument = require( './RoomFeed.gql' );
 
+let index = 0;
+
 interface RoomFeedProps {
     router: any;
 }
@@ -74,21 +76,28 @@ export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedSta
     }
 }
 
-const RoomComponent = ( props: Room & { onClick: Function } ) => {
-    return (
-        <div className='room-item' style={{maxWidth: roomFeedState.columnWidth}}>
-            <IpfsImage
-                defaultPicture={`mocks/pictures/${uintRandom(9)}.png`}
-                urlPicture={ props.picture }
-                onClick={ e => props.onClick( props._id )}
-                readOnly
-            />
-            <div>
-                <h4>{props.name}</h4>
-                <small>{props.description}</small>
+class RoomComponent extends React.Component< any, any > {
+    constructor() {
+        super();
+    }
+
+    render() {
+        return (
+            <div className='room-item' style={{maxWidth: roomFeedState.columnWidth}}>
+                <IpfsImage
+                    key={this.props._id}
+                    defaultPicture='public/giphy.gif'
+                    urlPicture={ this.props.picture }
+                    onClick={ e => this.props.onClick( this.props._id )}
+                    readOnly
+                />
+                <div>
+                    <h4>{this.props.name}</h4>
+                    <small>{this.props.description}</small>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 import './RoomFeed.scss';

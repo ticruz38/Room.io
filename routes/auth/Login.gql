@@ -1,5 +1,5 @@
-query Login( $email: String, $password: String ) {
-    login(email: $email, password: $password) {
+query Login( $user: UserLogin! ) {
+    login(login: $user) {
         _id
         name
         email

@@ -17,6 +17,8 @@ module.exports = {
         filename: "bundle.js"
     },
 
+    target: 'web',
+
     // Enable sourcemaps for debugging webpack's output.
     devtool: "eval",
 

@@ -29,7 +29,6 @@ export default class Dropdown extends React.Component< DropdownProps, {expand: b
                 >
                     { this.props.list.map( (l, i) =>
                       <div
-                        onClick={ _ => console.log('click') }
                         key={i} 
                         style={{ justifyContent: this.props.align === 'right' ? 'flex-end' : 'flex-start'}}
                       >

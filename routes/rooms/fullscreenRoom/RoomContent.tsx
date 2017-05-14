@@ -33,9 +33,11 @@ export class RoomContent extends React.Component<props, any> {
                 {
                     roomState.order && roomState.stuffs.length ? 
                     <Caddy roomState={roomState} /> : 
-                    <IpfsImage 
+                    <IpfsImage
                         urlPicture={roomState.room.picture} 
-                        defaultPicture="public/giphy.gif" readOnly/>
+                        defaultPicture="public/giphy.gif" 
+                        readOnly
+                    />
                 }
             </div>
         );

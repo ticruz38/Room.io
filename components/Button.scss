@@ -1,0 +1,37 @@
+@import 'routes/index.scss';
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+button, a {
+      transition: all 0.2s ease-in;
+      border-radius: 3px;
+      border: 1px solid $orange;
+      cursor: pointer;
+      background: $lightyellow;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 2vh;
+      outline: none;
+      color: $orange;
+      padding: 0.75vh 1vh;
+      font-family: inherit;
+      i.loading {
+          animation: rotate 0.5s linear infinite;
+      }
+      &:hover {
+          background: $whitesmoke;
+      }
+      &.disabled {
+        color: $yellow;
+        cursor: not-allowed;
+        background: $lightyellow;
+      }
+      &.small {
+          font-size: 1.5vh;
+          padding: 0.5vh 0.75vh;
+      }
+    }

@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 
 import { Input } from 'components/form';
 import { password, nonEmpty, sameAs, email } from 'components/form/Constraint';
+import Button from "components/Button";
 
 import Login from 'routes/auth/Login';
 import { layoutState } from 'routes/layout/Layout';
@@ -55,15 +56,20 @@ export default class Signup extends React.Component<any, any> {
                     type='password'
                 />
                 <div className="question">
-                    <button onClick={_ => layoutState.modal = <Login />}>Already a member ?</button>
+                    <Button 
+                        message="Already a member ?"
+                        action={_ => layoutState.modal = <Login />}
+                        size="small"
+                    />
                 </div>
                 <div className="action-button">
                     {
                         this.isValid ?
-                            <button onClick={_ => this.user.signup( this.onSave )}>
-                                Signup
-                            </button> :
-                            null
+                            <Button
+                                action={_ => this.user.signup( this.onSave )}
+                                message='Signup'
+                                size="small"
+                            /> : null
                     }
                 </div>
             </div>
@@ -72,3 +78,4 @@ export default class Signup extends React.Component<any, any> {
 }
 
 import './signup.scss';
+

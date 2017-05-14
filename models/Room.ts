@@ -22,7 +22,7 @@ export class EditableRoom extends Editable {
 
     save = (cb?: Function) => this.execute( 'SaveRoom', { room: this.toInput() } )
 
-    update = (cb?: Function) => { console.log( this.toInput() ); this.execute( 'UpdateRoom', { room: this.toInput() } ) }
+    update = (cb?: Function) => this.execute( 'UpdateRoom', { room: this.toInput() } )
 
     delete = (cb?: Function) => this.execute( 'DeleteRoom', { id: this._id } )
 

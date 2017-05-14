@@ -4,10 +4,10 @@ import { observer } from 'mobx-react';
 
 import { Input } from 'components/form';
 import { password, email } from 'components/form/Constraint';
+import Button from 'components/Button';
 import { layoutState } from 'routes/layout/Layout';
 import Loader from 'graph/Loader';
 import Signup from './Signup';
-import loadApp from '../../';
 
 import { EditableUser } from "models";
 
@@ -15,10 +15,11 @@ import { EditableUser } from "models";
 export default class Login extends React.Component<any, any> {
 
     user = new EditableUser({})
-    @observable errors: string[] = []
+    @observable errors: any[] = []
 
     onSave = (result) => {
         if( result.errors) {
+            console.log(result.errors);
             return this.errors = result.errors;
         }
         sessionStorage.setItem( 'user', JSON.stringify( result.data.login ) );
@@ -46,17 +47,23 @@ export default class Login extends React.Component<any, any> {
                     type='text'
                 />
                 <div className="question">
-                    <button onClick={_ => layoutState.modal = <Signup />}>Not a member yet ?</button>
+                    <Button 
+                        size="small"
+                        message='Not a member yet'
+                        action={_ => layoutState.modal = <Signup />}
+                    />
                 </div>
                 <div className="errors">
-                    {this.errors.map( e => <div>{e}</div> )}
+                    {this.errors.map( e => <div>{e.message}</div> )}
                 </div>
                 <div className="action-button">
                     {
                         this.isValid ?
-                            <button onClick={_ => this.user.login( this.onSave )}>
-                                Login
-                            </button> :
+                            <Button
+                                size="small"
+                                message='Login'
+                                action={_ => this.user.login( this.onSave )}
+                            /> :
                             null
                     }
                 </div>

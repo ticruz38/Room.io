@@ -148,7 +148,6 @@ const Modal = (props: any) => {
     const close = (e: MouseEvent) => {
         e.preventDefault();
         const clickedElement: any = e.target;
-        console.log(clickedElement.id)
         if (clickedElement.id === "wrapper") {
             if (layoutState.onClose) layoutState.onClose();
             layoutState.modal = false;

@@ -1,7 +1,7 @@
 {
   "name": "ambrosia-ts",
   "version": "0.0.0",
-  "description": "an attempt at ambrosia with typescript",
+  "description": "Fully decentralized application sample",
   "main": "index.js",
   "scripts": {
     "start": "node webpackdevserver",
@@ -26,7 +26,7 @@
     "@types/graphql": "^0.8.4",
     "@types/history": "^2.0.39",
     "@types/ipfs": "git+https://git@github.com/zabirauf/ipfs-types.git",
-    "@types/node": "^6.0.48",
+    "@types/node": "^7.0.5",
     "@types/react": "^0.14.42",
     "@types/react-dom": "^0.14.18",
     "@types/react-motion": "0.0.20",
@@ -51,6 +51,7 @@
     "webpack": "^2.3.3"
   },
   "dependencies": {
+    "@creditkarma/graphql-loader": "^0.3.0",
     "@haad/ipfs-api": "^13.0.0-beta.7",
     "@playlyfe/gql": "^2.2.3",
     "bl": "^1.2.0",
@@ -60,11 +61,12 @@
     "concat-stream": "^1.6.0",
     "graphiql": "^0.8.1",
     "graphql-tools": "^0.8.4",
-    "ipfs": "^0.23.1",
+    "ipfs": "git+https://github.com/ipfs/js-ipfs.git",
     "material-design-icons": "^3.0.1",
     "mobx": "^2.5.1",
     "mobx-react": "^3.5.6",
     "moment": "^2.17.1",
+    "node-fs": "^0.1.7",
     "orbit-db": "^0.17.3",
     "orbit-db-cache": "^0.0.6",
     "path": "^0.12.7",
