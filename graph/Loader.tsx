@@ -10,7 +10,7 @@ export default class Loader {
 
     static execute(Document: DocumentNode, operationName: string, variables?: { [key: string]: any }, contextValue?, rootValue?): Promise<ExecutionResult> {
         const errors = validate(Schema, Document);
-        Logger.info("execute", operationName, errors, variables);
+        logger.info("execute", operationName, errors, variables);
         if (errors.length) return Promise.reject(errors);
         return execute(
             Schema,

@@ -1,5 +1,13 @@
 [
     {
+        "_id": "1",
+        "name": "Duduche Room",
+        "description": "The best room ever",
+        "email": "t.d@gmail.com",
+        "phoneNumber": "1-(323)814-8569",
+        "userId": "1"
+    },
+    {
         "_id": "1b83560d-223d-4756-9e0b-a65633338289",
         "mailname": "Papagena",
         "name": "Overhold",

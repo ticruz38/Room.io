@@ -61,7 +61,7 @@
     "concat-stream": "^1.6.0",
     "graphiql": "^0.8.1",
     "graphql-tools": "^0.8.4",
-    "ipfs": "^0.23.1",
+    "ipfs": "git+https://github.com/ipfs/js-ipfs.git",
     "material-design-icons": "^3.0.1",
     "mobx": "^2.5.1",
     "mobx-react": "^3.5.6",

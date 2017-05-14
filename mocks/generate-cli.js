@@ -75,7 +75,7 @@ const aliveOrders = ( roomId ) => {
         Object.assign({}, o, {
             stuffIds: randomOrderStuff(),
             clientId: Users[uintRandom(50)]._id,
-            roomId: "563a6c40-3720-11e7-80eb-bb3b498293d1",
+            roomId: "1",
             created: Moment().startOf("days").add(uintRandom(24 * 60), "minutes").unix(),
             treated: this.created < Moment().unix
         })

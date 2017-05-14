@@ -113,7 +113,7 @@ class DashboardState extends Loader {
                 const { room } = data.user;
                 if(!room) throw 'oop, room hasnt been fetched';
                 this.room = room;
-                this.orders = room.orders;
+                this.orders = room.orders || [];
                 this.watchOrders();
             }
         } )

@@ -11,7 +11,7 @@ import Web3DB from './Web3DB';
 const Logger = require('logplease');
 
 const logger = Logger.create('Ipfs-server');
-
+let index = 0;
 class IpfsStore {
     web3DB: any; // layer on top of orbitdb
     ipfs: any;
@@ -21,7 +21,7 @@ class IpfsStore {
     roomWatch: Promise<any> = this.createPartialDb('room'); // a database that continuously load items, to be used in subscription
     stuff: Promise<any> = this.createDb('stuff');
     stuffWatch: Promise<any> = this.createPartialDb('stuff'); // a database that continuously load items, to be used in subscription
-    user: Promise<any> = this.createDb('user');
+    user: Promise<any> = this.createDb('user', 'email');
     userWatch: Promise<any> = this.createPartialDb('user'); // a database that continuously load items, to be used in subscription
     order: Promise<any> = this.createDb('order');
     orderWatch: Promise<any> = this.createPartialDb('order'); // a database that continuously load items, to be used in subscription
@@ -67,10 +67,13 @@ class IpfsStore {
                 if (err) console.log(err);
                 filesStream.on('data', file => {
                     if (file.content) {
-                        const buf = []
+                        const buf = [];
                         // buffer up all the data in the file
-                        file.content.on('data', (data) => buf.push(data))
+                        file.content.on('data', (data) => {
+                            buf.push(data)
+                        })
                         file.content.once('end', () => {
+                            console.log('data file', index++ );
                             const listItem = createFileBlob(buf, hash)
                             resolve(listItem);
                         })
@@ -78,7 +81,7 @@ class IpfsStore {
                     }
                 })
                 filesStream.resume()
-                filesStream.on('end', () => console.log('Every file was fetched for ', hash));
+                // filesStream.on('end', () => console.log('Every file was fetched for ', hash));
             })
         });
     }
@@ -109,7 +112,16 @@ class IpfsStore {
     }
 
     startWeb3DB(): Promise<any> {
-        this.ipfs = new Ipfs({ EXPERIMENTAL: { pubsub: true } });
+        this.ipfs = new Ipfs({
+            EXPERIMENTAL: { pubsub: true },
+            config: {
+                Addresses: {
+                    Swarm: [
+                        '/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss'
+                    ]
+                }
+            }
+        });
         return new Promise((resolve, reject) => {
             this.ipfs.on('ready', () => {
                 // We instantiate Orbit-db with our ipfs client node

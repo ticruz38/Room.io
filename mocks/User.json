@@ -1,5 +1,12 @@
 [
     {
+        "_id": "1",
+        "name": "Thib",
+        "email": "thib.duchene@gmail.com",
+        "password": "Password69",
+        "roomId": "1"
+    },
+    {
         "_id": "c3ebcd61-69f4-46d7-8a0a-9fc44c196ed6",
         "name": "Wynny",
         "email": "wwahner0@vistaprint.com",
