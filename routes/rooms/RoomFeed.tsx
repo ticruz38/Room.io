@@ -86,7 +86,7 @@ class RoomComponent extends React.Component< any, any > {
             <div className='room-item' style={{maxWidth: roomFeedState.columnWidth}}>
                 <IpfsImage
                     key={this.props._id}
-                    defaultPicture='public/giphy.gif'
+                    defaultPicture='public/roomio-background.jpg'
                     urlPicture={ this.props.picture }
                     onClick={ e => this.props.onClick( this.props._id )}
                     readOnly
