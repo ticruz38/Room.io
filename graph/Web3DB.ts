@@ -62,6 +62,7 @@ export default class Web3DB extends OrbitDB {
                 Object.keys(cache).map(key => {
                     this.stores[key]._cache.set(key, cache[key]).then(_ => {
                         // reload the database with the new cache
+                        this.stores[key].load();
                         this.stores[key].load(1).then(_ => {
                             // we need to listen to events in order to refresh room count in the view
                             let index = 0;
@@ -106,7 +107,8 @@ export default class Web3DB extends OrbitDB {
         console.log(".WROTE", dbname, hash)
         if (!heads) throw new Error("'heads' not defined")
         if (this._pubsub) setImmediate(() => {
-            this._pubsub.publish(dbname, heads)
+            // console.log(new Buffer(JSON.stringify(heads)));
+            this._pubsub.publish(dbname, heads);
             this._ipfs.pubsub.publish(ROOMDATAUPDATE, new Buffer(JSON.stringify({ [dbname]: hash })));
         })
     }
