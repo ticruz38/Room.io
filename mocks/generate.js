@@ -5,7 +5,6 @@ const Users = require("./User.json");
 
 import Store from "graph/IpfsApiStore";
 
-
 export function uintRandom(int) {
     return Math.round(Math.random() * (int - 1));
 }
@@ -23,7 +22,7 @@ function getRandomData(dbName) {
     }
 }
 
-window["dropDb"] = dbName => {
+export const DropDb = dbName => {
     return new Promise((resolve, reject) => {
         Store[dbName].then(db => {
             console.log(dbName + " database ready, deleting items");
@@ -46,7 +45,7 @@ window["dropDb"] = dbName => {
     });
 };
 
-window["populateDb"] = dbName => {
+export const PopulateDb = dbName => {
     const dbItems = getRandomData(dbName);
     Store[dbName].then(db => {
         console.log(dbName + " database ready, adding items");
