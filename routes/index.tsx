@@ -3,9 +3,13 @@ import { graphql } from 'graphql';
 
 import Layout from './layout/Layout';
 import Schema from 'graph';
-import generate from 'mocks/Generate'; // just to get the window method dropDb, populateDb
+import * as generate from 'mocks/Generate'; // just to get the window method dropDb, populateDb
 
 const Graphiql = require('graphiql');
+
+// mock features
+window["dropDb"] = generate.DropDb;
+window["populateDb"] = generate.PopulateDb;
 
 const Graph = _ => (
     <Graphiql
