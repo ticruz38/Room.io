@@ -39,11 +39,11 @@ export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedSta
     componentWillMount() {
         layoutState.reset();
         layoutState.title = 'Pick a Room you like';
-        layoutState.modal = this.props.children;
+        layoutState.setModal(this.props.children);
     }
 
     componentWillReceiveProps() {
-        layoutState.modal = this.props.children
+        layoutState.setModal(this.props.children);
     }
 
     render(): React.ReactElement<any> {

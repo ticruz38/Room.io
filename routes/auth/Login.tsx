@@ -5,9 +5,9 @@ import { observer } from 'mobx-react';
 import { Input } from 'components/form';
 import { password, email } from 'components/form/Constraint';
 import Button from 'components/Button';
-import { layoutState } from 'routes/layout/Layout';
 import Loader from 'graph/Loader';
 import Signup from './Signup';
+import { layoutState } from 'routes/layout/Layout';
 
 import { EditableUser } from "models";
 
@@ -23,8 +23,6 @@ export default class Login extends React.Component<any, any> {
             return this.errors = result.errors;
         }
         sessionStorage.setItem( 'user', JSON.stringify( result.data.login ) );
-        layoutState.isLogged = true
-        layoutState.modal = null;
     }
 
     @computed get isValid() {
@@ -50,7 +48,7 @@ export default class Login extends React.Component<any, any> {
                     <Button 
                         size="small"
                         message='Not a member yet'
-                        action={_ => layoutState.modal = <Signup />}
+                        action={_ => layoutState.setModal(<Signup />)}
                     />
                 </div>
                 <div className="errors">

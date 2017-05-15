@@ -8,7 +8,7 @@ type props = {
     roomState: RoomState
 }
 
-export class RoomContent extends React.Component<props, any> {
+export default class RoomContent extends React.Component<props, any> {
     render() {
         const { roomState } = this.props;
         return (
@@ -42,12 +42,6 @@ export class RoomContent extends React.Component<props, any> {
             </div>
         );
     }
-}
-
-
-export default {
-    path: '',
-    component: RoomContent
 }
 
 import './RoomContent.scss';
