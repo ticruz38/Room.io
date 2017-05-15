@@ -26,6 +26,7 @@ export default {
                 context.rooms = query();
             })
             dbroom.events.on('synced', (dbname) => { // paralel loading
+                logger.info('watchRoom:subscription:synced', dbname);
                 context.rooms = query();
             })
             context.rooms = query();

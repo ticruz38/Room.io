@@ -7,6 +7,7 @@ const ROOMDATAUPDATE = 'roomio:data:update';
 const PEERS = 'peers';
 const collections = ['room', 'stuff', 'user', 'order'];
 
+const fetchedPicture: { [hash: string]: boolean } = {};
 
 class GuardNode {
     _cache: any;
@@ -30,9 +31,11 @@ class GuardNode {
             if (err) {
                 throw err
             }
-            if (this._peers.length !== peerIds.length ) console.log('topic peers', peerIds);
-            console.log(peerIds);
-            this.ipfs.pubsub.publish(PEERS, new Buffer(JSON.stringify(peerIds)))
+            if ( peerIds.filter( id => !this._peers.find(peerId => peerId === id)).length) {
+                console.log('publish', peerIds);
+                this._peers = peerIds;
+                this.ipfs.pubsub.publish(PEERS, new Buffer(JSON.stringify(peerIds)))
+            }
         })
         // this.ipfs.swarm.peers((err, peerInfos) => {
         //     if(err) return console.log(err);
@@ -55,14 +58,24 @@ class GuardNode {
                     console.log('logData', logData);
                     logData.heads.map(hash => {
                         this.ipfs.object.get(hash, { enc: 'base58' })
-                            .then((dagNode) => JSON.parse(dagNode.toJSON().data))
-                            .then((logData) => console.log('sub - logData', logData))
+                        .then((dagNode) => JSON.parse(dagNode.toJSON().data))
+                        .then((logData) => {
+                            console.log('sub - logData', logData)
+                            // const hash = logData.payload.value.picture;
+                            // if( hash && !fetchedPicture[hash]) {
+                            //     this.ipfs.files.get(hash);
+                            //     fetchedPicture[hash] = true;
+                            // }
+                        })
                     })
                 })
         })
     }
 }
 
+function fetchDocImage(doc) {
+    this.ipfs.files.get(doc.payload.value.picture);
+}
 // should i init the node to be able to put and pull object?
 // May I start it in another directory ?
 const ipfs = new Ipfs({ EXPERIMENTAL: { pubsub: true } });

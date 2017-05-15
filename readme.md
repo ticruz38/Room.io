@@ -6,11 +6,20 @@ It uses IPFS as its DataStorage and Ethereum for everything that is related to a
 
 
 ## Install
-
 ```bash
+> npm i -g ipfs
 > npm i -g yarn
 > npm i -g typescript
 > yarn
+```
+
+## Bootstrap
+first run the guard node
+```bash
+yarn run guardnode
+```
+then in another bash window
+```bash
 > yarn start
 ```
 
@@ -25,7 +34,7 @@ populateDb('order')
 ```
 
 Login to your room with these credentials:
-- email: t.d@gmail.com
+- email: thib.duchene@gmail.com
 - password: Password69
 
 start playing around
@@ -40,18 +49,17 @@ start playing around
 
 ### graph
 - This is where the application data is computed
-- Schema are my graphql defined schema
-- Resolver are my services that interact with ipfs to store and pull data
+- Schema => Graphql schema
+- GraphQl Resolver, they are basically services for each type entry
 
 ### mocks
 - this is just for dev purpose, we fulfill the app with mock data
 
 ### models
-- This is where I defined my client side models
-- I defined typescript classes that are able to query, update, mutate and delete themself.
+- All the client side models (user, room, stuffs, orders) it's typescript classes that are able to query, update, mutate and delete themself.
 
 ### routes
-- this is where I define all my react views
+- This is where the React application stands
 
 
 ## Tips and tricks

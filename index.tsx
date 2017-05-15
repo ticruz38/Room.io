@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Router, Route, hashHistory } from 'react-router';
 import routes from 'routes';
 
+
 export default function loadApp() {
   ReactDOM.render(
     <Router
