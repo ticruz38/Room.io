@@ -47,7 +47,7 @@ export const DropDb = dbName => {
 
 export const PopulateDb = dbName => {
     const dbItems = getRandomData(dbName);
-    Store[dbName].then(db => {
+    return Store[dbName].then(db => {
         console.log(dbName + " database ready, adding items");
         let index = 0;
         const populateItems = (index) => {

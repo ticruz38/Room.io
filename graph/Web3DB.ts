@@ -53,6 +53,10 @@ export default class Web3DB extends OrbitDB {
                 // for some reason we need to set a setTimeout...
                 setTimeout(_ => this._ipfs.pubsub.publish(ROOMDATAREQUEST, new Buffer(peer.id)), 100);
             });
+            // early bail out, resolve db in case nothing happened after 5 seconds
+            setTimeout(_ => dbs.map(db => 
+                this.stores[db].load().then( _ => this.stores[db].events.emit('loaded') )
+            ), 5000 );
             this._ipfs.pubsub.subscribe(peer.id, message => {
                 const cache = JSON.parse(message.data.toString());
                 Object.keys(cache)
