@@ -5,11 +5,7 @@ import routes from 'routes';
 
 
 export default function loadApp() {
-  ReactDOM.render(
-    <Router
-      history={ hashHistory }
-      routes={ routes }
-    />,
+  ReactDOM.render(routes,
     document.getElementById('app')
   );
 }

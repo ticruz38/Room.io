@@ -58,7 +58,7 @@ export default class Signup extends React.Component<any, any> {
                 <div className="question">
                     <Button 
                         message="Already a member ?"
-                        action={_ => layoutState.modal = <Login />}
+                        action={_ => layoutState.setModal(<Login />)}
                         size="small"
                     />
                 </div>

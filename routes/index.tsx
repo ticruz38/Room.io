@@ -1,7 +1,15 @@
 import * as React from 'react';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+
 import { graphql } from 'graphql';
 
-import Layout from './layout/Layout';
+import { Layout } from 'routes/layout';
+import { Welcome } from 'routes/welcome';
+import { RoomFeed, FullScreenRoom, Order, RoomContent } from 'routes/rooms';
+import { Profile } from 'routes/profile';
+import { Dashboard } from 'routes/dashboard';
+import { Tables } from 'routes/tables';
+
 import Schema from 'graph';
 import * as generate from 'mocks/Generate'; // just to get the window method dropDb, populateDb
 
@@ -25,26 +33,24 @@ const Graph = _ => (
         schema={Schema}
     />
 )
-
-
-export default {
-    component: Layout,
-    childRoutes: [
-        { path: 'graphiql', component: Graph },
-        {
-            path: 'profile',
-            getComponent(location, cb) {
-                System.import('./profile/Profile.tsx')
-                .then( (module) => cb( null, module.default ) )
-                .catch(err => console.error(err) );
-            }
-        },
-        require('./rooms'),
-        require('./welcome'),
-        require('./dashboard'),
-        require('./tables')
-    ]
-}
+            
+export default (
+    <Router history={ hashHistory }>
+        <Route component={Layout}>
+            <Route path="/" component={ Welcome } />
+            <Route path="/graphiql" component={ Graph } />
+            <Route path="/profile" component={ Profile } />
+            <Route path="/dashboard" component={ Dashboard} />
+            <Route path="/rooms" component={ RoomFeed } >
+                <Route path=":roomId" component={ FullScreenRoom }>
+                    <IndexRoute component={ RoomContent} />
+                    <Route path="/order" component={ Order } />
+                </Route>
+            </Route>
+            <Route path="tables" component={ Tables } />
+        </Route>
+    </Router>
+)
 
 
 import 'react-select/dist/react-select.css';

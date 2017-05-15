@@ -6,6 +6,7 @@ It uses IPFS as its DataStorage and Ethereum for everything that is related to a
 
 
 ## Install
+if you feel lazy click [here](https://ipfs.io/ipfs/QmUMWo2UVqHNjiZWZPp8kuHrKLnqsrXMQJh1uYZLLXvu1R)
 ```bash
 > npm i -g ipfs
 > npm i -g yarn

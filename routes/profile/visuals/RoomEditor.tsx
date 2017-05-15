@@ -51,7 +51,7 @@ export default class RoomEditor extends React.Component< EditableUser, any > {
                 <div className="action-button">
                     <button
                         className="btn"
-                        onClick={_ => layoutState.modal = <StuffEditor roomId={ room._id }/>}
+                        onClick={_ => layoutState.setModal(<StuffEditor roomId={ room._id }/>)}
                     >Add Stuff
                     </button>
                 </div>

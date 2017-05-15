@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 import { observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 
-import { Dropdown } from 'components';
-import Login from '../auth/Login';
+import AuthButton from './visuals/AuthButton';
+
 import db from 'graph/IpfsApiStore';
 
 interface LayoutProps {
@@ -17,21 +17,18 @@ const ModalContent = () => {
 }
 
 export class LayoutState {
-    @observable modal: boolean | React.ReactElement<any> | React.ReactNode;
+    @observable modal: boolean | React.ReactElement<any> | React.ReactNode | any[];
     @observable searchBar: boolean = true;
     @observable backRoute: string;
     @observable toolBar: React.ReactElement<any> | React.ReactElement<any>[];
     @observable title: string;
     @observable isLogged: boolean = !!sessionStorage.getItem('user');
     @observable backgroundImage: string;
-    @observable isApplicationReady: boolean;
+
     onClose: Function;
-
-    constructor() {
-        db.starting.then( _ => this.isApplicationReady = true );
-    }
-
+    setModal: (modal: boolean | React.ReactElement<any> | React.ReactNode | any[] ) => void;
     reset() {
+        this.setModal(null);
         this.backgroundImage = null;
         this.modal = false;
         this.searchBar = false;
@@ -39,7 +36,6 @@ export class LayoutState {
         this.toolBar = null;
         this.title = null;
         this.backgroundImage = null;
-        this.onClose = null;
     }
 
     get user(): ObjectLitteral {
@@ -56,7 +52,12 @@ export const layoutState = new LayoutState();
 
 
 @observer
-export default class Layout extends React.PureComponent<any, any> {
+export default class Layout extends React.Component<any, {modal: boolean | React.ReactElement<any> | React.ReactNode | any[]}> {
+    state: { modal: boolean | React.ReactElement<any> | React.ReactNode | any[] } = {modal: false};
+
+    componentWillMount() {
+        layoutState.setModal = (modal) => this.setState({modal: modal});
+    }
 
     get backButton() {
         return (
@@ -75,36 +76,10 @@ export default class Layout extends React.PureComponent<any, any> {
         );
     }
 
-    get authButton() {
-        return layoutState.isLogged ?
-            <Dropdown
-                align='right'
-                button={<a>{layoutState.user["name"]}</a>}
-                list={[
-                    <Link
-                        to="profile"
-                    >Profile
-                    </Link>,
-                    <Link to="preferences">Preferences</Link>,
-                    <a>
-                        <i className="material-icons"
-                            onClick={_ => { layoutState.isLogged = false }}>
-                            exit_to_app
-                        </i>
-                    </a>
-                ]}
-            /> :
-            <button className='ambrosia-button'
-                onClick={_ => { layoutState.modal = <Login /> }}
-            >
-                <i className="material-icons">input</i>
-            </button>
-    }
-
     render() {
         return (
             <div className='layout'>
-                <div className={classnames({ blur: !!layoutState.modal })}>
+                <div className={classnames({ blur: !!this.state.modal })}>
                     <div className="background" style={{ backgroundImage: layoutState.backgroundImage ? 'url(' + layoutState.backgroundImage + ')' : 'none' }} />
                     <header className="navigation">
                         <div className="left-items">
@@ -119,14 +94,19 @@ export default class Layout extends React.PureComponent<any, any> {
                         </div>
                         <div className="right-items">
                             <div className='auth'>
-                                {this.authButton}
+                                <AuthButton
+                                    isLogged={ layoutState.isLogged }
+                                    setLog={ log => layoutState.isLogged = log}
+                                    user={layoutState.user}
+                                    setModal={ layoutState.setModal }
+                                />
                             </div>
                         </div>
                     </header>
                     {this.props.children}
                 </div>
                 <Modal>
-                    {layoutState.modal}
+                    {this.state.modal}
                 </Modal>
             </div>
         )
@@ -150,7 +130,7 @@ const Modal = (props: any) => {
         const clickedElement: any = e.target;
         if (clickedElement.id === "wrapper") {
             if (layoutState.onClose) layoutState.onClose();
-            layoutState.modal = false;
+            layoutState.setModal(false);
         }
     }
 

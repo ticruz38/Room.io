@@ -13,7 +13,7 @@ type props = {
     params: any
 }
 
-export class Order extends React.Component<props, any> {
+export default class Order extends React.Component<props, any> {
 
     onSave() {
         const { roomState } = this.props;
@@ -60,12 +60,6 @@ export class Order extends React.Component<props, any> {
             </div>
         );
     }
-}
-
-
-export default {
-    path: 'order',
-    component: Order
 }
 
 

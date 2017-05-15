@@ -22,7 +22,7 @@ export default class StuffEditor extends React.Component<StuffProps, any> {
 
     onSave = ( result ) => {
         profileState.room.stuffs.push( this.stuff )
-        layoutState.modal = null;
+        layoutState.setModal(null);
     }
 
     render(): React.ReactElement< any > {
