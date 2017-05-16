@@ -22,6 +22,8 @@ export default class Login extends React.Component<any, any> {
             console.log(result.errors);
             return this.errors = result.errors;
         }
+        layoutState.isLogged = true;
+        layoutState.setModal(false);
         sessionStorage.setItem( 'user', JSON.stringify( result.data.login ) );
     }
 
@@ -42,7 +44,7 @@ export default class Login extends React.Component<any, any> {
                 <Input
                     placeholder='Password'
                     field={this.user.password}
-                    type='text'
+                    type='password'
                 />
                 <div className="question">
                     <Button 

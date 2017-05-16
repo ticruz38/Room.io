@@ -129,10 +129,10 @@ export const dashboardState = new DashboardState(Document);
 export default class Dashboard extends React.Component<any, any> {
     componentWillMount() {
         layoutState.reset();
-        layoutState.toolBar = [
+        layoutState.setToolbar([
             <Link to="/profile" className="btn">Profile</Link>,
             dashboardState.select
-        ]
+        ])
         layoutState.title = 'Dashboard';
         dashboardState.loadRoom()
     }
