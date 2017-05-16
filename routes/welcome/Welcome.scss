@@ -1,8 +1,8 @@
-
+@import 'routes/index.scss';
 div.welcome {
+    background: $whitesmoke;
     .header {
-        margin-top: -2em;
-        height: calc( 100vh - 50px);
+        height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -14,7 +14,7 @@ div.welcome {
                 color: white;
             }
             h3 {
-                color: gold;
+                color: $yellow;
             }
         }
     }

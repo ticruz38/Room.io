@@ -3,8 +3,9 @@ import {Link}       from "react-router";
 import {computed, observable, toJS, autorun} from 'mobx' 
 import { observer } from 'mobx-react'; 
  
-import { layoutState } from '../layout/Layout'; 
-import Login from '../auth/Login'; 
+import { layoutState } from 'routes/layout/Layout'; 
+import Login from 'routes/auth/Login'; 
+import Button from "components/Button";
  
  
 export default class Welcome extends React.Component< any, any > {
@@ -33,16 +34,18 @@ export default class Welcome extends React.Component< any, any > {
                     </li> 
                 </ul>
                 <div className='pick'>
-                    <Link to="login" className='box'> 
-                        <span>Get Started</span>
-                    </Link>
-                    <Link to="rooms" className='box'> 
-                        <span>Look around</span> 
-                    </Link>
-                </div> 
-            </div> 
+                    <Button 
+                        action={_ => this.props.router.push('login')} 
+                        message="Get Started"
+                    />
+                    <Button
+                        action={_ => this.props.router.push('rooms')}
+                        message="Look Around"
+                    />
+                </div>
+            </div>
         ); 
     } 
-} 
+}
  
 import './Welcome.scss';

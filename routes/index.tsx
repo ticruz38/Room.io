@@ -36,8 +36,8 @@ const Graph = _ => (
             
 export default (
     <Router history={ hashHistory }>
+        <Route path="/" component={ Welcome } />
         <Route component={Layout}>
-            <Route path="/" component={ Welcome } />
             <Route path="/graphiql" component={ Graph } />
             <Route path="/profile" component={ Profile } />
             <Route path="/dashboard" component={ Dashboard} />

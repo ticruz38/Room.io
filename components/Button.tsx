@@ -10,6 +10,7 @@ type ButtonProps = {
     action?: Function, // what happen when you click that button
     fileUpload?: boolean,
     disabled?: boolean,
+    href?: string,
     size?: 'small' | 'medium' | 'large',
     mode?: 'warning' | 'info' | 'action' | 'default'
 }
@@ -24,6 +25,8 @@ export default class Button extends React.Component< ButtonProps, {loading: bool
     }
 
     _onClick = (e) => {
+        console.log(this.context);
+        if( this.props.href ) return this.context.router.push(this.props.href);
         if( this.props.fileUpload ) return this.refs.fileInput['click'](e);
         const action = this.props.action();
         if( action instanceof Promise ) {
@@ -49,6 +52,7 @@ export default class Button extends React.Component< ButtonProps, {loading: bool
                 ) }
                 onClick={ this._onClick }
                 disabled={ this.props.disabled }
+                href={ this.props.href }
             >
                 { this.icon } {this.props.message}
                 { this.props.fileUpload ? 
