@@ -33,6 +33,20 @@ export default class Login extends React.Component<any, any> {
             this.user.password.isValid
         )
     }
+
+    connectWithUport() {
+        layoutState.connect.requestCredentials().then(credentials => {
+            layoutState.isLogged = true;
+            layoutState.setModal(false);
+            sessionStorage.setItem('user', JSON.stringify({
+                _id: credentials.address,
+                email: credentials.email,
+                name: credentials.name,
+                picture: credentials.image.contentUrl.split('/').pop()
+            }));
+        });
+    }
+
     render() {
         return (
             <div className='login'>
@@ -51,6 +65,11 @@ export default class Login extends React.Component<any, any> {
                         size="small"
                         message='Not a member yet'
                         action={_ => layoutState.setModal(<Signup />)}
+                    />
+                     <Button 
+                        size="small"
+                        message="Login With Uport"
+                        action={this.connectWithUport}
                     />
                 </div>
                 <div className="errors">

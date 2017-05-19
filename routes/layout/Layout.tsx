@@ -3,6 +3,7 @@ import * as classnames from 'classnames';
 import { Link } from 'react-router';
 import { observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
+import { Connect } from 'uport-connect';
 
 import AuthButton from './visuals/AuthButton';
 import Modal from './visuals/Modal';
@@ -23,6 +24,7 @@ export class LayoutState {
     @observable title: string;
     @observable isLogged: boolean = !!sessionStorage.getItem('user');
     @observable backgroundImage: string;
+    connect = new Connect('roomio');
 
     onClose: Function;
     setModal: (modal: boolean | React.ReactElement<any> | React.ReactNode | any[]) => void;
