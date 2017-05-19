@@ -75,7 +75,11 @@
     "react-router": "^3.0.0",
     "react-select": "^1.0.0-rc.3",
     "through2": "^2.0.3",
+    "truffle-contract": "^2.0.0",
+    "typescript": "2.3.2",
+    "uport-connect": "^0.6.0",
     "uuid": "^3.0.1",
+    "web3": "^0.19.0",
     "webpack-dev-server": "^2.4.2"
   },
   "repository": "https://github.com/ticruz38/Room.io.git"
