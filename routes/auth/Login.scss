@@ -12,6 +12,9 @@
         margin-top: 1em;
     }
     .question {
-        text-align: center;
+        button {
+            margin: 0 auto 0.5em;
+            display: flex
+        }
     }
 }
