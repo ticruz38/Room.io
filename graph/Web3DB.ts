@@ -1,6 +1,6 @@
 import * as OrbitDB from 'orbit-db';
 import * as Ipfs from 'ipfs';
-
+import { uniq } from './utils';
 
 const dbs = ['user', 'order', 'room', 'stuff'];
 
@@ -8,11 +8,6 @@ const ROOMDATAREQUEST = 'roomio:data:request';
 const ROOMDATAUPDATE = 'roomio:data:update';
 const PEERS = 'peers';
 
-const uniq = (array: string[]) => {
-    const map = {};
-    array.map(a => map[a] = 1);
-    return Object.keys(map);
-}
 
 //TODO Make it listening to sinced db events and notify the guardian about the new hash
 export default class Web3DB extends OrbitDB {
