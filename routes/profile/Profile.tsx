@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import { Input } from 'components/form';
 import { IpfsImage } from 'components';
 import { nonEmpty, email, hasChanged } from 'components/form/Constraint';
+import Button from "components/Button";
 import { layoutState } from 'routes/layout/Layout';
 import Loader from 'graph/Loader';
 import db from 'graph/IpfsApiStore';
@@ -50,16 +51,18 @@ class ProfileState extends Loader {
             this.user && this.user.hasChanged ||
                 this.room && this.room.hasChanged && this.room.isValid ||
                 this.room && this.room.stuffs && this.room.stuffs.some(s => !!s.hasChanged) ?
-                <button onClick={_ => this.saveChanges()}>Save</button> :
-                null;
-        const CreateRoom = this.user && this.user.room ?
-            null :
-            <button onClick={_ => this.createRoom()}>Add a room</button>;
-        return [
-            DashBoard,
-            SaveButton,
-            CreateRoom
-        ];
+                <Button
+                    message="Save"
+                    action={_ => this.saveChanges()}
+                    appear
+                /> : null;
+        const CreateRoom = this.user && this.user.room ? null :
+            <Button
+                message="Add a room"
+                action={_ => this.createRoom()}
+                appear
+            />;
+        return [ DashBoard, SaveButton, CreateRoom ];
     }
     loadProfile() {
         this.execute('ProfileQuery', {

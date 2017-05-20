@@ -7,15 +7,12 @@ import { Connect } from 'uport-connect';
 
 import AuthButton from './visuals/AuthButton';
 import Modal from './visuals/Modal';
+import Button from 'components/Button';
 
 import db from 'graph/IpfsApiStore';
 
 interface LayoutProps {
     children: React.Component<any, any>,
-}
-
-const ModalContent = () => {
-    return <div> Hi Guys, I'm a modal</div>;
 }
 
 export class LayoutState {
@@ -66,18 +63,23 @@ export default class Layout extends React.Component<any, state> {
 
     get backButton() {
         return (
-            <Link to={layoutState.backRoute} className={classnames('back-button', { hidden: !layoutState.backRoute })}>
-                <i className="material-icons">keyboard_arrow_left</i>
-                <p>{layoutState.backRoute}</p>
-            </Link>
+            <Button
+                message={layoutState.backRoute}
+                icon={<i className="material-icons">keyboard_arrow_left</i>}
+                to={layoutState.backRoute}
+                className={classnames('back-button', { hidden: !layoutState.backRoute })}
+            />
         );
     }
 
     get icon() {
         return (
-            <Link className='app-icon' to="/rooms">
-                <i className="material-icons">weekend</i>
-            </Link>
+            <Button
+                to="/rooms"
+                icon={<i className="material-icons">weekend</i>}
+                className='app-icon' 
+                appear
+            />
         );
     }
 
@@ -119,15 +121,6 @@ export default class Layout extends React.Component<any, state> {
             </div>
         )
     }
-}
-
-const SearchBar = () => {
-    return (
-        <div className="search-wrapper">
-            <i className="material-icons">search</i>
-            <div className='search-bar'><input type='text' placeholder='search..' /></div>
-        </div>
-    );
 }
 
 
