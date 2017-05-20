@@ -6,6 +6,7 @@ type Room {
     email: String
     phoneNumber: String
     picture: String
+    tags: [String]
     categories: [String] # A room class its stuff under categories
     stuffs: [Stuff]
     orders: [Order]
@@ -15,7 +16,8 @@ input RoomInput {
     userId: String!
     name: String! # Room Name
     description: String # Room Description
-    email: String,
-    phoneNumber: String,
+    email: String
+    tags: [String]
+    phoneNumber: String
     picture: String # Room pictures as a list of hash
 }

@@ -3,4 +3,5 @@ type Query {
     rooms: [Room]
     user(id: String): User
     login(login: UserLogin!): User
+    tags: [String] ## all tags added to the room in the app
 }

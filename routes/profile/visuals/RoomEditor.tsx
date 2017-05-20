@@ -8,16 +8,24 @@ import { StuffInput, Field, EditableRoom, EditableStuff, EditableUser } from 'mo
 //layout
 import { layoutState } from 'routes/layout/Layout';
 
+import Loader from 'graph/Loader';
+
 // Profile
 import { profileState } from 'routes/profile/Profile';
 import StuffEditor from './StuffEditor';
 import { IpfsImage } from "components";
 
+const Document = require('./RoomEditor.gql');
 
 
 
 @observer
-export default class RoomEditor extends React.Component< EditableUser, any > {
+export default class RoomEditor extends React.Component< any, any > {
+    componentWillMount() {
+        Loader.execute(Document, 'AllTags').then(result => {
+            console.log(result.data, result.errors);
+        })
+    }
     render() {
         const { room } = this.props;
         return (
