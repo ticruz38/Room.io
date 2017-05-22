@@ -12,6 +12,7 @@ type Mutation {
     deleteStuff(id: String!): Stuff
 
     signup(user: UserSignup!): User # has to be handled via ethereum for security
+    logWithUport(user: UserInput!): User # log with Uport register credentials
     updateUser(user: UserInput!): User # has to be handled via ethereum for security
     deleteUser(id: String!): User
 }

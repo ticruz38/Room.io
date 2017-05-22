@@ -68,6 +68,15 @@ query Login($login: UserLogin!) {
     }
 }
 
+mutation LogWithUport($user: UserInput! ) {
+    user: logWithUport(user: $user) {
+        _id
+        name
+        email
+        picture
+    }
+}
+
 mutation DeleteUser($id: String!) {
     deleteUser(id: $id) {
         _id
