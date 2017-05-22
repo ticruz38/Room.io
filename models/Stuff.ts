@@ -31,7 +31,7 @@ export class EditableStuff extends Editable {
         this.category = new Field( stuff ? stuff.category : "", [C.nonEmpty()] );
         this.description = new Field( stuff ? stuff.description : "", [C.nonEmpty()] );
         this.picture = new Field( stuff ? stuff.picture : "" );
-        this.price = new Field( stuff ? stuff.price || 0 : 0 );
+        this.price = new Field( stuff ? stuff.price : undefined );
     }
 }
 
