@@ -108,7 +108,7 @@ class DashboardState extends Loader {
     }
     loadRoom() {
         this.execute('RoomWithOrders', {
-            variables: { userId: layoutState.user["_id"] },
+            variables: { userId: layoutState.userId },
             cb: (data: any) => {
                 const { room } = data.user;
                 if(!room) throw 'oop, room hasnt been fetched';
