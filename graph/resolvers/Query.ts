@@ -12,14 +12,6 @@ export default {
             return roomDb.query( doc => !!doc );
         } );
     },
-    tags: function( root, params, context ) {
-        return db.room.then( dbRoom => {
-            const rooms = dbRoom.query( r => !!r );
-            return uniq( rooms.reduce( (acc, cur) => 
-                [...acc, ...(cur.tags || []) ]
-            , [] ) )
-        } )
-    },
     user( root, args, context ) {
         return db.user.then( userDb => userDb.query( u => u._id === args.id )[0] );
     },
@@ -34,5 +26,13 @@ export default {
                     reject( new GraphQLError( 'The password do not match the email' ) )
             } );
         } );
-    }
+    },
+    tags: function( root, params, context ) {
+        return db.room.then( dbRoom => {
+            const rooms = dbRoom.query( r => !!r );
+            return uniq( rooms.reduce( (acc, cur) => 
+                [...acc, ...(cur.tags || []) ]
+            , [] ) )
+        } )
+    },
 }

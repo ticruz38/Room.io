@@ -1,6 +1,6 @@
 import db from '../IpfsApiStore';
 import * as moment from 'moment';
-import { addressStamp } from './utils';
+import { addressStamp } from '../utils';
 const Logger = require('logplease');
 Logger.setLogLevel('INFO');
 const logger = Logger.create('mutation');
@@ -87,6 +87,17 @@ export default {
                 return user;
             });
         });
+    },
+    logWithUport( root, { user }, context ) {
+        return db.user.then( userDb => {
+            const userExist = userDb.get( user.email )[0];
+            if(!userExist) {
+                // if not add it to the app
+                userDb.put(user);
+                return user;
+            }
+            return userDb.query( u => u._id === user._id)[0];
+        })
     },
     deleteUser(root, { id }, context) {
         return db.user.then(dbUser => dbUser.del(id)
