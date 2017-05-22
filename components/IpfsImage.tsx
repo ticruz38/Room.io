@@ -23,21 +23,14 @@ export default class ImageComponent extends React.PureComponent< ImageProps, {ur
     state = {url: null};
 
     componentWillMount() {
-        if( this.props.urlPicture ) {
-            this.loadImage(this.props.urlPicture);
-        }
-        if( this.props.picture && this.props.picture.value ) {
-            this.loadImage(this.props.picture.value);
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if( nextProps.urlPicture ) {
-            this.loadImage(nextProps.urlPicture);
-        }
-        if( nextProps.picture && nextProps.picture.value ) {
-            this.loadImage(nextProps.picture.value);
-        }
+        autorun( _ => {
+            if( this.props.urlPicture ) {
+                this.loadImage(this.props.urlPicture);
+            }
+            if( this.props.picture && this.props.picture.value ) {
+                this.loadImage(this.props.picture.value);
+            }
+        } );
     }
 
     loadImage = (hash) => {
@@ -53,13 +46,22 @@ export default class ImageComponent extends React.PureComponent< ImageProps, {ur
         } )
     }
 
-    uploadFile = () => db.uploadFile( this.refs.fileinput['files'][0], this.props.onUpload )
+    uploadFile = () => {
+        if(!this.refs.fileinput['files'][0] ) return;
+        db.uploadFile( this.refs.fileinput['files'][0], this.props.onUpload )
+    }
+
+    onClick(e) {
+        if(this.props.readOnly) return;
+        if(this.props.onClick) return this.props.onClick(e)
+        this.refs.fileinput['click']();
+    }
 
     render() {
         return (
             <div 
                 className={ classNames( "ipfs-picture", this.props.className, { readOnly: this.props.readOnly } ) }
-                onClick={ (e: any) => this.props.readOnly ? this.props.onClick(e) : this.refs.fileinput['click']() } 
+                onClick={ (e: any) => this.onClick(e) } 
             >
                 <input type='file' ref="fileinput" onChange={ this.uploadFile } />
                 {
