@@ -40,6 +40,7 @@ export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedSta
         layoutState.reset();
         layoutState.title = 'Pick a Room you like';
         layoutState.setModal(this.props.children);
+        layoutState.setToolbar(null);
     }
 
     componentWillReceiveProps() {
@@ -55,7 +56,7 @@ export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedSta
                 <div className='column' key={index}>
                     {rooms.filter( room => !!room ).map( room =>
                         <RoomComponent 
-                            key={room._id} 
+                            key={room._id}
                             onClick={roomId => this.props.router.push( { pathname: '/rooms/' + roomId } )} 
                             {...room} 
                         />
@@ -84,13 +85,14 @@ class RoomComponent extends React.Component< any, any > {
     render() {
         return (
             <div className='room-item' style={{maxWidth: roomFeedState.columnWidth}}>
-                <IpfsImage
-                    key={this.props._id}
-                    defaultPicture='public/roomio-background.jpg'
-                    urlPicture={ this.props.picture }
-                    onClick={ e => this.props.onClick( this.props._id )}
-                    readOnly
-                />
+                <div onClick={_ => this.props.onClick( this.props._id )}>
+                    <IpfsImage
+                        key={this.props._id}
+                        defaultPicture='public/roomio-background.jpg'
+                        urlPicture={ this.props.picture }
+                        readOnly
+                    />
+                </div>
                 <div>
                     <h4>{this.props.name}</h4>
                     <small>{this.props.description}</small>
