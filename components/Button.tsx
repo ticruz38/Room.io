@@ -42,6 +42,11 @@ export default class Button extends React.Component<ButtonProps, { loading: bool
             this.props.icon || null
     }
 
+    get message() {
+        if(!this.props.message) return null;
+        return <span>{this.props.message}</span>
+    }
+
     render(): React.ReactElement<any> {
         const El = this.props.to ? Link : 'button';
         return (
@@ -57,7 +62,7 @@ export default class Button extends React.Component<ButtonProps, { loading: bool
                 disabled={this.props.disabled}
                 to={this.props.to}
             >
-                {this.icon} {this.props.message || null}
+                {this.icon} {this.message || null}
                 {this.props.fileUpload ?
                     <input type="file" ref="fileInput" onChange={e => this.props.action(e)} /> :
                     null
