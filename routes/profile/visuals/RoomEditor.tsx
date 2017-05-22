@@ -13,7 +13,7 @@ import Loader from 'graph/Loader';
 // Profile
 import { profileState } from 'routes/profile/Profile';
 import StuffEditor from './StuffEditor';
-import { IpfsImage } from "components";
+import { IpfsImage, Button } from "components";
 
 const Document = require('./RoomEditor.gql');
 
@@ -50,6 +50,7 @@ export default class RoomEditor extends React.Component< any, any > {
                     <IpfsImage
                         picture={ room.picture }
                         onUpload={ (err, hash) => {
+                            console.log(room.picture.value);
                             room.picture.value = hash
                             room.picture.hasChanged = true;
                         } }
@@ -57,11 +58,10 @@ export default class RoomEditor extends React.Component< any, any > {
                     />
                 </div>
                 <div className="action-button">
-                    <button
-                        className="btn"
-                        onClick={_ => layoutState.setModal(<StuffEditor roomId={ room._id }/>)}
-                    >Add Stuff
-                    </button>
+                    <Button
+                        message='Add Stuff'
+                        action={_ => layoutState.setModal(<StuffEditor roomId={ room._id }/>)}
+                    />
                 </div>
             </div>
         );
