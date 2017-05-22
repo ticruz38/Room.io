@@ -39,7 +39,7 @@ class ProfileState extends Loader {
         if (this.user.hasChanged) {
             this.user.save();
         }
-        if (this.room.hasChanged) {
+        if (this.room && this.room.hasChanged) {
             this.room.update();
         }
         this.room.stuffs.forEach(s => s.hasChanged ? s.save() : '');
@@ -66,7 +66,7 @@ class ProfileState extends Loader {
     }
     loadProfile() {
         this.execute('ProfileQuery', {
-            variables: { id: layoutState.user["_id"] },
+            variables: { id: layoutState.userId },
             cb: (data: any) => {
                 const { profile } = data;
                 if (!profile) throw 'oops, profile hasnt been fetched';
@@ -81,6 +81,7 @@ export const profileState = new ProfileState(Document);
 @observer
 export default class Profile extends React.Component<any, any> {
     componentWillMount() {
+        console.log(layoutState.userId);
         profileState.loadProfile();
         layoutState.reset();
         layoutState.title = "Profile";
