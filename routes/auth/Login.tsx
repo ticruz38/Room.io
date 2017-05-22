@@ -10,7 +10,6 @@ import Signup from './Signup';
 import { layoutState } from 'routes/layout/Layout';
 
 import { EditableUser } from "models";
-
 @observer
 export default class Login extends React.Component<any, any> {
 
@@ -22,17 +21,35 @@ export default class Login extends React.Component<any, any> {
             console.log(result.errors);
             return this.errors = result.errors;
         }
-        layoutState.isLogged = true;
+        const user = result.data.login
+        sessionStorage.setItem( 'userId', user._id );
         layoutState.setModal(false);
-        sessionStorage.setItem( 'user', JSON.stringify( result.data.login ) );
+        layoutState.user = user;
     }
 
     @computed get isValid() {
         return (
             this.user.email.isValid &&
             this.user.password.isValid
-        )
+        );
     }
+
+    connectWithUport() {
+        layoutState.connect.requestCredentials().then(credentials => {
+            console.log(credentials);
+            const userInput = new EditableUser({
+                _id: credentials.address,
+                name: credentials.name,
+                picture: credentials.image ? credentials.image.contentUrl.split('/').pop() : ''
+            }).logWithUport( result => {
+                const user = result.data.user;
+                layoutState.user = user;
+                sessionStorage.setItem('userId', user._id);
+            } );
+            layoutState.setModal(false);
+        });
+    }
+
     render() {
         return (
             <div className='login'>
@@ -51,6 +68,12 @@ export default class Login extends React.Component<any, any> {
                         size="small"
                         message='Not a member yet'
                         action={_ => layoutState.setModal(<Signup />)}
+                    />
+                     <Button 
+                        size="small"
+                        icon={<img src='public/uport-logo-white.svg' />}
+                        message="Login With Uport"
+                        action={this.connectWithUport}
                     />
                 </div>
                 <div className="errors">

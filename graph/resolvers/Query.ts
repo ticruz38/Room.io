@@ -1,5 +1,6 @@
 import db from '../IpfsApiStore';
 import { GraphQLError } from 'graphql';
+import { uniq } from '../utils';
 
 export default {
     room( root, args, context ) {
@@ -18,11 +19,20 @@ export default {
         return new Promise(( resolve, reject ) => {
             db.user.then( userDb => {
                 const user = userDb.get( login.email )[0];
+                console.log(user);
                 if ( !user ) return reject( new GraphQLError( login.email + ' is not registered in the network' ) );
                 return user.password === login.password ? 
                     resolve( user ) : 
                     reject( new GraphQLError( 'The password do not match the email' ) )
             } );
         } );
-    }
+    },
+    tags: function( root, params, context ) {
+        return db.room.then( dbRoom => {
+            const rooms = dbRoom.query( r => !!r );
+            return uniq( rooms.reduce( (acc, cur) => 
+                [...acc, ...(cur.tags || []) ]
+            , [] ) )
+        } )
+    },
 }

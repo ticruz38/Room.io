@@ -3,44 +3,52 @@ import * as classnames from 'classnames';
 import { Link } from 'react-router';
 import { observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
+import { Connect } from 'uport-connect';
 
 import AuthButton from './visuals/AuthButton';
 import Modal from './visuals/Modal';
+import Loader from "graph/Loader";
+import Button from 'components/Button';
 
 import db from 'graph/IpfsApiStore';
 
+const Document = require('./Layout.gql');
+
 interface LayoutProps {
     children: React.Component<any, any>,
-}
-
-const ModalContent = () => {
-    return <div> Hi Guys, I'm a modal</div>;
 }
 
 export class LayoutState {
     @observable searchBar: boolean = true;
     @observable backRoute: string;
     @observable title: string;
-    @observable isLogged: boolean = !!sessionStorage.getItem('user');
+    @observable user: User
     @observable backgroundImage: string;
+    connect = new Connect('roomio');
+
+    constructor() {
+        console.log(this.userId, sessionStorage.getItem('userId'));
+        if( this.userId ) {
+            Loader.execute( Document, 'getUser', {id: this.userId } ).then( result => {
+                if( result.errors) throw result.errors;
+                this.user = result.data.user;
+            });
+        }
+    }
 
     onClose: Function;
     setModal: (modal: boolean | React.ReactElement<any> | React.ReactNode | any[]) => void;
     setToolbar: (toolbar: React.ReactElement<any> | React.ReactElement<any>[]) => void;
 
+    get userId(): String { return sessionStorage.getItem('userId') };
     reset() {
         this.setModal(null);
-        this.setToolbar(null);
+        this.setToolbar(<span/>);
         this.backgroundImage = null;
         this.searchBar = false;
         this.backRoute = null;
         this.title = null;
         this.backgroundImage = null;
-    }
-
-    get user(): ObjectLitteral {
-        if (!this.isLogged) return {};
-        return JSON.parse(sessionStorage.getItem('user'));
     }
 }
 
@@ -64,18 +72,23 @@ export default class Layout extends React.Component<any, state> {
 
     get backButton() {
         return (
-            <Link to={layoutState.backRoute} className={classnames('back-button', { hidden: !layoutState.backRoute })}>
-                <i className="material-icons">keyboard_arrow_left</i>
-                <p>{layoutState.backRoute}</p>
-            </Link>
+            <Button
+                message={layoutState.backRoute}
+                icon={<i className="material-icons">keyboard_arrow_left</i>}
+                to={layoutState.backRoute}
+                className={classnames('back-button', { hidden: !layoutState.backRoute })}
+            />
         );
     }
 
     get icon() {
         return (
-            <Link className='app-icon' to="/rooms">
-                <i className="material-icons">weekend</i>
-            </Link>
+            <Button
+                to="/rooms"
+                icon={<i className="material-icons">weekend</i>}
+                className='app-icon' 
+                appear
+            />
         );
     }
 
@@ -98,8 +111,7 @@ export default class Layout extends React.Component<any, state> {
                         <div className="right-items">
                             <div className='auth'>
                                 <AuthButton
-                                    isLogged={layoutState.isLogged}
-                                    setLog={log => layoutState.isLogged = log}
+                                    reset={_ => layoutState.user = {} }
                                     user={layoutState.user}
                                     setModal={layoutState.setModal}
                                 />
@@ -117,15 +129,6 @@ export default class Layout extends React.Component<any, state> {
             </div>
         )
     }
-}
-
-const SearchBar = () => {
-    return (
-        <div className="search-wrapper">
-            <i className="material-icons">search</i>
-            <div className='search-bar'><input type='text' placeholder='search..' /></div>
-        </div>
-    );
 }
 
 

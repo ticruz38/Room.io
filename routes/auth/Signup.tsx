@@ -20,8 +20,8 @@ export default class Signup extends React.Component<any, any> {
 
     onSave = (result) => {
         if( result.data.signup)
-        sessionStorage.setItem( 'user', JSON.stringify( result.data.signup ) )
-        layoutState.isLogged = true
+        sessionStorage.setItem( 'userId', result.data.signup._id )
+        layoutState.user = result.data.signup;
     }
 
     @computed get isValid(): boolean {

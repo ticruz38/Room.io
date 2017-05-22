@@ -3,5 +3,6 @@ query Login( $user: UserLogin! ) {
         _id
         name
         email
+        picture
     }
 }

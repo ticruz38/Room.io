@@ -1,0 +1,11 @@
+@import 'components/Button.scss';
+.a-b-image {
+    img {
+        height: 24px;
+        width: 24px;
+        border-radius: 12px;
+    }
+    >div:last-child {
+        @include button;
+    }
+}

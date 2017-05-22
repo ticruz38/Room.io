@@ -1,4 +1,6 @@
-// import * as Orbitdb from './orbit-db';
+
+declare let web3: any;
+
 declare interface Field {
   value: any;
   constraints: Function[];

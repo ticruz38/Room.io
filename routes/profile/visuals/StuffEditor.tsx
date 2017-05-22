@@ -10,6 +10,7 @@ import { EditableStuff } from "models";
 
 //layout
 import { layoutState } from 'routes/layout/Layout';
+import { Button } from "components";
 
 interface StuffProps {
     roomId: string;
@@ -32,8 +33,12 @@ export default class StuffEditor extends React.Component<StuffProps, any> {
                 <Input field={name} type="text" placeholder="Stuff Name" />
                 <Input field={description} type="text" placeholder="Stuff Description" />
                 <Input field={category} type="text" placeholder="Stuff Category" />
+                <Input field={price} type="number" placeholder="Stuff Price" min={0}/>
                 { this.stuff.isValid ?
-                    <button className="btn" onClick={_ => this.stuff.save( this.onSave ) }>Save</button> :
+                    <Button 
+                        className="btn" 
+                        message="Save"
+                        action={_ => this.stuff.save( this.onSave ) }/> :
                     null
                 }
             </div>

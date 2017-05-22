@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 import { EditableOrder } from "models";
 import { Input } from 'components/form';
+import { Button } from "components";
 import { layoutState } from "routes/layout/Layout";
 
 import { RoomState } from './FullscreenRoom';
@@ -21,6 +22,19 @@ export default class Order extends React.Component<props, any> {
         roomState.order = new EditableOrder( null, layoutState.user._id, this.props.params.roomId);
         this.props.router.push( { pathname: '/rooms/' + this.props.params.roomId } )
     }
+
+    sendTransaction() {
+        const web3 = layoutState.connect.getWeb3();
+        web3.eth.sendTransaction({
+            from: layoutState.user._id, 
+            to:'0xd156a38ce652de569383df1b458400b5ebb1c808', 
+            value: web3.toWei(0.05, "ether")
+        }, (err, result ) => {
+            console.log(err, result );
+        } )
+        console.log(web3);
+    }
+
     render() {
         const { roomState } = this.props;
         return (
@@ -55,7 +69,11 @@ export default class Order extends React.Component<props, any> {
                 />
                 <div className="buttons">
                     <Link to={ "/rooms/" + this.props.params.roomId } className="btn">Cancel</Link>
-                    <button className="btn" onClick={ _ => this.onSave() }>Order</button>
+                    <Button 
+                        message="Order"
+                        className="btn" 
+                        action={ _ => this.sendTransaction() }
+                    />
                 </div>
             </div>
         );

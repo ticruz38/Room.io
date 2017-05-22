@@ -44,7 +44,7 @@ export default (
             <Route path="/rooms" component={ RoomFeed } >
                 <Route path=":roomId" component={ FullScreenRoom }>
                     <IndexRoute component={ RoomContent} />
-                    <Route path="/order" component={ Order } />
+                    <Route path="order" component={ Order } />
                 </Route>
             </Route>
             <Route path="tables" component={ Tables } />

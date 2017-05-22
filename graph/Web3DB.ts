@@ -1,5 +1,6 @@
 import * as OrbitDB from 'orbit-db';
 import * as Ipfs from 'ipfs';
+import { uniq } from './utils';
 
 const dbs = ['user', 'order', 'room', 'stuff'];
 
@@ -7,85 +8,89 @@ const ROOMDATAREQUEST = 'roomio:data:request';
 const ROOMDATAUPDATE = 'roomio:data:update';
 const PEERS = 'peers';
 
-const uniq = (array: string[]) => {
-    const map = {};
-    array.map( a => map[a] = 1 );
-    return Object.keys(map);
-}
 
 //TODO Make it listening to sinced db events and notify the guardian about the new hash
 export default class Web3DB extends OrbitDB {
     _peers: string[] = [];
-    constructor(ipfs: Ipfs) {
+
+    constructor(ipfs: Ipfs, public dbContract: any, public account: string, public peerId: string) {
         super(ipfs);
         window['web3'] = ipfs;
-        this.connectWithPeers();
-        this.requestDataToGuard();
+        // subscribe to a common chanel for all active peers in the app
+        this._ipfs.pubsub.subscribe(PEERS, () => null);
+        this.listenToContract();
+        this.syncWithContract();
     }
 
-    openConnection(addr) {
+    listenToContract() {
+        const dbUpdate = this.dbContract.dbUpdate();
+        dbUpdate.watch((err, result) => {
+            if (err) return console.log(err);
+            console.log('dbUpdate watched');
+            // update cache hash and reload store
+            this._pubsub.publish(result.collection, result.hash);
+        });
+        const newConnection = this.dbContract.peerAdded();
+        newConnection.watch((err, peer) => {
+            const newPeer = peer.args.ipfsHash;
+            this._connectWithPeers([newPeer, ...this._peers]);
+        });
+        // get the last connection forwarded by the event
+        newConnection.get((err, peers) => {
+            const newPeers = peers.map(p => p.args.ipfsHash);
+            this._connectWithPeers(newPeers);
+        });
+    }
+    //notify the contract about a new connection and get the latests collection hash
+    syncWithContract() {
+        // I wish I could just make a call, but then the event is'nt triggered
+        this.dbContract.addPeer(this.peerId, { from: this.account })
+            .then(result => console.log('addPeer', result))
+            .catch(err => console.log(err))
+        dbs.map(dbName =>
+            this.dbContract.getCollection.call(dbName, { from: this.account }).then(dbHash => {
+                this._loadStore(dbName, dbHash);
+            })
+        )
+    }
+
+    _openConnection(addr) {
         this._ipfs.swarm.connect(addr, (err) => {
             if (err) return console.error(err);
-            console.log('opened connection with ' + addr );
+            console.log('opened connection with ' + addr);
         });
     }
 
-    connectWithPeers() {
-        this._ipfs.id().then(peer => {
-            this._ipfs.pubsub.subscribe(PEERS, message => {
-                const peers = JSON.parse(message.data.toString()); // all peers currently linked to the app
-                if( this._peers.length === peers ) return; // save unnecessary computation
-                const currentPeers = this._ipfs.pubsub.peers(PEERS, (err, currentPeerIds) => {
-                    if(err) return console.error(err);
-                    let newPeers = peers.filter( pId => !this._peers.find( id => id === pId ) );
-                    this._peers = uniq([...peers, ...currentPeerIds]);
-                    newPeers.map( pId => this.openConnection('/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss/ipfs/'+ pId) );
-                })
-            })
+    _connectWithPeers(peers) {
+        console.log(peers);
+        this._ipfs.pubsub.peers(PEERS, (err, peersConnected) => {
+            if (err) return console.error(err);
+            let newPeers = peers.filter(pId => !this._peers.find(id => id === pId));
+            this._peers = uniq([...peers, ...peersConnected]);
+            newPeers.map(pId => this._openConnection('/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss/ipfs/' + pId));
         })
     }
-    // plug the node to the roomio network to subscribe to generic network events
-    requestDataToGuard() {
-        this._ipfs.id().then(peer => {
-            this._ipfs.swarm.connect('/ip4/127.0.0.1/tcp/4003/ws/ipfs/QmXNgnNG5hdshrggnJ2GvhdE6p6LY6imhqP3vE9uDHZ21S', (err) => {
-                if (err) return console.error(err);
-                console.log('you just connected to the guardnode');
-                // for some reason we need to set a setTimeout...
-                setTimeout(_ => this._ipfs.pubsub.publish(ROOMDATAREQUEST, new Buffer(peer.id)), 100);
+
+    _loadStore(dbName, dbHash) {
+        console.log('loadStore', dbName, dbHash);
+        if (!dbHash.length) return this.stores[dbName].events.emit('loaded', dbName);
+        this.stores[dbName]._cache.set(dbName, dbHash).then(_ => {
+            this.stores[dbName].load();
+            this.stores[dbName].load(1).then(_ => {
+                let index = 0;
+                const loadMore = () => {
+                    index++;
+                    this.stores[dbName].loadMore(1).then(_ => {
+                        if (index > 50) {
+                            this.stores[dbName].events.emit('loaded', 'room');
+                            // this.stores[key].load(); // load any other items
+                            return;
+                        };
+                        loadMore();
+                    });
+                }
+                loadMore();
             });
-            // early bail out, resolve db in case nothing happened after 5 seconds
-            setTimeout(_ => dbs.map(db => 
-                this.stores[db].load().then( _ => this.stores[db].events.emit('loaded') )
-            ), 5000 );
-            this._ipfs.pubsub.subscribe(peer.id, message => {
-                const cache = JSON.parse(message.data.toString());
-                Object.keys(cache)
-                console.info('guardnode responded with cache', cache);
-                // if the db is not cached yet resolve immediately
-                dbs.map(db => Object.keys(cache).find(key => key === db) || this.stores[db].events.emit('loaded', db));
-                Object.keys(cache).map(key => {
-                    this.stores[key]._cache.set(key, cache[key]).then(_ => {
-                        // reload the database with the new cache
-                        this.stores[key].load();
-                        this.stores[key].load(1).then(_ => {
-                            // we need to listen to events in order to refresh room count in the view
-                            let index = 0;
-                            const loadMore = () => {
-                                index++;
-                                this.stores[key].loadMore(1).then(_ => {
-                                    if (index > 50) {
-                                        this.stores[key].events.emit('loaded', 'room');
-                                        // this.stores[key].load(); // load any other items
-                                        return;
-                                    };
-                                    loadMore()
-                                });
-                            }
-                            loadMore();
-                        });
-                    })
-                })
-            })
         })
     }
 
@@ -97,7 +102,7 @@ export default class Web3DB extends OrbitDB {
         store.events.on('write', this._onWrite.bind(this))
         store.events.on('ready', this._onReady.bind(this))
 
-        this.stores[dbname] = store
+        this.stores[dbname] = store;
 
         if (opts.replicate && this._pubsub)
             this._pubsub.subscribe(dbname, this._onMessage.bind(this))
@@ -108,12 +113,14 @@ export default class Web3DB extends OrbitDB {
     /* Data events */
     _onWrite(dbname, hash, entry, heads) {
         // 'New entry written to database...', after adding a new db entry locally
-        console.log(".WROTE", dbname, hash)
-        if (!heads) throw new Error("'heads' not defined")
+        console.log(".WROTE", dbname, hash, heads, this.account);
+        if (!heads) throw new Error("'heads' not defined");
+        //@TODO check if the previous ownerAddress block match the account
+        // if not throw an error, ownerAddress shouldnt be mutated
         if (this._pubsub) setImmediate(() => {
-            // console.log(new Buffer(JSON.stringify(heads)));
-            this._pubsub.publish(dbname, heads);
-            this._ipfs.pubsub.publish(ROOMDATAUPDATE, new Buffer(JSON.stringify({ [dbname]: hash })));
-        })
+            this.dbContract.saveCollection(dbname, hash, { from: this.account })
+            // notify the blockchain about new entry
+            // this._pubsub.publish(dbname, heads);
+        });
     }
 }

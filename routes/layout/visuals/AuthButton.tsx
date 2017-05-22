@@ -2,14 +2,26 @@ import * as React from 'react';
 import Login from 'routes/auth/Login';
 import { Link } from 'react-router';
 
-import { Dropdown } from 'components';
+import { Dropdown, IpfsImage, Button } from 'components';
 
 
-export default ( props: { isLogged: boolean, setLog: (boolean) => void, setModal: Function, user: object} ) => {
-    return props.isLogged ?
+export default ( props: { reset: Function, setModal: Function, user: any} ) => {
+    const ButtonContent = (user: any) => {
+        if(user.picture) return (
+            <IpfsImage
+                className="a-b-image"
+                defaultPicture="public/uport-logo-white.svg"
+                urlPicture={user.picture}
+                readOnly
+            />
+        );
+        return <Button message={props.user.name} />
+    }
+
+    return props.user ?
         <Dropdown
             align='right'
-            button={<a>{props.user["name"]}</a>}
+            button={<ButtonContent {...props.user} />}
             list={[
                 <Link
                     to="profile"
@@ -18,7 +30,7 @@ export default ( props: { isLogged: boolean, setLog: (boolean) => void, setModal
                 <Link to="preferences">Preferences</Link>,
                 <a>
                     <i className="material-icons"
-                        onClick={_ => { props.setLog(false) }}>
+                        onClick={_ => { props.reset() }}>
                         exit_to_app
                     </i>
                 </a>
@@ -30,3 +42,5 @@ export default ( props: { isLogged: boolean, setLog: (boolean) => void, setModal
             <i className="material-icons">input</i>
         </button>
 }
+
+import './AuthButton.scss';

@@ -4,6 +4,7 @@ import { EventEmitter } from 'events';
 import * as through from 'through2';
 import * as concat from 'concat-stream';
 import * as Ipfs from 'ipfs';
+import DataBase from './DbContract';
 import Web3DB from './Web3DB';
 
 
@@ -16,6 +17,7 @@ class IpfsStore {
     web3DB: any; // layer on top of orbitdb
     ipfs: any;
     pubsub = new EventEmitter();
+    ownerAddress: string;
     bootingDb: Promise<any> = this.startWeb3DB();
     room: Promise<any> = this.createDb('room');
     roomWatch: Promise<any> = this.createPartialDb('room'); // a database that continuously load items, to be used in subscription
@@ -122,13 +124,22 @@ class IpfsStore {
                 }
             }
         });
-        return new Promise((resolve, reject) => {
+        const bootIpfs: Promise<string> = new Promise((resolve, reject) => {
             this.ipfs.on('ready', () => {
                 // We instantiate Orbit-db with our ipfs client node
-                this.web3DB = new Web3DB(this.ipfs);
-                resolve();
+                this.ipfs.id().then( (peer: {id: string}) => {
+                    console.log('resolved peer', peer);
+                    resolve(peer.id);
+                })
             })
             this.ipfs.on('error', (err) => reject(err))
+        });
+        return Promise.all([
+            DataBase,
+            bootIpfs
+            ]).then(value => {
+            this.ownerAddress = value[0].account;
+            this.web3DB = new Web3DB(this.ipfs, value[0].instance, value[0].account, value[1]);
         })
     }
 }

@@ -50,7 +50,7 @@ export class RoomState extends Loader {
 
     constructor( roomId ) {
         super(Document);
-        this.order = layoutState.isLogged ? new EditableOrder(null, layoutState.user._id, roomId ) : null;
+        this.order = layoutState.user ? new EditableOrder(null, layoutState.user._id, roomId ) : null;
         this.loadRoom( roomId );
     }
 
@@ -78,7 +78,7 @@ export default class FullscreenRoom extends React.Component<props, RoomState> {
     }
 
     @computed get logNeeded() {
-        return layoutState.isLogged ? 
+        return layoutState.user ? 
             null :
             <p className="warning">You need to be logged in to pass an order</p>
     }

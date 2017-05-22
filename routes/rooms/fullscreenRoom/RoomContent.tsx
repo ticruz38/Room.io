@@ -19,7 +19,10 @@ export default class RoomContent extends React.Component<props, any> {
                             <h4>{key}</h4>
                             <div key={key} className='stuffs'>
                                 {roomState.roomCategories[key].map(s =>
-                                    <div key={s._id} className="stuff" onClick={_ => { if (roomState.order) roomState.order.stuffIds.push(s._id) }}>
+                                    <div 
+                                        key={s._id} 
+                                        className="stuff" 
+                                        onClick={_ => { if (roomState.order) roomState.order.stuffIds.push(s._id) }}>
                                         <h4>
                                             <span>{s.name}</span>
                                         </h4>

@@ -40,6 +40,7 @@ export class EditableUser extends Editable {
             password: this.password.value
         };
     }
+    logWithUport = (cb?: Function) => this.execute( 'LogWithUport', { user: this.toInput() }, cb )
     save = (cb?: Function) => this.execute( 'SaveUser', { user: this.toInput() }, cb )
     login = (cb?: Function) => this.execute( 'Login', { login: this.toLogin() }, cb )
     signup = (cb?: Function ) => this.execute( 'Signup', { user: this.toSignup() }, cb )

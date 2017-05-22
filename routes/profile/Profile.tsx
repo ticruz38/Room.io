@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import { Input } from 'components/form';
 import { IpfsImage } from 'components';
 import { nonEmpty, email, hasChanged } from 'components/form/Constraint';
+import Button from "components/Button";
 import { layoutState } from 'routes/layout/Layout';
 import Loader from 'graph/Loader';
 import db from 'graph/IpfsApiStore';
@@ -38,7 +39,7 @@ class ProfileState extends Loader {
         if (this.user.hasChanged) {
             this.user.save();
         }
-        if (this.room.hasChanged) {
+        if (this.room && this.room.hasChanged) {
             this.room.update();
         }
         this.room.stuffs.forEach(s => s.hasChanged ? s.save() : '');
@@ -50,20 +51,22 @@ class ProfileState extends Loader {
             this.user && this.user.hasChanged ||
                 this.room && this.room.hasChanged && this.room.isValid ||
                 this.room && this.room.stuffs && this.room.stuffs.some(s => !!s.hasChanged) ?
-                <button onClick={_ => this.saveChanges()}>Save</button> :
-                null;
-        const CreateRoom = this.user && this.user.room ?
-            null :
-            <button onClick={_ => this.createRoom()}>Add a room</button>;
-        return [
-            DashBoard,
-            SaveButton,
-            CreateRoom
-        ];
+                <Button
+                    message="Save"
+                    action={_ => this.saveChanges()}
+                    appear
+                /> : null;
+        const CreateRoom = this.user && this.user.room ? null :
+            <Button
+                message="Add a room"
+                action={_ => this.createRoom()}
+                appear
+            />;
+        return [ DashBoard, SaveButton, CreateRoom ];
     }
     loadProfile() {
         this.execute('ProfileQuery', {
-            variables: { id: layoutState.user["_id"] },
+            variables: { id: layoutState.userId },
             cb: (data: any) => {
                 const { profile } = data;
                 if (!profile) throw 'oops, profile hasnt been fetched';
@@ -78,6 +81,7 @@ export const profileState = new ProfileState(Document);
 @observer
 export default class Profile extends React.Component<any, any> {
     componentWillMount() {
+        console.log(layoutState.userId);
         profileState.loadProfile();
         layoutState.reset();
         layoutState.title = "Profile";
