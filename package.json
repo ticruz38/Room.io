@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node webpackdevserver",
     "build": "webpack -p",
+    "buildSchema": "ts-node graph/schema",
     "guardnode": "rm -rf ~/.jsipfs/repo.lock && ts-node mocks/GuardNode",
     "test": "mocha",
     "feed": "node mocks/generate-cli"
