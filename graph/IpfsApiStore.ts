@@ -37,6 +37,10 @@ class IpfsStore {
         ])
     }
 
+    get currentUserId(): String {
+        return sessionStorage.getItem('userId');
+    }
+
     uploadFile(input, cb?: (err, res: any) => void) {
         const readFileContent = (file) => {
             return new Promise((resolve, reject) => {
@@ -75,7 +79,7 @@ class IpfsStore {
                             buf.push(data)
                         })
                         file.content.once('end', () => {
-                            console.log('data file', index++ );
+                            console.log('data file truly ended', index++ );
                             const listItem = createFileBlob(buf, hash)
                             resolve(listItem);
                         })
@@ -138,8 +142,7 @@ class IpfsStore {
             DataBase,
             bootIpfs
             ]).then(value => {
-            this.ownerAddress = value[0].account;
-            this.web3DB = new Web3DB(this.ipfs, value[0].instance, value[0].account, value[1]);
+            this.web3DB = new Web3DB(this.ipfs, value[1] );
         })
     }
 }

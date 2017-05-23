@@ -10,6 +10,7 @@ import Signup from './Signup';
 import { layoutState } from 'routes/layout/Layout';
 
 import { EditableUser } from "models";
+
 @observer
 export default class Login extends React.Component<any, any> {
 
@@ -36,7 +37,6 @@ export default class Login extends React.Component<any, any> {
 
     connectWithUport() {
         layoutState.connect.requestCredentials().then(credentials => {
-            console.log(credentials);
             const userInput = new EditableUser({
                 _id: credentials.address,
                 name: credentials.name,

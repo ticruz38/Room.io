@@ -2,7 +2,6 @@ const Web3 = require('web3');
 const contract = require('truffle-contract');
 // const database_artifact = require('/Users/tduchene/Code/truffle/build/contracts/DataBase.json');
 const database = require('/Users/tduchene/Code/truffle/bin/contracts/DataBase.json');
-console.log(database);
 
 const DataBase: Promise<{instance: any, account: string}> = new Promise((resolve, reject) => {
     // if we are in mist or metamask the var web3 is already there

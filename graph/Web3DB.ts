@@ -1,34 +1,51 @@
 import * as OrbitDB from 'orbit-db';
 import * as Ipfs from 'ipfs';
 import { uniq } from './utils';
+import { Connect } from 'uport-connect'
+
+const database = require('/Users/tduchene/Code/truffle/bin/contracts/DataBase.json');
 
 const dbs = ['user', 'order', 'room', 'stuff'];
 
 const ROOMDATAREQUEST = 'roomio:data:request';
 const ROOMDATAUPDATE = 'roomio:data:update';
 const PEERS = 'peers';
-
+const uport = new Connect('Roomio');
 
 //TODO Make it listening to sinced db events and notify the guardian about the new hash
 export default class Web3DB extends OrbitDB {
     _peers: string[] = [];
+    web3: any // ethereum connector
+    account: string //ethereum account address
+    dbContract: any;
 
-    constructor(ipfs: Ipfs, public dbContract: any, public account: string, public peerId: string) {
+    constructor(ipfs: Ipfs, public peerId: string ) {
         super(ipfs);
-        window['web3'] = ipfs;
+        window['ipfs'] = ipfs;
+        const db = uport.contract(JSON.parse(database.abi));
+        this.dbContract = db.at(["0x330cd6C307E8B0aaCbbe3183C5273ef948D6005A"]);
         // subscribe to a common chanel for all active peers in the app
         this._ipfs.pubsub.subscribe(PEERS, () => null);
-        this.listenToContract();
-        this.syncWithContract();
+        this.web3 = uport.getWeb3();
+        this.web3.eth.getAccounts((err, accs) => {
+            console.log(accs);
+            const account = accs[0];
+            this.dbContract.getCollection.call("room", { from: account }).then(dbHash => {
+                this._loadStore("room", dbHash);
+            });
+        })
+        console.log(this.dbContract);
+        // this.web3 = uport.getWeb3();
+        // this.syncWithContract();
     }
 
     listenToContract() {
         const dbUpdate = this.dbContract.dbUpdate();
         dbUpdate.watch((err, result) => {
             if (err) return console.log(err);
-            console.log('dbUpdate watched');
+            // console.log('dbUpdate watched');
             // update cache hash and reload store
-            this._pubsub.publish(result.collection, result.hash);
+            this._pubsub.publish(result.collection, result.collectionHash);
         });
         const newConnection = this.dbContract.peerAdded();
         newConnection.watch((err, peer) => {
@@ -44,14 +61,12 @@ export default class Web3DB extends OrbitDB {
     //notify the contract about a new connection and get the latests collection hash
     syncWithContract() {
         // I wish I could just make a call, but then the event is'nt triggered
-        this.dbContract.addPeer(this.peerId, { from: this.account })
-            .then(result => console.log('addPeer', result))
-            .catch(err => console.log(err))
-        dbs.map(dbName =>
-            this.dbContract.getCollection.call(dbName, { from: this.account }).then(dbHash => {
-                this._loadStore(dbName, dbHash);
-            })
-        )
+        // this.dbContract.addPeer(this.peerId, { from: this.account })
+        //     .then(result => console.log('addPeer', result))
+        //     .catch(err => console.log(err))
+        this.dbContract.getCollection.call("room").then(dbHash => {
+            this._loadStore("room", dbHash);
+        });
     }
 
     _openConnection(addr) {
@@ -62,7 +77,6 @@ export default class Web3DB extends OrbitDB {
     }
 
     _connectWithPeers(peers) {
-        console.log(peers);
         this._ipfs.pubsub.peers(PEERS, (err, peersConnected) => {
             if (err) return console.error(err);
             let newPeers = peers.filter(pId => !this._peers.find(id => id === pId));
