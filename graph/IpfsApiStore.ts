@@ -4,7 +4,6 @@ import { EventEmitter } from 'events';
 import * as through from 'through2';
 import * as concat from 'concat-stream';
 import * as Ipfs from 'ipfs';
-import DataBase from './DbContract';
 import Web3DB from './Web3DB';
 
 
@@ -117,7 +116,7 @@ class IpfsStore {
         });
     }
 
-    startWeb3DB(): Promise<any> {
+    startWeb3DB(): Promise< any > {
         this.ipfs = new Ipfs({
             EXPERIMENTAL: { pubsub: true },
             config: {
@@ -128,21 +127,18 @@ class IpfsStore {
                 }
             }
         });
-        const bootIpfs: Promise<string> = new Promise((resolve, reject) => {
+        return new Promise( (resolve, reject) => {
             this.ipfs.on('ready', () => {
                 // We instantiate Orbit-db with our ipfs client node
                 this.ipfs.id().then( (peer: {id: string}) => {
                     console.log('resolved peer', peer);
-                    resolve(peer.id);
+                    this.web3DB = new Web3DB(this.ipfs, peer.id);
+                    resolve(this.web3DB);
                 })
+            });
+            this.ipfs.on('error', _ => {
+                reject();
             })
-            this.ipfs.on('error', (err) => reject(err))
-        });
-        return Promise.all([
-            DataBase,
-            bootIpfs
-            ]).then(value => {
-            this.web3DB = new Web3DB(this.ipfs, value[1] );
         })
     }
 }
