@@ -12,8 +12,12 @@ const DataBase: Promise<{instance: any, account: string}> = new Promise((resolve
         window["web3"] = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
     }
     const db = window['web3'].eth.contract(JSON.parse(database.abi));
+    // Contract is unfindable at the current address!!
     const dbInstance = db.at(['0x330cd6C307E8B0aaCbbe3183C5273ef948D6005A']);
-    resolve(dbInstance);
+    web3.eth.getAccounts( (err, accs ) => {
+        console.log(accs);
+        resolve( { instance: dbInstance, account: accs[0] });
+    } )
 });
 
 export default DataBase;
