@@ -9,9 +9,10 @@ import AuthButton from './visuals/AuthButton';
 import Modal from './visuals/Modal';
 import Loader from "graph/Loader";
 import Button from 'components/Button';
+import { EditableUser } from "models";
 
 import db from 'graph/IpfsApiStore';
-
+console.log(db);
 const Document = require('./Layout.gql');
 
 interface LayoutProps {
@@ -24,13 +25,11 @@ export class LayoutState {
     @observable title: string;
     @observable user: User
     @observable backgroundImage: string;
-    connect = new Connect('roomio');
 
     constructor() {
-        console.log(this.userId, sessionStorage.getItem('userId'));
-        if( this.userId ) {
-            Loader.execute( Document, 'getUser', {id: this.userId } ).then( result => {
-                if( result.errors) throw result.errors;
+        if (this.userId) {
+            Loader.execute(Document, 'getUser', { id: this.userId }).then(result => {
+                if (result.errors) throw result.errors;
                 this.user = result.data.user;
             });
         }
@@ -43,7 +42,7 @@ export class LayoutState {
     get userId(): String { return sessionStorage.getItem('userId') };
     reset() {
         this.setModal(null);
-        this.setToolbar(<span/>);
+        this.setToolbar(<span />);
         this.backgroundImage = null;
         this.searchBar = false;
         this.backRoute = null;
@@ -66,6 +65,22 @@ export default class Layout extends React.Component<any, state> {
     state = { modal: false, toolbar: null };
 
     componentWillMount() {
+        // startup web3Db;
+        db.bootingDb.then(web3DB => {
+            web3DB.startUp((err, credentials) => {
+                if(!credentials) this.props.router.push('/'); //back to home page
+                new EditableUser({
+                    _id: credentials.address,
+                    name: credentials.name,
+                    picture: credentials.image ? credentials.image.contentUrl.split('/').pop() : ''
+                }).logWithUport(result => {
+                    const user = result.data.user;
+                    console.log(result.data);
+                    layoutState.user = user;
+                    sessionStorage.setItem('userId', user._id);
+                });
+            })
+        });
         layoutState.setModal = (modal) => this.setState({ ...this.state, modal: modal });
         layoutState.setToolbar = (toolbar: React.ReactElement<any> | React.ReactElement<any>[]) => this.setState({ ...this.state, toolbar: toolbar });
     }
@@ -86,7 +101,7 @@ export default class Layout extends React.Component<any, state> {
             <Button
                 to="/rooms"
                 icon={<i className="material-icons">weekend</i>}
-                className='app-icon' 
+                className='app-icon'
                 appear
             />
         );
@@ -111,7 +126,7 @@ export default class Layout extends React.Component<any, state> {
                         <div className="right-items">
                             <div className='auth'>
                                 <AuthButton
-                                    reset={_ => layoutState.user = {} }
+                                    reset={_ => layoutState.user = {}}
                                     user={layoutState.user}
                                     setModal={layoutState.setModal}
                                 />
@@ -133,3 +148,4 @@ export default class Layout extends React.Component<any, state> {
 
 
 import './Layout.scss';
+

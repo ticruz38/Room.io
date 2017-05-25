@@ -2,15 +2,15 @@ import * as OrbitDB from 'orbit-db';
 import * as Ipfs from 'ipfs';
 import { uniq } from './utils';
 import { Connect } from 'uport-connect'
+import dbContract from './DbContract';
 
-const database = require('/Users/tduchene/Code/truffle/bin/contracts/DataBase.json');
-
+const database = require('/Users/tduchene/Code/truffle/build/contracts/DataBase.json');
+const contract = require('truffle-contract');
 const dbs = ['user', 'order', 'room', 'stuff'];
 
 const ROOMDATAREQUEST = 'roomio:data:request';
 const ROOMDATAUPDATE = 'roomio:data:update';
 const PEERS = 'peers';
-const uport = new Connect('Roomio');
 
 //TODO Make it listening to sinced db events and notify the guardian about the new hash
 export default class Web3DB extends OrbitDB {
@@ -22,24 +22,23 @@ export default class Web3DB extends OrbitDB {
     constructor(ipfs: Ipfs, public peerId: string ) {
         super(ipfs);
         window['ipfs'] = ipfs;
-        const db = uport.contract(JSON.parse(database.abi));
-        this.dbContract = db.at(["0x330cd6C307E8B0aaCbbe3183C5273ef948D6005A"]);
         // subscribe to a common chanel for all active peers in the app
         this._ipfs.pubsub.subscribe(PEERS, () => null);
-        this.web3 = uport.getWeb3();
-        this.web3.eth.getAccounts((err, accs) => {
-            console.log(accs);
-            const account = accs[0];
-            this.dbContract.getCollection.call("room", { from: account }).then(dbHash => {
-                this._loadStore("room", dbHash);
-            });
-        })
-        console.log(this.dbContract);
         // this.web3 = uport.getWeb3();
         // this.syncWithContract();
     }
 
-    listenToContract() {
+    startUp(cb) {
+        return dbContract().then(({instance, credentials}) => {
+            this.dbContract = instance;
+            this.account = credentials.address;
+            this._syncWithContract();
+            this._listenToContract();
+            cb(null, credentials);
+        }).catch(error => cb(error, null));
+    }
+
+    _listenToContract() {
         const dbUpdate = this.dbContract.dbUpdate();
         dbUpdate.watch((err, result) => {
             if (err) return console.log(err);
@@ -54,19 +53,23 @@ export default class Web3DB extends OrbitDB {
         });
         // get the last connection forwarded by the event
         newConnection.get((err, peers) => {
+            console.log(peers);
             const newPeers = peers.map(p => p.args.ipfsHash);
             this._connectWithPeers(newPeers);
         });
     }
     //notify the contract about a new connection and get the latests collection hash
-    syncWithContract() {
+    _syncWithContract() {
         // I wish I could just make a call, but then the event is'nt triggered
-        // this.dbContract.addPeer(this.peerId, { from: this.account })
-        //     .then(result => console.log('addPeer', result))
-        //     .catch(err => console.log(err))
-        this.dbContract.getCollection.call("room").then(dbHash => {
-            this._loadStore("room", dbHash);
-        });
+        this.dbContract.addPeer(this.peerId, { from: this.account, gas: 210000 })
+            .then(result => console.log('addPeer', result))
+            .catch(err => console.log(err))
+        dbs.map( db => 
+            this.dbContract.getCollection.call(db).then(dbHash => {
+                console.log(db, dbHash);
+                this._loadStore(db, dbHash);
+            })
+        )
     }
 
     _openConnection(addr) {
@@ -132,7 +135,11 @@ export default class Web3DB extends OrbitDB {
         //@TODO check if the previous ownerAddress block match the account
         // if not throw an error, ownerAddress shouldnt be mutated
         if (this._pubsub) setImmediate(() => {
-            this.dbContract.saveCollection(dbname, hash, { from: this.account })
+            console.log(this.account, dbname, hash);
+            window["web3"].eth.getBalance( this.account, (err, result) => console.log(result.toString(10)));
+            this.dbContract.saveCollection(dbname, hash, { from: this.account, gas: 210000 })
+            .then( transaction => console.log(transaction))
+            .catch( error => console.log(error))
             // notify the blockchain about new entry
             // this._pubsub.publish(dbname, heads);
         });
