@@ -23,7 +23,7 @@ export default class Web3DB extends OrbitDB {
         super(ipfs);
         window['ipfs'] = ipfs;
         // subscribe to a common chanel for all active peers in the app
-        this._ipfs.pubsub.subscribe(PEERS, () => null);
+        // this._ipfs.pubsub.subscribe(PEERS, () => null);
         // this.web3 = uport.getWeb3();
         // this.syncWithContract();
     }
@@ -42,28 +42,15 @@ export default class Web3DB extends OrbitDB {
         const dbUpdate = this.dbContract.dbUpdate();
         dbUpdate.watch((err, result) => {
             if (err) return console.log(err);
-            // console.log('dbUpdate watched');
             // update cache hash and reload store
-            this._pubsub.publish(result.collection, result.collectionHash);
-        });
-        const newConnection = this.dbContract.peerAdded();
-        newConnection.watch((err, peer) => {
-            const newPeer = peer.args.ipfsHash;
-            this._connectWithPeers([newPeer, ...this._peers]);
-        });
-        // get the last connection forwarded by the event
-        newConnection.get((err, peers) => {
-            console.log(peers);
-            const newPeers = peers.map(p => p.args.ipfsHash);
-            this._connectWithPeers(newPeers);
+            // sorry the collection is the hash, the hash is the collection, neet ot fix this in the contract
+            this._onMessage(result.args.hash, result.args.collection);
         });
     }
+
     //notify the contract about a new connection and get the latests collection hash
     _syncWithContract() {
         // I wish I could just make a call, but then the event is'nt triggered
-        this.dbContract.addPeer(this.peerId, { from: this.account, gas: 210000 })
-            .then(result => console.log('addPeer', result))
-            .catch(err => console.log(err))
         dbs.map( db => 
             this.dbContract.getCollection.call(db).then(dbHash => {
                 console.log(db, dbHash);
@@ -72,27 +59,12 @@ export default class Web3DB extends OrbitDB {
         )
     }
 
-    _openConnection(addr) {
-        this._ipfs.swarm.connect(addr, (err) => {
-            if (err) return console.error(err);
-            console.log('opened connection with ' + addr);
-        });
-    }
-
-    _connectWithPeers(peers) {
-        this._ipfs.pubsub.peers(PEERS, (err, peersConnected) => {
-            if (err) return console.error(err);
-            let newPeers = peers.filter(pId => !this._peers.find(id => id === pId));
-            this._peers = uniq([...peers, ...peersConnected]);
-            newPeers.map(pId => this._openConnection('/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss/ipfs/' + pId));
-        })
-    }
-
     _loadStore(dbName, dbHash) {
         console.log('loadStore', dbName, dbHash);
         if (!dbHash.length) return this.stores[dbName].events.emit('loaded', dbName);
         this.stores[dbName]._cache.set(dbName, dbHash).then(_ => {
             this.stores[dbName].load();
+            // load items one by one
             this.stores[dbName].load(1).then(_ => {
                 let index = 0;
                 const loadMore = () => {
@@ -121,9 +93,6 @@ export default class Web3DB extends OrbitDB {
 
         this.stores[dbname] = store;
 
-        if (opts.replicate && this._pubsub)
-            this._pubsub.subscribe(dbname, this._onMessage.bind(this))
-
         return store
     }
 
@@ -134,7 +103,7 @@ export default class Web3DB extends OrbitDB {
         if (!heads) throw new Error("'heads' not defined");
         //@TODO check if the previous ownerAddress block match the account
         // if not throw an error, ownerAddress shouldnt be mutated
-        if (this._pubsub) setImmediate(() => {
+        setImmediate(() => {
             console.log(this.account, dbname, hash);
             window["web3"].eth.getBalance( this.account, (err, result) => console.log(result.toString(10)));
             this.dbContract.saveCollection(dbname, hash, { from: this.account, gas: 210000 })
