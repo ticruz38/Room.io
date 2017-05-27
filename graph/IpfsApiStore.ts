@@ -118,7 +118,6 @@ class IpfsStore {
 
     startWeb3DB(): Promise<any> {
         this.ipfs = new ipfsApi({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
-        console.log(this.ipfs);
         return new Promise((resolve, reject) => {
             // We instantiate Orbit-db with our ipfs client node
             this.ipfs.id().then((peer: { id: string }) => {

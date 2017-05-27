@@ -12,7 +12,6 @@ import Button from 'components/Button';
 import { EditableUser } from "models";
 
 import db from 'graph/IpfsApiStore';
-console.log(db);
 const Document = require('./Layout.gql');
 
 interface LayoutProps {
@@ -39,7 +38,7 @@ export class LayoutState {
     setModal: (modal: boolean | React.ReactElement<any> | React.ReactNode | any[]) => void;
     setToolbar: (toolbar: React.ReactElement<any> | React.ReactElement<any>[]) => void;
 
-    get userId(): String { return sessionStorage.getItem('userId') };
+    get userId(): string { return sessionStorage.getItem('userId') };
     reset() {
         this.setModal(null);
         this.setToolbar(<span />);
@@ -68,6 +67,7 @@ export default class Layout extends React.Component<any, state> {
         // startup web3Db;
         db.bootingDb.then(web3DB => {
             web3DB.startUp((err, credentials) => {
+                console.log(err, credentials);
                 if(!credentials) this.props.router.push('/'); //back to home page
                 new EditableUser({
                     _id: credentials.address,
@@ -75,11 +75,10 @@ export default class Layout extends React.Component<any, state> {
                     picture: credentials.image ? credentials.image.contentUrl.split('/').pop() : ''
                 }).logWithUport(result => {
                     const user = result.data.user;
-                    console.log(result.data);
                     layoutState.user = user;
                     sessionStorage.setItem('userId', user._id);
                 });
-            })
+            });
         });
         layoutState.setModal = (modal) => this.setState({ ...this.state, modal: modal });
         layoutState.setToolbar = (toolbar: React.ReactElement<any> | React.ReactElement<any>[]) => this.setState({ ...this.state, toolbar: toolbar });

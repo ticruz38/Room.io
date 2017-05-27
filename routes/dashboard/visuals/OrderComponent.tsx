@@ -40,6 +40,7 @@ export default class OrderComponent extends React.Component<{order: Order, roomI
                 </div>
             );
         };
+        console.log(order);
         return (
             <div ref="order"
                 className="order-component"

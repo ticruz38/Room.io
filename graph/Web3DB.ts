@@ -53,14 +53,12 @@ export default class Web3DB extends OrbitDB {
         // I wish I could just make a call, but then the event is'nt triggered
         dbs.map( db => 
             this.dbContract.getCollection.call(db).then(dbHash => {
-                console.log(db, dbHash);
                 this._loadStore(db, dbHash);
             })
         )
     }
 
     _loadStore(dbName, dbHash) {
-        console.log('loadStore', dbName, dbHash);
         if (!dbHash.length) return this.stores[dbName].events.emit('loaded', dbName);
         this.stores[dbName]._cache.set(dbName, dbHash).then(_ => {
             this.stores[dbName].load();
@@ -99,13 +97,10 @@ export default class Web3DB extends OrbitDB {
     /* Data events */
     _onWrite(dbname, hash, entry, heads) {
         // 'New entry written to database...', after adding a new db entry locally
-        console.log(".WROTE", dbname, hash, heads, this.account);
         if (!heads) throw new Error("'heads' not defined");
         //@TODO check if the previous ownerAddress block match the account
         // if not throw an error, ownerAddress shouldnt be mutated
         setImmediate(() => {
-            console.log(this.account, dbname, hash);
-            window["web3"].eth.getBalance( this.account, (err, result) => console.log(result.toString(10)));
             this.dbContract.saveCollection(dbname, hash, { from: this.account, gas: 210000 })
             .then( transaction => console.log(transaction))
             .catch( error => console.log(error))
