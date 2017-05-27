@@ -7,7 +7,7 @@ import * as Ipfs from 'ipfs';
 import Web3DB from './Web3DB';
 
 
-// import IpfsDaemon from './IpfsDaemon';
+const ipfsApi = require('ipfs-api');
 const Logger = require('logplease');
 
 const logger = Logger.create('Ipfs-server');
@@ -52,7 +52,7 @@ class IpfsStore {
             .then(buffer => {
                 return this.ipfs.files.add([{
                     path: input.name,
-                    content: new this.ipfs.types.Buffer(buffer)
+                    content: new this.ipfs.Buffer(buffer)
                 }])
             })
             .then(files => {
@@ -78,7 +78,7 @@ class IpfsStore {
                             buf.push(data)
                         })
                         file.content.once('end', () => {
-                            console.log('data file truly ended', index++ );
+                            console.log('data file truly ended', index++);
                             const listItem = createFileBlob(buf, hash)
                             resolve(listItem);
                         })
@@ -116,30 +116,17 @@ class IpfsStore {
         });
     }
 
-    startWeb3DB(): Promise< any > {
-        this.ipfs = new Ipfs({
-            EXPERIMENTAL: { pubsub: true },
-            config: {
-                Addresses: {
-                    Swarm: [
-                        '/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss'
-                    ]
-                }
-            }
-        });
-        return new Promise( (resolve, reject) => {
-            this.ipfs.on('ready', () => {
-                // We instantiate Orbit-db with our ipfs client node
-                this.ipfs.id().then( (peer: {id: string}) => {
-                    console.log('resolved peer', peer);
-                    this.web3DB = new Web3DB(this.ipfs, peer.id);
-                    resolve(this.web3DB);
-                })
-            });
-            this.ipfs.on('error', _ => {
-                reject();
+    startWeb3DB(): Promise<any> {
+        this.ipfs = new ipfsApi({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
+        console.log(this.ipfs);
+        return new Promise((resolve, reject) => {
+            // We instantiate Orbit-db with our ipfs client node
+            this.ipfs.id().then((peer: { id: string }) => {
+                console.log('resolved peer', peer);
+                this.web3DB = new Web3DB(this.ipfs, peer.id);
+                resolve(this.web3DB);
             })
-        })
+        });
     }
 }
 
