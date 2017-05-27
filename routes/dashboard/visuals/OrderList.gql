@@ -1,0 +1,9 @@
+query LoadOrder( $orderId: String! ) {
+    order(id: $orderId) {
+        _id
+        client {
+            _id
+            name
+        }
+    }
+}

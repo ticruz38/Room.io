@@ -103,11 +103,11 @@ class DashboardState extends Loader {
     watchOrders() {
         this.execute('WatchOrders', {
             variables: { roomId: this.room._id },
-            contextValue: this,
-         } );
+            contextValue: this
+        } );
     }
     loadRoom() {
-        this.execute('RoomWithOrders', {
+        this.execute('LoadRoom', {
             variables: { userId: layoutState.userId },
             cb: (data: any) => {
                 const { room } = data.user;

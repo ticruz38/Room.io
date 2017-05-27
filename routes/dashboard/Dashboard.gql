@@ -1,26 +1,8 @@
-query RoomWithOrders( $userId: String ) {
+query LoadRoom( $userId: String! ) {
     user( id: $userId ) {
         room {
             _id
             name
-            orders {
-                _id
-                created
-                stuffs {
-                    _id
-                    name
-                    category
-                    price
-                }
-                client {
-                    _id
-                    name
-                }
-                payed
-                treated
-                created
-                amount
-            }
         }
     }
 }

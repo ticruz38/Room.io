@@ -15,6 +15,9 @@ export default {
     user( root, args, context ) {
         return db.user.then( userDb => userDb.query( u => u._id === args.id )[0] );
     },
+    order( root, args, content ) {
+        return db.order.then( orderDb => orderDb.get( args.id )[0] );
+    },
     login( root, { login }, context ) {
         return new Promise(( resolve, reject ) => {
             db.user.then( userDb => {

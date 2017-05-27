@@ -1,4 +1,4 @@
 type Subscription {
-    watchOrders(id: String!): [Order]
+    watchOrders(id: String!): [Order] #We have a roomInput back because I can't check subfield here...
     watchRooms: [Room]
 }
