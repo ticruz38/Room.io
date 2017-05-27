@@ -5,6 +5,10 @@ $title-font: 'Raleway', sans-serif;
 
 $yellow: #ffc107;
 $lightyellow: lighten(#ffc107, 15%);
+$green: #289057;
+$lightgreen: #25d678;
+$warning: #d2691e;
+$lightwarning: lighten(#d2691e, 25%);
 $orange: rgb(245, 124, 0);
 $whitesmoke: #EFEFEF;
 $transparent-grey: rgba(0, 0, 0, 0.07);
@@ -32,12 +36,6 @@ h1, h2, h3, h4, h5, .title {
   display: none !important;
 }
 
-a {
-  text-decoration: none;
-  color: gold;
-  cursor: pointer;
-}
-
 .buttons {
     display: flex;
     >* {
@@ -45,20 +43,8 @@ a {
     }
 }
 
-.btn {
-  border-radius: 3px;
-  cursor: pointer;
-  background: lightyellow;
-  display: flex;
-  font-size: 18px;
-  border: none;
-  outline: none;
-  color: black;
-  padding: 5px;
-  font-family: inherit;
-  &.disabled {
-    color: gold;
-  }
+a {
+    text-decoration: none;
 }
 
 .Select {

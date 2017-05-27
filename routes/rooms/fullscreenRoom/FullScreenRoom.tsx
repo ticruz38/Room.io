@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 
 // roomio
 import { SpinnerIcon, EthereumIcon } from 'components/icons';
+ import { Button } from "components";
 import Loader from 'graph/Loader';
 import { layoutState } from 'routes/layout/Layout';
 import { EditableOrder } from "models";
@@ -19,6 +20,7 @@ const Document = require( './FullScreenRoom.gql' );
 interface props {
     room: Room,
     params: any;
+    location: any;
     router: any;
     children: any;
 }
@@ -26,8 +28,12 @@ interface props {
 export class RoomState extends Loader {
     @observable room: Room;
     @observable order: EditableOrder;
+
     @computed get amount(): number {
-        return this.stuffs.reduce( ( prev, cur ) => prev + cur[1].price || 0, 0 )
+        return this.order.stuffIds.reduce( ( acc, cur ) => {
+            const currentRoom = this.room.stuffs.find( s => s._id === cur );
+            return acc + currentRoom.price || 0
+        }, 0);
     }
 
     @computed get stuffs(): any[][] { // [number, Stuff][]
@@ -76,11 +82,31 @@ export default class FullscreenRoom extends React.Component<props, RoomState> {
         layoutState.onClose = () => this.props.router.push( { pathname: '/rooms' } )
         this.roomState.room = this.props.room;
     }
+    // the button on the top left order screen
+    get orderButton() {
+        const { order } = this.roomState;
+        if ( order && order.stuffIds.length && !this.props.location.pathname.includes('/order') ) {
+            return (
+                <Button
+                    message='Order'
+                    to={'rooms/' + this.props.params.roomId + '/order'} 
+                />
+            );
+        }
+        if ( this.props.location.pathname.includes('/order') ) {
+            return (
+                <Button
+                    message='Cancel'
+                    to={'rooms/' + this.props.params.roomId} 
+                />
+            )
+        }
+    }
 
     @computed get logNeeded() {
         return layoutState.user ? 
             null :
-            <p className="warning">You need to be logged in to pass an order</p>
+            <p className="warning-message">You need to be logged in to pass an order</p>
     }
 
     render() {
@@ -92,11 +118,7 @@ export default class FullscreenRoom extends React.Component<props, RoomState> {
                     <h1>{room.name}</h1>
                     <div className='right-buttons'>
                         { order ? <div>{ this.roomState.amount} <EthereumIcon /> </div> : null }
-                        <div className="chat"><i className="material-icons">chat</i></div>
-                        { order && order.stuffIds.length ?
-                            <Link to={'rooms/' + this.props.params.roomId + '/order'} className="btn">Order</Link> : 
-                            null
-                        }
+                        { this.orderButton }
                     </div>
                 </div>
                 <p className="room-description">{ room.description }</p>
@@ -109,3 +131,4 @@ export default class FullscreenRoom extends React.Component<props, RoomState> {
 
 
 import './FullScreenRoom.scss';
+
