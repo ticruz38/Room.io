@@ -17,7 +17,7 @@ export default class OrderList extends React.Component<{}, any> {
 
     get emptyList() {
         return (
-            <div className="empty-list">
+            <div className="dashboard">
                 <i className="material-icons">hot_tub</i>
                 <p>You ain't got no order yet</p>
             </div>
@@ -39,6 +39,7 @@ export default class OrderList extends React.Component<{}, any> {
     }
 
     render() {
+        // console.log('orderLIst', this.prevItems, this.nextItems);
         if( !this.prevItems.length && !this.nextItems.length) return this.emptyList;
         return (
             <div className="dashboard">
@@ -50,3 +51,5 @@ export default class OrderList extends React.Component<{}, any> {
         );
     }
 }
+
+import './OrderList.scss';

@@ -1,0 +1,9 @@
+@import 'routes/index.scss';
+
+.dashboard {
+    text-align: center;
+    >i {
+        color: $yellow;
+        font-size: 5em;
+    }
+}

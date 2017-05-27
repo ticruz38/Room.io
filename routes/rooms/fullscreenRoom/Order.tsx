@@ -18,8 +18,9 @@ export default class Order extends React.Component<props, any> {
 
     sendOrder = () => {
         const { roomState } = this.props;
+        // roomState.order = new EditableOrder( null, layoutState.userId, this.props.params.roomId);
+        console.log(roomState.order.toInput());
         roomState.order.create()
-        roomState.order = new EditableOrder( null, layoutState.user._id, this.props.params.roomId);
         this.props.router.push( { pathname: '/rooms/' + this.props.params.roomId } )
     }
 

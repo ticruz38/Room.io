@@ -7,6 +7,7 @@ import { observer } from 'mobx-react';
 import uiStore from '../UiStore';
 import { layoutState } from '../layout/Layout';
 import { uintRandom } from 'mocks/Generate';
+import { IpfsImage } from "components";
 import Loader from 'graph/Loader';
 
 const RoomDocument = require( './RoomFeed.gql' );
@@ -103,6 +104,3 @@ class RoomComponent extends React.Component< any, any > {
 }
 
 import './RoomFeed.scss';
-import { IpfsImage } from "components";
-
-
