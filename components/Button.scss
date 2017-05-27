@@ -47,6 +47,22 @@
         }
         font-size: 3vh;
     }
+    &.valid {
+        background: $lightgreen;
+        color: $green;
+        border: 1px solid $green;
+        &:hover {
+            background: $whitesmoke;
+        }
+    }
+    &.warning {
+        background: $lightwarning;
+        color: $warning;
+        border: 1px solid $warning;
+        &:hover {
+            background: $whitesmoke;
+        }
+    }
 }
 button, a, .button {
     @include button;
