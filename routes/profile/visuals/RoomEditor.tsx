@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as mobx from 'mobx';
 import { observer } from 'mobx-react';
 import { Input } from 'components/form';
-import { Select } from 'components';
+import { Select, Option } from 'components';
 //models
 import { StuffInput, Field, EditableRoom, EditableStuff, EditableUser } from 'models';
 //layout
@@ -14,6 +14,7 @@ import Loader from 'graph/Loader';
 import { profileState } from 'routes/profile/Profile';
 import StuffEditor from './StuffEditor';
 import { IpfsImage, Button } from "components";
+const Tags = require('mocks/Tags.json');
 
 const Document = require('./RoomEditor.gql');
 
@@ -28,6 +29,7 @@ export default class RoomEditor extends React.Component< any, any > {
     }
     render() {
         const { room } = this.props;
+        console.log(Tags, room.tags);
         return (
             <div className="room-editor card">
                 <h2>Room</h2>
@@ -40,17 +42,16 @@ export default class RoomEditor extends React.Component< any, any > {
                         <Input field={room.phoneNumber} type="text" placeholder="phone-number" />
                         <Select 
                             placeholder="Add tags..."
-                            values={ {
-                                options: [],
+                            values={ mobx.observable({
+                                options: Tags,
                                 filters: room.tags
-                            } }
+                            }) }
                             allowCreate
                         />
                     </div>
                     <IpfsImage
                         picture={ room.picture }
                         onUpload={ (err, hash) => {
-                            console.log(room.picture.value);
                             room.picture.value = hash
                             room.picture.hasChanged = true;
                         } }

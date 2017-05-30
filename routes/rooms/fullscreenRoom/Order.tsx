@@ -5,6 +5,7 @@ import { EditableOrder } from "models";
 import { Input } from 'components/form';
 import { Button } from "components";
 import { layoutState } from "routes/layout/Layout";
+import uPort from 'graph/Uport';
 
 import { RoomState } from './FullscreenRoom';
 
@@ -19,12 +20,12 @@ export default class Order extends React.Component<props, any> {
     sendOrder = () => {
         const { roomState } = this.props;
         // roomState.order = new EditableOrder( null, layoutState.userId, this.props.params.roomId);
-        console.log(roomState.order.toInput());
         roomState.order.create()
         this.props.router.push( { pathname: '/rooms/' + this.props.params.roomId } )
     }
 
     sendTransaction = () => {
+        const web3 = uPort.getWeb3();
         web3.eth.sendTransaction({
             from: layoutState.user._id, 
             to:'0xd156a38ce652de569383df1b458400b5ebb1c808', 

@@ -103,7 +103,10 @@ class DashboardState extends Loader {
     watchOrders() {
         this.execute('WatchOrders', {
             variables: { roomId: this.room._id },
-            contextValue: this
+            contextValue: {},
+            cb: (data: any) => {
+                this.loadRoom();
+            }
         } );
     }
     loadRoom() {
@@ -114,7 +117,6 @@ class DashboardState extends Loader {
                 if(!room) throw 'oop, room hasnt been fetched';
                 this.room = room;
                 this.orders = room.orders || [];
-                this.watchOrders();
             }
         } )
     }

@@ -15,6 +15,8 @@ type SelectProps = {
     placeholder?: string; 
 }
 
+export type Option = Option;
+
 @observer
 export default class SelectComponent extends React.PureComponent< SelectProps, any > {
 
@@ -36,7 +38,6 @@ export default class SelectComponent extends React.PureComponent< SelectProps, a
 
     render() {
         const { filters, options } = this.props.values;
-        console.log(filters, options);
         return (
             <Select
                 placeholder={ this.props.placeholder || "Filter by..." }

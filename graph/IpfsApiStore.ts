@@ -121,7 +121,6 @@ class IpfsStore {
         return new Promise((resolve, reject) => {
             // We instantiate Orbit-db with our ipfs client node
             this.ipfs.id().then((peer: { id: string }) => {
-                console.log('resolved peer', peer);
                 this.web3DB = new Web3DB(this.ipfs, peer.id);
                 resolve(this.web3DB);
             })

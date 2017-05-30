@@ -18,8 +18,7 @@ import EditButtons from './visuals/EditButtons';
 
 //models 
 import { EditableRoom, EditableUser } from "models";
-// stream
-import bl = require('bl');
+
 const Document = require('./Profile.gql');
 
 

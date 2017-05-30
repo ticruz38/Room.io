@@ -23,6 +23,7 @@
     .flex-box {
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
         .form {
             flex-grow: 1;
         }

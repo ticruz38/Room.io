@@ -1,5 +1,5 @@
-import { Connect } from 'uport-connect';
-const uport = new Connect('Roomio');
+import uPort from './Uport';
+
 const Web3 = require('web3');
 const contract = require('truffle-contract');
 
@@ -21,10 +21,10 @@ const DataBase = (): Promise<{ instance: any, credentials: any }> => new Promise
         })
     } else {
         // set the provider you want from Web3.providers
-        window["web3"] = uport.getWeb3();
-        db.setProvider(web3.currentProvider);
+        window["web3"] = uPort.getWeb3();
+        db.setProvider(window["web3"].currentProvider);
         if (!sessionStorage.userId) {
-            return uport.requestCredentials().then(credentials => {
+            return uPort.requestCredentials().then(credentials => {
                 console.log(credentials);
                 db.deployed().then(instance => {
                     resolve({ instance, credentials });

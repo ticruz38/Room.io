@@ -3,6 +3,24 @@ query LoadRoom( $userId: String! ) {
         room {
             _id
             name
+            orders {
+                _id
+                message
+                created
+                payed
+                treated
+                amount
+                stuffs {
+                    _id
+                    name
+                    category
+                    price
+                }
+                client {
+                    _id
+                    name
+                }
+            }
         }
     }
 }
@@ -10,20 +28,5 @@ query LoadRoom( $userId: String! ) {
 subscription WatchOrders( $roomId: String! ) {
     orders: watchOrders( id: $roomId ) {
         _id
-        created
-        payed
-        treated
-        created
-        amount
-        stuffs {
-            _id
-            name
-            category
-            price
-        }
-        client {
-            _id
-            name
-        }
     }
 }

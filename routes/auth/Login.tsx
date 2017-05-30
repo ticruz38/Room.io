@@ -6,6 +6,7 @@ import { Input } from 'components/form';
 import { password, email } from 'components/form/Constraint';
 import Button from 'components/Button';
 import Loader from 'graph/Loader';
+import uPort from 'graph/Uport';
 import Signup from './Signup';
 import { layoutState } from 'routes/layout/Layout';
 
@@ -36,7 +37,8 @@ export default class Login extends React.Component<any, any> {
     }
 
     connectWithUport() {
-        layoutState.connect.requestCredentials().then(credentials => {
+        uPort.requestCredentials().then(credentials => {
+            console.log(credentials);
             const userInput = new EditableUser({
                 _id: credentials.address,
                 name: credentials.name,

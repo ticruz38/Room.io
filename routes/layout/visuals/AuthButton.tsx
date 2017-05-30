@@ -18,7 +18,7 @@ export default ( props: { reset: Function, setModal: Function, user: any} ) => {
         return <Button message={props.user.name} />
     }
 
-    return props.user ?
+    return props.user && props.user._id ?
         <Dropdown
             align='right'
             button={<ButtonContent {...props.user} />}

@@ -22,10 +22,7 @@ export default class Web3DB extends OrbitDB {
     constructor(ipfs: Ipfs, public peerId: string ) {
         super(ipfs);
         window['ipfs'] = ipfs;
-        // subscribe to a common chanel for all active peers in the app
-        // this._ipfs.pubsub.subscribe(PEERS, () => null);
-        // this.web3 = uport.getWeb3();
-        // this.syncWithContract();
+        window['web3DB'] = this;
     }
 
     startUp(cb) {
@@ -48,11 +45,18 @@ export default class Web3DB extends OrbitDB {
         });
     }
 
+    reset(dbName) {
+        this.dbContract.saveCollection(dbName, "", { from: this.account, gas: 210000 })
+            .then( transaction => console.log(transaction))
+            .catch( error => console.log(error))
+    }
+
     //notify the contract about a new connection and get the latests collection hash
     _syncWithContract() {
         // I wish I could just make a call, but then the event is'nt triggered
         dbs.map( db => 
             this.dbContract.getCollection.call(db).then(dbHash => {
+                console.log(db, dbHash);
                 this._loadStore(db, dbHash);
             })
         )
