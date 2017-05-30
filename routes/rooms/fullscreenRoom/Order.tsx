@@ -5,6 +5,7 @@ import { EditableOrder } from "models";
 import { Input } from 'components/form';
 import { Button } from "components";
 import { layoutState } from "routes/layout/Layout";
+import uPort from 'graph/Uport';
 
 import { RoomState } from './FullscreenRoom';
 
@@ -16,15 +17,15 @@ type props = {
 
 export default class Order extends React.Component<props, any> {
 
-    onSave() {
+    sendOrder = () => {
         const { roomState } = this.props;
+        // roomState.order = new EditableOrder( null, layoutState.userId, this.props.params.roomId);
         roomState.order.create()
-        roomState.order = new EditableOrder( null, layoutState.user._id, this.props.params.roomId);
         this.props.router.push( { pathname: '/rooms/' + this.props.params.roomId } )
     }
 
-    sendTransaction() {
-        const web3 = layoutState.connect.getWeb3();
+    sendTransaction = () => {
+        const web3 = uPort.getWeb3();
         web3.eth.sendTransaction({
             from: layoutState.user._id, 
             to:'0xd156a38ce652de569383df1b458400b5ebb1c808', 
@@ -68,11 +69,15 @@ export default class Order extends React.Component<props, any> {
                     field={ roomState.order.message }
                 />
                 <div className="buttons">
-                    <Link to={ "/rooms/" + this.props.params.roomId } className="btn">Cancel</Link>
-                    <Button 
-                        message="Order"
-                        className="btn" 
-                        action={ _ => this.sendTransaction() }
+                    <Button
+                        message="Pay now"
+                        className="valid"
+                        action={ this.sendTransaction } 
+                    />
+                    <Button
+                        message="Pay Later"
+                        className="warning"
+                        action={ this.sendOrder }
                     />
                 </div>
             </div>

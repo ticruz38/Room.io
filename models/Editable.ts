@@ -13,12 +13,12 @@ export default class Editable {
         const input: any = {}
         Object.keys(this)
             .filter(key => ( //filter editable entry to generate an input
-                !!this[key] &&
+                ( this[key] !== undefined && this[key] !== null ) &&
                 typeof this[key] !== 'function' &&
                 !(typeof this[key] !== 'string' && this[key].length !== undefined && typeof this[key][0] !== 'string') &&
                 key !== 'confirmPassword' &&
                 !(this[key] instanceof Editable)))
-            .map(key => this[key].value !== undefined ? input[key] = this[key].value : input[key] = this[key])
+            .map(key => this[key] && this[key].value !== undefined ? input[key] = this[key].value : input[key] = this[key])
         return input;
     }
 

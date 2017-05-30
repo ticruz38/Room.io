@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 import * as mobx from 'mobx';
 import * as moment from 'moment';
+import Loader from 'graph/Loader';
 import { observer } from 'mobx-react';
 
 import { EditableOrder } from "models";
@@ -9,6 +10,7 @@ import { EditableOrder } from "models";
 
 @observer
 export default class OrderComponent extends React.Component<{order: Order, roomId: string }, any> {
+
     get stuffs(): any[][] { // [number, Stuff][]
         const map = {};
         this.props.order.stuffs.forEach( s => map[s._id] ? map[s._id]++ : map[s._id] = 1 );
@@ -31,7 +33,6 @@ export default class OrderComponent extends React.Component<{order: Order, roomI
     };
 
     render() {
-        const order: Order = this.props.order;
         const createItem = ( s: Stuff ) => {
             return (
                 <div key={s[1]._id} className="order-stuff">
@@ -44,9 +45,9 @@ export default class OrderComponent extends React.Component<{order: Order, roomI
             <div ref="order"
                 className="order-component"
             >
-                <small className="order-number">{order._id}</small>
-                <small className="order-created">{ moment.unix(order.created).fromNow() }</small>
-                <h3>{order.client.name}<span className='price'>{this.amount ? this.amount + 'Rc': 'Free'}</span></h3>
+                <small className="order-number">{this.props.order._id}</small>
+                <small className="this.props.order-created">{ moment.unix(this.props.order.created).fromNow() }</small>
+                <h3>{this.props.order.client.name}<span className='price'>{this.amount ? this.amount + 'Rc': 'Free'}</span></h3>
                 <div className="flex">
                     <div className="items">
                         {this.stuffs.map( createItem )}

@@ -89,6 +89,7 @@ export default {
         });
     },
     logWithUport( root, { user }, context ) {
+        console.log('logwithuport', user);
         return db.user.then( userDb => {
             const userExist = userDb.get( user.email )[0];
             if(!userExist) {

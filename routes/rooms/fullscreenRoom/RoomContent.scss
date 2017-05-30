@@ -1,7 +1,15 @@
 .room-content-wrapper {
     display: flex;
+    align-items: flex-start;
     .room-content {
+        border-radius: 4px;
+        background: #ddd;
+        margin: 0 1em;
+        margin-top: 1em;
         width: 80%;
+        &:first-child {
+            margin-top: 1em;
+        }
     }
     .ipfs-picture {
         margin: 1em;
