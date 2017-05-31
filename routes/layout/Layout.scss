@@ -133,6 +133,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    &.unclosable {
+        cursor: auto;
+    }
     >* {
       cursor: default;
     }

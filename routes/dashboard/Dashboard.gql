@@ -19,6 +19,7 @@ query LoadRoom( $userId: String! ) {
                 client {
                     _id
                     name
+                    picture
                 }
             }
         }

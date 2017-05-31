@@ -1,9 +1,12 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import * as mobx from 'mobx';
-import * as moment from 'moment';
-import Loader from 'graph/Loader';
 import { observer } from 'mobx-react';
+import * as moment from 'moment';
+
+import Loader from 'graph/Loader';
+import { layoutState } from 'routes/layout/Layout';
+import FullscreenOrder from './FullscreenOrder';
 
 import { EditableOrder } from "models";
 
@@ -27,7 +30,7 @@ export default class OrderComponent extends React.Component<{order: Order, roomI
         this.editableOrder.update();
     }
 
-    componentWillUnmount = () => {
+    componentWillUnmount = () => { 
         const Order: any = this.refs['order']
         Order.className = 'leave';
     };
@@ -63,7 +66,10 @@ export default class OrderComponent extends React.Component<{order: Order, roomI
                             <i className="material-icons" onClick={ _ => { this.editableOrder.treated = 0; this.save() } }>check_box</i> :
                             <i className="material-icons" onClick={ _ => { this.editableOrder.treated = moment().unix(); this.save() } }>check_box_outline_blank</i>
                         }
-                        <i className="material-icons">open_with</i>
+                        <i
+                            className="material-icons" 
+                            onClick={_ => layoutState.setModal(<FullscreenOrder {...this.props} />) } 
+                        >open_with</i>
                     </div>
                 </div>
             </div>

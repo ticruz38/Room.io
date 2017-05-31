@@ -22,7 +22,7 @@ export default {
         db.roomWatch.then(dbroom => {
             const query = () => dbroom.query(doc => !!doc);
             dbroom.events.on('write', (dbname) => {
-                // logger.info('watchRoom:subscription:write', dbname);
+                logger.info('watchRoom:subscription:write', dbname);
                 context.rooms = query();
             })
             dbroom.events.on('synced', (dbname) => { // paralel loading

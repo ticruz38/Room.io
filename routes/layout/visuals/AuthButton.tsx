@@ -15,7 +15,7 @@ export default ( props: { reset: Function, setModal: Function, user: any} ) => {
                 readOnly
             />
         );
-        return <Button message={props.user.name} />
+        return <Button message={props.user.name || 'Welcome'} />
     }
 
     return props.user && props.user._id ?

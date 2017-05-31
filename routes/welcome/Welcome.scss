@@ -29,6 +29,16 @@ div.welcome {
         justify-content: space-around;
         li {
             margin: 2em 0;
+            img, .img {
+                margin: auto;
+                background-size: cover;
+                background-position: center center;
+                &.distributed {
+                    height: 10em;
+                    width: 14em;
+                    border-radius: 1em;
+                }
+            }
         }
     }
 

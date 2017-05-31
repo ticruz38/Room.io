@@ -25,15 +25,15 @@ export default class Order extends React.Component<props, any> {
     }
 
     sendTransaction = () => {
+        console.log(layoutState.userId);
         const web3 = uPort.getWeb3();
         web3.eth.sendTransaction({
-            from: layoutState.user._id, 
-            to:'0xd156a38ce652de569383df1b458400b5ebb1c808', 
-            value: web3.toWei(0.05, "ether")
+            from: layoutState.userId,
+            to:'0x159594122d4df7dc6ad32f770e2246c14df6b23c', 
+            value: web3.toWei(0.0005, "ether")
         }, (err, result ) => {
             console.log(err, result );
         } )
-        console.log(web3);
     }
 
     render() {

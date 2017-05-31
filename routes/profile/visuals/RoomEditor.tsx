@@ -29,7 +29,6 @@ export default class RoomEditor extends React.Component< any, any > {
     }
     render() {
         const { room } = this.props;
-        console.log(Tags, room.tags);
         return (
             <div className="room-editor card">
                 <h2>Room</h2>

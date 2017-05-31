@@ -32,7 +32,7 @@ export class RoomFeedState extends Loader {
 }
 
 export const roomFeedState = new RoomFeedState( RoomDocument );
-roomFeedState.execute('RoomsSubscription', {contextValue: roomFeedState});
+roomFeedState.execute('RoomsSubscription', { contextValue: roomFeedState });
 
 @observer
 export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedState> {
@@ -79,9 +79,6 @@ export default class RoomFeed extends React.Component<RoomFeedProps, RoomFeedSta
 }
 
 class RoomComponent extends React.Component< any, any > {
-    constructor() {
-        super();
-    }
 
     render() {
         return (

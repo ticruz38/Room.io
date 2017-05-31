@@ -2,8 +2,10 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 import { observer } from "mobx-react";
 import { toJS, computed, observable, autorun } from "mobx";
+
+import { SpinnerIcon } from 'components/icons';
 import db from 'graph/IpfsApiStore';
-let index = 0;
+
 
 type ImageProps = {
     onUpload?: (err: Error, res: any) => void;
@@ -20,7 +22,10 @@ const pending = {};
 const loaded = {};
 @observer
 export default class ImageComponent extends React.PureComponent< ImageProps, {url: string} > {
-    @observable state = {url: ''};
+    @observable state = {
+        url: '',
+        loading: false
+    };
 
     componentWillMount() {
         const { defaultPicture } = this.props;
@@ -51,7 +56,16 @@ export default class ImageComponent extends React.PureComponent< ImageProps, {ur
     uploadFile = () => {
         if( this.props.readOnly ) return;
         if(!this.refs.fileinput['files'][0] ) return;
-        db.uploadFile( this.refs.fileinput['files'][0], this.props.onUpload )
+        const reader = new FileReader();
+        reader.readAsDataURL( this.refs.fileinput['files'][0] );
+        reader.onloadend = (e: ProgressEvent ) => {
+            this.state.url = reader.result;
+        }
+        this.state.loading = true
+        db.uploadFile( this.refs.fileinput['files'][0], (err, res) => {
+            this.state.loading = false;
+            this.props.onUpload(err, res);
+        } )
     }
 
     onFileInputClick = (e) => {
@@ -76,7 +90,7 @@ export default class ImageComponent extends React.PureComponent< ImageProps, {ur
                     onClick={ this.onFileInputClick } 
                     onChange={ this.uploadFile } 
                 />
-                <div className={ this.props.readOnly ? "" : "picture-blur" }>
+                <div className={classNames({['picture-blur']: !this.props.readOnly, loading: this.state.loading} ) }>
                     <img
                         className='picture'
                         src={ this.state.url }

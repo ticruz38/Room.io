@@ -20,27 +20,38 @@ export default class Welcome extends React.Component< any, any > {
                     </div>
                 </div>
                 <ul className='presentation'>
-                    <li> 
-                        Room.io is a very simple concept, you show and detail what you are offering, in a nicely usable yet beautiful interface, it can be anything, 
-                        goods, services, foods, homemade beauty product... And let your customer enter in a deal with you in total trust and simplicity. 
+                    <li>
+                        <p>
+                            Room.io is a very simple concept, you show and detail what you are offering, in a nicely usable yet beautiful interface, it can be anything: 
+                            goods, services, foods, homemade beauty product...
+                        </p> 
+                        <p>
+                            Your customer will deal with you in total trust and simplicity.
+                        </p>
                     </li> 
                     <li>
-                        Caddy is a decentralized, peer-to-peer application, there is no server here, you exchange directly with your customer with no third parties
-                        Your goods will be barter or buyed with cryptomonney
+                        <p>
+                            Room.io is a distributed, peer-to-peer application, it has no central point of authority, no server, you exchange directly with your customer.
+                        </p>
+                        <div 
+                            className="img distributed" 
+                            style={{backgroundImage: 'url("https://blog.savoirfairelinux.com/en-ca/wp-content/uploads/sites/2/2016/11/Social-network-sphere-1024x798.jpg")'}} 
+                        />
+                        <p>
+                            Your goods will be barter or buyed with cryptocurrency
+                        </p>
                     </li>
                     <li>
-                        Go fill your caddy account, share your profile, grab popularity in the network, and make yourself the greatest roomer ever! 
-                        Nobody owns your data, it's all yours!
+                        <p>
+                            Go fill your account, share your profile, grab popularity in the network, and make yourself the greatest roomer ever! 
+                            Nobody owns your data or identity, it's all yours!
+                        </p>
                     </li> 
                 </ul>
                 <div className='pick'>
-                    <Button 
-                        action={_ => this.props.router.push('login')} 
-                        message="Get Started"
-                    />
                     <Button
                         action={_ => this.props.router.push('rooms')}
-                        message="Look Around"
+                        message="Let's get started"
                     />
                 </div>
             </div>

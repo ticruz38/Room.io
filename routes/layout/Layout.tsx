@@ -7,6 +7,7 @@ import { Connect } from 'uport-connect';
 
 import AuthButton from './visuals/AuthButton';
 import Modal from './visuals/Modal';
+import Loading from './visuals/Loading';
 import Loader from "graph/Loader";
 import Button from 'components/Button';
 import { EditableUser } from "models";
@@ -42,6 +43,7 @@ export class LayoutState {
     reset() {
         this.setModal(null);
         this.setToolbar(<span />);
+        this.onClose = null;
         this.backgroundImage = null;
         this.searchBar = false;
         this.backRoute = null;
@@ -57,23 +59,28 @@ export const layoutState = new LayoutState();
 
 type state = {
     modal: boolean | React.ReactElement<any> | React.ReactNode | any[],
-    toolbar: React.ReactElement<any> | React.ReactElement<any>[]
+    loader: boolean | React.ReactElement<any> | React.ReactNode | any[],
+    toolbar: React.ReactElement<any> | React.ReactElement<any>[],
 }
 @observer
 export default class Layout extends React.Component<any, state> {
-    state = { modal: false, toolbar: null };
+    state = { modal: false, toolbar: null, loader: false };
 
     componentWillMount() {
+        this.setState({ ...this.state, loader: <Loading message='looking for peers' /> })
         // startup web3Db;
         db.bootingDb.then(web3DB => {
+            this.setState({ ...this.state, loader: <Loading message='starting up db' /> })
             web3DB.startUp((err, credentials) => {
-                console.log(err, credentials);
-                if(!credentials) this.props.router.push('/'); //back to home page
+                this.setState({ ...this.state, loader: <Loading message='resolving ipfs address' /> })
+                // console.log(err, credentials);
+                if (!credentials) this.props.router.push('/'); //back to home page
                 new EditableUser({
                     _id: credentials.address,
                     name: credentials.name,
                     picture: credentials.image ? credentials.image.contentUrl.split('/').pop() : ''
                 }).logWithUport(result => {
+                    this.setState({...this.state, loader: false});
                     const user = result.data.user;
                     layoutState.user = user;
                     sessionStorage.setItem('userId', user._id);
@@ -109,7 +116,7 @@ export default class Layout extends React.Component<any, state> {
     render() {
         return (
             <div className='layout'>
-                <div className={classnames({ blur: !!this.state.modal })}>
+                <div className={classnames({ blur: this.state.modal || this.state.loader })}>
                     <div className="background" style={{ backgroundImage: layoutState.backgroundImage ? 'url(' + layoutState.backgroundImage + ')' : 'none' }} />
                     <header className="navigation">
                         <div className="left-items">
@@ -139,6 +146,9 @@ export default class Layout extends React.Component<any, state> {
                     setModal={layoutState.setModal}
                 >
                     {this.state.modal}
+                </Modal>
+                <Modal unclosable>
+                    {this.state.loader}
                 </Modal>
             </div>
         )

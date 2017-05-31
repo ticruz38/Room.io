@@ -62,3 +62,7 @@ export const PopulateDb = dbName => {
         populateItems(index);
     });
 };
+
+export const UploadImages = () => {
+    
+}

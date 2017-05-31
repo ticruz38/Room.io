@@ -11,6 +11,7 @@ query ProfileQuery($id: String!) {
       email
       picture
       phoneNumber
+      tags
       owner {
         _id
       }

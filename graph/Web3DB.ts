@@ -45,8 +45,8 @@ export default class Web3DB extends OrbitDB {
         });
     }
 
-    reset(dbName) {
-        this.dbContract.saveCollection(dbName, "", { from: this.account, gas: 210000 })
+    reset(dbName, hash?: string) {
+        this.dbContract.saveCollection(dbName, hash || "", { from: this.account, gas: 210000 })
             .then( transaction => console.log(transaction))
             .catch( error => console.log(error))
     }

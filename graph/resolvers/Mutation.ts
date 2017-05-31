@@ -89,9 +89,9 @@ export default {
         });
     },
     logWithUport( root, { user }, context ) {
-        console.log('logwithuport', user);
         return db.user.then( userDb => {
-            const userExist = userDb.get( user.email )[0];
+            console.log('logwithuport', user);
+            const userExist = userDb.query( u => user._id === u._id )[0];
             if(!userExist) {
                 // if not add it to the app
                 userDb.put(user);

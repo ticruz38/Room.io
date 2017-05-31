@@ -20,9 +20,9 @@ export default class Login extends React.Component<any, any> {
 
     onSave = (result) => {
         if( result.errors) {
-            console.log(result.errors);
             return this.errors = result.errors;
         }
+        console.log(result.data);
         const user = result.data.login
         sessionStorage.setItem( 'userId', user._id );
         layoutState.setModal(false);
