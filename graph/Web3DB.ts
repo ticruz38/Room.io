@@ -12,7 +12,7 @@ const ROOMDATAREQUEST = 'roomio:data:request';
 const ROOMDATAUPDATE = 'roomio:data:update';
 const PEERS = 'peers';
 
-//TODO Make it listening to sinced db events and notify the guardian about the new hash
+//TODO Make it listening to sinced db events and notify the guardian about the new _hash
 export default class Web3DB extends OrbitDB {
     _peers: string[] = [];
     web3: any // ethereum connector
@@ -36,22 +36,22 @@ export default class Web3DB extends OrbitDB {
     }
 
     _listenToContract() {
-        const dbUpdate = this.dbContract.dbUpdate();
+        const dbUpdate = this.dbContract.DbUpdate();
         dbUpdate.watch((err, result) => {
             if (err) return console.log(err);
-            // update cache hash and reload store
-            // sorry the collection is the hash, the hash is the collection, neet ot fix this in the contract
-            this._onMessage(result.args.hash, result.args.collection);
+            // update cache _hash and reload store
+            // sorry the collection is the _hash, the _hash is the collection, neet ot fix this in the contract
+            this._onMessage(result.args._hash, result.args.collection);
         });
     }
 
-    reset(dbName, hash?: string) {
-        this.dbContract.saveCollection(dbName, hash || "", { from: this.account, gas: 210000 })
+    reset(dbName, _hash?: string) {
+        this.dbContract.saveCollection(dbName, _hash || "", { from: this.account, gas: 210000 })
             .then( transaction => console.log(transaction))
             .catch( error => console.log(error))
     }
 
-    //notify the contract about a new connection and get the latests collection hash
+    //notify the contract about a new connection and get the latests collection _hash
     _syncWithContract() {
         // I wish I could just make a call, but then the event is'nt triggered
         dbs.map( db => 
@@ -99,13 +99,13 @@ export default class Web3DB extends OrbitDB {
     }
 
     /* Data events */
-    _onWrite(dbname, hash, entry, heads) {
+    _onWrite(dbname, _hash, entry, heads) {
         // 'New entry written to database...', after adding a new db entry locally
         if (!heads) throw new Error("'heads' not defined");
         //@TODO check if the previous ownerAddress block match the account
         // if not throw an error, ownerAddress shouldnt be mutated
         setImmediate(() => {
-            this.dbContract.saveCollection(dbname, hash, { from: this.account, gas: 210000 })
+            this.dbContract.saveCollection(dbname, _hash, { from: this.account, gas: 210000 })
             .then( transaction => console.log(transaction))
             .catch( error => console.log(error))
             // notify the blockchain about new entry

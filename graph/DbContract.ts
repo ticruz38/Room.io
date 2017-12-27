@@ -28,7 +28,6 @@ const DataBase = (): Promise<{ instance: any, credentials: any }> => new Promise
         db.setProvider(window["web3"].currentProvider);
         if (!sessionStorage.userId) {
             return uPort.requestCredentials().then(credentials => {
-                console.log(credentials);
                 db.deployed().then(instance => {
                     resolve({ instance, credentials });
                 });
