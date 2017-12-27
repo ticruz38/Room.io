@@ -3,7 +3,7 @@ import uPort from './Uport';
 const Web3 = require('web3');
 const contract = require('truffle-contract');
 
-const database_artifact = require('/Users/tduchene/Code/truffle/build/contracts/DataBase.json');
+const database_artifact = require('contract/contracts/DataBase.json');
 
 
 
